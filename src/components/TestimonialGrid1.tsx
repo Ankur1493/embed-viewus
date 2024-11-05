@@ -15,6 +15,9 @@ const TestimonialGrid1: React.FC = () => {
   const [backgroundColor, setBackgroundColor] = useState("");
   const [tagColor, setTagColor] = useState("");
   const [tagTextColor, setTagTextColor] = useState("");
+  const [borderRadius, setBorderRadius] = useState("");
+  const [radius, setRadius] = useState("");
+  const [shadowColor, setShadowColor] = useState("");
   const controls = useAnimation();
 
   const isValidColor = (color: string) => {
@@ -45,6 +48,9 @@ const TestimonialGrid1: React.FC = () => {
     const background = urlParams.get("background");
     const tagColor = urlParams.get("tag");
     const tagTextColor = urlParams.get("tagText");
+    const cardBorderRadius = urlParams.get("cardBorderRadius");
+    const divRadius = urlParams.get("radius");
+    const shadowColor = urlParams.get("shadow");
 
     if (theme === "dark") setIsDarkTheme(true);
 
@@ -60,13 +66,19 @@ const TestimonialGrid1: React.FC = () => {
 
     if (tagTextColor) setTagTextColor(tagTextColor);
 
+    if (shadowColor) setShadowColor(shadowColor);
+
+    if (cardBorderRadius) setBorderRadius(cardBorderRadius);
+
+    if (divRadius) setRadius(divRadius);
+
     if (shouldAnimate) {
       const animateTestimonials = async () => {
-        let duration = 20;
+        let duration = 50;
         if (speed === "medium") {
-          duration = 15;
+          duration = 35;
         } else if (speed === "high") {
-          duration = 10;
+          duration = 25;
         }
         await controls.start({
           y: ["0%", "-100%"],
@@ -81,12 +93,51 @@ const TestimonialGrid1: React.FC = () => {
     }
   }, [controls, shouldAnimate]);
 
+  const cardBorderRad =
+    borderRadius === "low"
+      ? "5px"
+      : borderRadius === "medium"
+      ? "10px"
+      : borderRadius === "high"
+      ? "20px"
+      : "";
+
+  const containerRadius =
+    radius === "low"
+      ? "5px"
+      : radius === "medium"
+      ? "10px"
+      : radius === "high"
+      ? "20px"
+      : "";
+
   return (
     <div
       className={`relative overflow-hidden ${shouldAnimate ? "h-[90vh]" : ""}`}
+      style={{ borderRadius: containerRadius }}
     >
+      {shouldAnimate && (
+        <>
+          <div
+            className="absolute top-0 left-0 right-0 h-16 opacity-70 z-20 "
+            style={{
+              background: isValidColor(shadowColor)
+                ? `linear-gradient(${shadowColor}, transparent)`
+                : "",
+            }}
+          ></div>
+          <div
+            className="absolute bottom-0 left-0 right-0 h-16 opacity-70 z-20 "
+            style={{
+              background: isValidColor(shadowColor)
+                ? `linear-gradient(transparent, ${shadowColor})`
+                : "",
+            }}
+          ></div>
+        </>
+      )}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 auto-rows-auto"
+        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 auto-rows-auto"
         animate={controls}
       >
         {[...testimonials, ...testimonials].map((testimonial, index) => (
@@ -114,6 +165,7 @@ const TestimonialGrid1: React.FC = () => {
                 ? backgroundColor
                 : undefined,
               color: isValidColor(textColor) ? textColor : undefined,
+              borderRadius: cardBorderRad,
             }}
           >
             <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
