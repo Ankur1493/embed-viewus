@@ -3,13 +3,13 @@ import HallOfFame from "./pages/HallOfFame";
 import WallOfLove from "./pages/WallOfLove";
 import WallOfLoveTestimonials from "./pages/WallOfLoveTestimonials";
 import TestimonialGridHorizontal from "./components/TestimonialGridHorizontal";
-import TestimonialCarousel from "./components/testing";
+import TestimonialGridUpward from "./components/TestimonialGridVertical";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TestimonialCarousel />} />
+        <Route path="/" element={<TestimonialGridUpward />} />
         <Route path="/w/hall-of-fame" element={<HallOfFame />} />
         <Route path="/w/wall-of-love" element={<WallOfLove />} />
         <Route

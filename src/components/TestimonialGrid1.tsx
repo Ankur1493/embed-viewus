@@ -5,6 +5,7 @@ import linkedIn from "../assets/images/linkedIn_logo.png";
 import product from "../assets/images/ProductHunt_logo.png";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import { Heart, Star } from "lucide-react";
+import { isValidColor } from "./IsValidColor";
 import { motion, useAnimation } from "framer-motion";
 
 const TestimonialGrid1: React.FC = () => {
@@ -19,12 +20,6 @@ const TestimonialGrid1: React.FC = () => {
   const [radius, setRadius] = useState("");
   const [shadowColor, setShadowColor] = useState("");
   const controls = useAnimation();
-
-  const isValidColor = (color: string) => {
-    const s = new Option().style;
-    s.color = color;
-    return s.color !== "";
-  };
 
   useEffect(() => {
     if (shouldAnimate) {

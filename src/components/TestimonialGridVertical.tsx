@@ -1,145 +1,147 @@
 import React, { useState, useEffect } from "react";
 import { testimonials } from "../data/testimonialData";
-import twitter from "../assets/images/twitter_logo.png";
-import linkedIn from "../assets/images/linkedIn_logo.png";
-import product from "../assets/images/ProductHunt_logo.png";
-import star from "../assets/images/star_selected.png";
-import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
-import { Heart } from "lucide-react";
+import InfiniteMovingCards from "./ui/vertical-moving-cards";
 
-const TestimonialGridVertical: React.FC = () => {
+const TestimonialGridUpward: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [textColor, setTextColor] = useState("");
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [starColor, setStarColor] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("");
+  const [tagColor, setTagColor] = useState("");
+  const [tagTextColor, setTagTextColor] = useState("");
+  const [borderRadius, setBorderRadius] = useState("");
+  const [radius, setRadius] = useState("");
+  const [shadowColor, setShadowColor] = useState("");
+  const [speed, setSpeed] = useState("");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const theme = urlParams.get("theme");
-    if (theme === "dark") {
-      setIsDarkTheme(true);
-    }
+    const animated = urlParams.get("animated");
+    const speedParam = urlParams.get("speed");
+    const text = urlParams.get("text");
+    const star = urlParams.get("star");
+    const background = urlParams.get("background");
+    const tagColor = urlParams.get("tag");
+    const tagTextColor = urlParams.get("tagText");
+    const cardBorderRadius = urlParams.get("cardBorderRadius");
+    const divRadius = urlParams.get("radius");
+    const shadowColor = urlParams.get("shadow");
+
+    if (theme === "dark") setIsDarkTheme(true);
+
+    if (animated === "on") setShouldAnimate(true);
+
+    if (text) setTextColor(text);
+
+    if (star) setStarColor(star);
+
+    if (background) setBackgroundColor(background);
+
+    if (tagColor) setTagColor(tagColor);
+
+    if (tagTextColor) setTagTextColor(tagTextColor);
+
+    if (shadowColor) setShadowColor(shadowColor);
+
+    if (cardBorderRadius) setBorderRadius(cardBorderRadius);
+
+    if (divRadius) setRadius(divRadius);
+
+    if (speedParam) setSpeed(speedParam);
+
+    if (shadowColor) setShadowColor(shadowColor);
   }, []);
 
-  return (
-    <div className="flex justify-center">
-      <div className="flex flex-col gap-4 p-4">
-        {testimonials.map((testimonial) => (
-          <Card
-            key={testimonial.item}
-            className={`border border-gray-200 max-w-[700px] ${
-              isDarkTheme ? "bg-gray-800 text-white" : "bg-white text-black"
-            }`}
-          >
-            <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
-              <div className="flex flex-row items-center gap-2">
-                {testimonial.avatar && (
-                  <div className="w-10 h-10 overflow-hidden rounded-full">
-                    <img
-                      src={testimonial.avatar}
-                      alt={`${testimonial.author}'s avatar`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <div
-                  className={`text-sm ${
-                    isDarkTheme ? "text-white" : "text-gray-600"
-                  } flex flex-col`}
-                >
-                  <strong>{testimonial.author}</strong>
-                  {testimonial.role && (
-                    <span className={`${isDarkTheme ? "text-gray-200" : ""}`}>
-                      {testimonial.role}
-                    </span>
-                  )}
-                </div>
-              </div>
-              {testimonial.importedFrom && (
-                <div className="w-7 h-7 overflow-hidden rounded-full">
-                  {testimonial.importedFrom === "Twitter" ? (
-                    <img
-                      src={twitter}
-                      alt="Twitter"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : testimonial.importedFrom === "LinkedIn" ? (
-                    <img
-                      src={linkedIn}
-                      alt="LinkedIn"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={product}
-                      alt="Product Hunt"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-              )}
-            </CardHeader>
+  const cardBorderRad =
+    borderRadius === "low"
+      ? "5px"
+      : borderRadius === "medium"
+      ? "10px"
+      : borderRadius === "high"
+      ? "20px"
+      : "";
 
-            <CardContent className="p-2 px-4 flex flex-col gap-2 justify-center">
-              {testimonial.star && (
-                <div className="flex">
-                  {Array.from({ length: testimonial.star }).map((_, index) => (
-                    <img
-                      key={index}
-                      src={star}
-                      alt="Star"
-                      className="w-7 h-6 mt-2"
-                    />
-                  ))}
-                </div>
-              )}
-              {testimonial.content && (
-                <p
-                  className={`${
-                    isDarkTheme ? "text-gray-200" : "text-gray-800"
-                  }`}
-                >
-                  "{testimonial.content}"
-                </p>
-              )}
-              {testimonial.image && (
-                <img
-                  src={testimonial.image}
-                  alt="Testimonial"
-                  className="w-full h-auto mt-2"
-                />
-              )}
-              {testimonial.video && (
-                <video
-                  controls
-                  src={testimonial.video}
-                  className="w-full h-auto pt-6"
-                />
-              )}
-            </CardContent>
-            <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
-              {testimonial.tags && testimonial.tags.length > 0 && (
-                <div className="flex gap-1">
-                  {testimonial.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 bg-[#C2F19D] text-black rounded-full text-[14px] flex items-center"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {testimonial.liked == true && (
-                <Heart
-                  size={25}
-                  color="red-500"
-                  className="fill-red-500 right-0"
-                />
-              )}
-            </CardFooter>
-          </Card>
-        ))}
+  const containerRadius =
+    radius === "low"
+      ? "5px"
+      : radius === "medium"
+      ? "10px"
+      : radius === "high"
+      ? "20px"
+      : "10px";
+
+  let duration: "normal" | "slow" | "fast" | undefined = "slow";
+  if (speed === "medium") {
+    duration = "normal";
+  } else if (speed === "high") {
+    duration = "fast";
+  } else {
+    duration = "slow";
+  }
+
+  return (
+    <div className="flex items-center justify-center mx-20">
+      <div
+        className="flex gap-4 relative min-w-[90vw] max-w-screen h-[90vh]"
+        style={{ borderRadius: containerRadius }}
+      >
+        <InfiniteMovingCards
+          items={testimonials}
+          direction="up"
+          speed={duration}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          isDarkTheme={isDarkTheme}
+          cardBorderRad={cardBorderRad}
+          starColor={starColor}
+          tagColor={tagColor}
+          tagTextColor={tagTextColor}
+          shadowColor={shadowColor}
+        />
+        <InfiniteMovingCards
+          items={testimonials}
+          direction="up"
+          speed={duration}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          isDarkTheme={isDarkTheme}
+          cardBorderRad={cardBorderRad}
+          starColor={starColor}
+          tagColor={tagColor}
+          tagTextColor={tagTextColor}
+          shadowColor={shadowColor}
+        />
+        <InfiniteMovingCards
+          items={testimonials}
+          direction="up"
+          speed={duration}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          isDarkTheme={isDarkTheme}
+          cardBorderRad={cardBorderRad}
+          starColor={starColor}
+          tagColor={tagColor}
+          tagTextColor={tagTextColor}
+          shadowColor={shadowColor}
+        />
+        <InfiniteMovingCards
+          items={testimonials}
+          direction="up"
+          speed={duration}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          isDarkTheme={isDarkTheme}
+          cardBorderRad={cardBorderRad}
+          starColor={starColor}
+          tagColor={tagColor}
+          tagTextColor={tagTextColor}
+          shadowColor={shadowColor}
+        />
       </div>
     </div>
   );
 };
 
-export default TestimonialGridVertical;
+export default TestimonialGridUpward;
