@@ -15,6 +15,7 @@ export interface Testimonial {
   video?: string;
   star?: number;
   tags?: string[];
+  liked?: boolean;
 }
 
 export const testimonials: Testimonial[] = [
@@ -26,6 +27,7 @@ export const testimonials: Testimonial[] = [
     role: "Groot at Groot Industries",
     avatar: profile,
     tags: ["Good", "Loving", "Great Product"],
+    liked: true,
   },
   {
     item: 2,
@@ -61,6 +63,7 @@ export const testimonials: Testimonial[] = [
     importedFrom: "Twitter",
     avatar: profile,
     image: image1,
+    liked: true,
   },
   {
     item: 6,
@@ -80,6 +83,7 @@ export const testimonials: Testimonial[] = [
     avatar: profile,
     star: 3,
     tags: ["Good", "Loving", "Great Product"],
+    liked: true,
   },
   {
     item: 8,
@@ -106,6 +110,7 @@ export const testimonials: Testimonial[] = [
     author: "Hannah Thompson",
     avatar: profile,
     star: 4,
+    liked: true,
   },
   {
     item: 11,
@@ -126,6 +131,7 @@ export const testimonials: Testimonial[] = [
     avatar: profile,
     star: 5,
     tags: ["Good", "Loving", "Great Product"],
+    liked: true,
   },
   {
     item: 13,

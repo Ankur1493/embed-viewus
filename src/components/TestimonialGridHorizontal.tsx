@@ -5,6 +5,7 @@ import linkedIn from "../assets/images/linkedIn_logo.png";
 import product from "../assets/images/ProductHunt_logo.png";
 import star from "../assets/images/star_selected.png";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
+import { Heart } from "lucide-react";
 
 const TestimonialGridHorizontal: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -114,18 +115,27 @@ const TestimonialGridHorizontal: React.FC = () => {
               />
             )}
           </CardContent>
-          {testimonial.tags && testimonial.tags.length > 0 && (
-            <CardFooter className="flex gap-1 p-0 py-2 pb-4 px-4">
-              {testimonial.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-[#C2F19D] text-black rounded-full text-[14px] flex items-center"
-                >
-                  {tag}
-                </span>
-              ))}
-            </CardFooter>
-          )}
+          <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
+            {testimonial.tags && testimonial.tags.length > 0 && (
+              <div className="flex gap-1">
+                {testimonial.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-[#C2F19D] text-black rounded-full text-[14px] flex items-center"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            {testimonial.liked == true && (
+              <Heart
+                size={25}
+                color="red-500"
+                className="fill-red-500 right-0"
+              />
+            )}
+          </CardFooter>
         </Card>
       ))}
     </div>

@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { testimonials } from "../data/testimonialData";
 import twitter from "../assets/images/twitter_logo.png";
 import linkedIn from "../assets/images/linkedIn_logo.png";
 import product from "../assets/images/ProductHunt_logo.png";
 import star from "../assets/images/star_selected.png";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
+import { useState, useEffect } from "react";
+import { Heart } from "lucide-react";
 
-const TestimonialGrid2: React.FC = () => {
+const TestimonialGrid1: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const theme = urlParams.get("theme");
-    if (theme === "dark") {
+    if (theme == "dark") {
       setIsDarkTheme(true);
     }
-  }, []);
-
+  });
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4 auto-rows-auto">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 auto-rows-auto">
       {testimonials.map((testimonial) => (
         <Card
           key={testimonial.item}
@@ -26,7 +26,7 @@ const TestimonialGrid2: React.FC = () => {
             isDarkTheme ? "bg-gray-800 text-white" : "bg-white text-black"
           } ${
             testimonial.image || testimonial.video
-              ? "md:row-span-3"
+              ? "md:row-span-2"
               : "md:row-span-1"
           }`}
         >
@@ -86,7 +86,7 @@ const TestimonialGrid2: React.FC = () => {
                   <img
                     key={index}
                     src={star}
-                    alt="Star"
+                    alt="Image"
                     className="w-7 h-6 mt-2"
                   />
                 ))}
@@ -102,7 +102,7 @@ const TestimonialGrid2: React.FC = () => {
             {testimonial.image && (
               <img
                 src={testimonial.image}
-                alt="Testimonial"
+                alt="Image"
                 className="w-full h-auto mt-2"
               />
             )}
@@ -114,22 +114,31 @@ const TestimonialGrid2: React.FC = () => {
               />
             )}
           </CardContent>
-          {testimonial.tags && testimonial.tags.length > 0 && (
-            <CardFooter className="flex gap-1 p-0 py-2 pb-4 px-4">
-              {testimonial.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-[#C2F19D] text-black rounded-full text-[14px] flex items-center"
-                >
-                  {tag}
-                </span>
-              ))}
-            </CardFooter>
-          )}
+          <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
+            {testimonial.tags && testimonial.tags.length > 0 && (
+              <div className="flex gap-1">
+                {testimonial.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-[#C2F19D] text-black rounded-full text-[14px] flex items-center"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            {testimonial.liked == true && (
+              <Heart
+                size={25}
+                color="red-500"
+                className="fill-red-500 right-0"
+              />
+            )}
+          </CardFooter>
         </Card>
       ))}
     </div>
   );
 };
 
-export default TestimonialGrid2;
+export default TestimonialGrid1;
