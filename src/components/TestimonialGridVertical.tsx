@@ -5,7 +5,7 @@ import InfiniteMovingCards from "./ui/vertical-moving-cards";
 const TestimonialGridUpward: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [textColor, setTextColor] = useState("");
-  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [_, setShouldAnimate] = useState(false);
   const [starColor, setStarColor] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("");
   const [tagColor, setTagColor] = useState("");

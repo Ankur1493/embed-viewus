@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import TestimonialCard from "../TestimonialCard";
 import { Testimonial } from "@/interface";
 import "../TestimonialGrid.css";
@@ -36,25 +36,26 @@ export default function InfiniteMovingCards({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLUListElement>(null);
-
   const [start, setStart] = useState(false);
 
   useEffect(() => {
     if (containerRef.current && scrollerRef.current) {
+      // Duplicate items for infinite scrolling effect
       const scrollerContent = Array.from(scrollerRef.current.children);
-
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
         scrollerRef.current?.appendChild(duplicatedItem);
       });
 
-      getDirection();
-      getSpeed();
+      // Set direction and speed
+      setDirection();
+      setSpeed();
       setStart(true);
     }
   }, [direction, speed]);
 
-  const getDirection = () => {
+  // Set the scrolling direction based on the direction prop
+  const setDirection = () => {
     if (containerRef.current) {
       containerRef.current.style.setProperty(
         "--animation-direction",
@@ -63,13 +64,14 @@ export default function InfiniteMovingCards({
     }
   };
 
-  const getSpeed = () => {
+  // Set the speed based on the speed prop
+  const setSpeed = () => {
+    const speedMap = {
+      fast: "20s",
+      normal: "30s",
+      slow: "40s",
+    };
     if (containerRef.current) {
-      const speedMap = {
-        fast: "20s",
-        normal: "30s",
-        slow: "40s",
-      };
       containerRef.current.style.setProperty(
         "--animation-duration",
         speedMap[speed]
