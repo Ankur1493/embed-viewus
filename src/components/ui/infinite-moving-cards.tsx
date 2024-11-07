@@ -9,7 +9,7 @@ export const InfiniteMovingCards = ({
   speed = "normal",
   pauseOnHover = true,
   className,
-  backgroundColor,
+  cardBackgroundColor,
   textColor,
   isDarkTheme,
   cardBorderRad,
@@ -24,7 +24,7 @@ export const InfiniteMovingCards = ({
   speed?: "fast" | "normal" | "slow";
   pauseOnHover?: boolean;
   className?: string;
-  backgroundColor?: string;
+  cardBackgroundColor?: string;
   textColor?: string;
   isDarkTheme?: boolean;
   cardBorderRad?: string;
@@ -91,14 +91,14 @@ export const InfiniteMovingCards = ({
   return (
     <div
       ref={containerRef}
-      className={`scroller relative z-20 w-full overflow-hidden  ${className}`}
+      className={`scroller relative z-20 w-full h-auto overflow-x-hidden  ${className}`}
       style={{
-        maskImage: `linear-gradient(to right, transparent, ${shadowColor} 5%, ${shadowColor} 95%, transparent)`,
+        maskImage: `linear-gradient(to right, transparent, #${shadowColor} 5%, #${shadowColor} 95%, transparent)`,
       }}
     >
       <ul
         ref={scrollerRef}
-        className={`flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap ${
+        className={`flex min-w-full h-fit shrink-0 gap-4 py-4 w-max flex-nowrap ${
           start && "animate-scroll"
         } ${pauseOnHover && "hover:[animation-play-state:paused]"}`}
       >
@@ -107,7 +107,7 @@ export const InfiniteMovingCards = ({
             <TestimonialCard
               index={idx}
               testimonial={testimonial}
-              backgroundColor={backgroundColor}
+              cardBackgroundColor={cardBackgroundColor}
               textColor={textColor}
               isDarkTheme={isDarkTheme}
               cardBorderRad={cardBorderRad}

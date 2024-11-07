@@ -3,8 +3,9 @@ import TestimonialCard from "../TestimonialCard";
 import { Testimonial } from "@/interface";
 import "../TestimonialGrid.css";
 
-export default function InfiniteMovingCards({
-  items,
+export default function VerticalMovingCard({
+  index,
+  testimonial,
   direction = "up",
   speed = "normal",
   pauseOnHover = true,
@@ -16,10 +17,10 @@ export default function InfiniteMovingCards({
   starColor,
   tagColor,
   tagTextColor,
-  cardHeight,
   shadowColor,
 }: {
-  items: Testimonial[];
+  index: number;
+  testimonial: Testimonial;
   direction?: "up" | "down";
   speed?: "fast" | "normal" | "slow";
   pauseOnHover?: boolean;
@@ -39,6 +40,8 @@ export default function InfiniteMovingCards({
   const [start, setStart] = useState(false);
 
   useEffect(() => {
+    console.log("Rendering testimonial:", testimonial);
+
     if (containerRef.current && scrollerRef.current) {
       // Duplicate items for infinite scrolling effect
       const scrollerContent = Array.from(scrollerRef.current.children);
@@ -93,22 +96,19 @@ export default function InfiniteMovingCards({
           start ? "infinite-scroll" : ""
         } ${pauseOnHover ? "hover:[animation-play-state:paused]" : ""}`}
       >
-        {items.map((testimonial, idx) => (
-          <li key={idx} className="w-fit h-full">
-            <TestimonialCard
-              index={idx}
-              testimonial={testimonial}
-              cardBackgroundColor={cardBackgroundColor}
-              textColor={textColor}
-              isDarkTheme={isDarkTheme}
-              cardBorderRad={cardBorderRad}
-              starColor={starColor}
-              tagColor={tagColor}
-              tagTextColor={tagTextColor}
-              cardHeight={cardHeight}
-            />
-          </li>
-        ))}
+        <li key={index} className="w-fit h-full">
+          <TestimonialCard
+            index={index}
+            testimonial={testimonial}
+            cardBackgroundColor={cardBackgroundColor}
+            textColor={textColor}
+            isDarkTheme={isDarkTheme}
+            cardBorderRad={cardBorderRad}
+            starColor={starColor}
+            tagColor={tagColor}
+            tagTextColor={tagTextColor}
+          />
+        </li>
       </ul>
     </div>
   );

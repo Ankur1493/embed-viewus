@@ -5,7 +5,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Star, Heart } from "lucide-react";
+import { Star } from "lucide-react";
 import { isValidColor } from "./IsValidColor";
 import twitter from "@/assets/images/twitter_logo.png";
 import linkedIn from "@/assets/images/linkedIn_logo.png";
@@ -15,7 +15,7 @@ import { Testimonial } from "@/interface";
 interface TestimonialCardProps {
   index: number;
   testimonial: Testimonial;
-  backgroundColor?: string;
+  cardBackgroundColor?: string;
   textColor?: string;
   isDarkTheme?: boolean;
   cardBorderRad?: string;
@@ -23,12 +23,13 @@ interface TestimonialCardProps {
   tagColor?: string;
   tagTextColor?: string;
   cardHeight?: string;
+  cardWidth?: string;
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({
   index,
   testimonial,
-  backgroundColor = "",
+  cardBackgroundColor = "",
   textColor = "",
   isDarkTheme = false,
   cardBorderRad = "",
@@ -36,14 +37,15 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   tagColor = "#C2F19D",
   tagTextColor = "black",
   cardHeight,
+  cardWidth,
 }) => {
   return (
     <Card
       key={`${testimonial.item}-${index}`}
       className={`border border-gray-200 ${
-        !isValidColor(backgroundColor) && isDarkTheme
+        !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
-          : !isValidColor(backgroundColor) && !isDarkTheme
+          : !isValidColor(cardBackgroundColor) && !isDarkTheme
           ? "bg-white"
           : ""
       } ${
@@ -52,20 +54,21 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           : !isValidColor(textColor) && !isDarkTheme
           ? "text-black"
           : ""
-      }  max-w-[400px] h-full`}
+      } md:w-80 w-56 min-w-[270px] h-full`}
       style={{
-        backgroundColor: isValidColor(backgroundColor)
-          ? backgroundColor
+        backgroundColor: isValidColor(cardBackgroundColor)
+          ? `#${cardBackgroundColor}`
           : undefined,
-        color: isValidColor(textColor) ? textColor : undefined,
+        color: isValidColor(textColor) ? `#${textColor}` : undefined,
         borderRadius: cardBorderRad,
         height: cardHeight === "fit" ? "fit-content" : undefined,
+        minWidth: cardWidth ? `${cardWidth}px` : undefined,
       }}
     >
       <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
         <div className="flex flex-row items-center gap-2">
           {testimonial.avatar && (
-            <div className="w-10 h-10 overflow-hidden rounded-full">
+            <div className="w-6 h-6 md:w-10 md:h-10 overflow-hidden rounded-full">
               <img
                 src={testimonial.avatar}
                 alt={`${testimonial.author}'s avatar`}
@@ -103,7 +106,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
               <Star
                 key={i}
                 style={{
-                  fill: isValidColor(starColor) ? starColor : "#71D4FE",
+                  fill: isValidColor(starColor) ? `#${starColor}` : "#71D4FE",
                 }}
                 color="none"
               />
@@ -115,14 +118,14 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           <img
             src={testimonial.image}
             alt="Image"
-            className="w-full h-auto mt-2"
+            className="w-[70%] md:w-full h-auto mt-2 object-cover"
           />
         )}
         {testimonial.video && (
           <video
             controls
             src={testimonial.video}
-            className="w-full h-auto pt-6"
+            className="w-full h-auto pt-6 object-cover"
           />
         )}
       </CardContent>
@@ -135,7 +138,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 className="rounded-full px-2 py-1 text-xs font-medium"
                 style={{
                   backgroundColor: isValidColor(tagColor)
-                    ? tagColor
+                    ? `#${tagColor}`
                     : "#C2F19D",
                   color: isValidColor(tagTextColor) ? tagTextColor : "black",
                 }}
@@ -145,9 +148,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             ))}
           </div>
         )}
-        <div className="flex items-center gap-1">
-          {testimonial.liked && <Heart className="" color="none" />}
-        </div>
       </CardFooter>
     </Card>
   );

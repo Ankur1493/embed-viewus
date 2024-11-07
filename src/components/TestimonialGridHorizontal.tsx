@@ -9,6 +9,7 @@ const TestimonialGridHorizontal: React.FC = () => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [textColor, setTextColor] = useState("");
   const [starColor, setStarColor] = useState("");
+  const [cardBackgroundColor, setCardBackgroundColor] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("");
   const [tagColor, setTagColor] = useState("");
   const [tagTextColor, setTagTextColor] = useState("");
@@ -18,7 +19,7 @@ const TestimonialGridHorizontal: React.FC = () => {
   const [cardHeight, setCardHeight] = useState("");
   const [align, setAlign] = useState("");
   const [shadowColor, setShadowColor] = useState("");
-  const [rowNumber, setRowNumber] = useState("");
+  const [rowNumber, setRowNumber] = useState(1);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,7 +28,7 @@ const TestimonialGridHorizontal: React.FC = () => {
     const speedParam = urlParams.get("speed");
     const text = urlParams.get("text");
     const star = urlParams.get("star");
-    const background = urlParams.get("background");
+    const cardBackground = urlParams.get("cardBackground");
     const tagColor = urlParams.get("tag");
     const tagTextColor = urlParams.get("tagText");
     const cardBorderRadius = urlParams.get("cardBorderRadius");
@@ -36,14 +37,14 @@ const TestimonialGridHorizontal: React.FC = () => {
     const alignCard = urlParams.get("align");
     const shadowColor = urlParams.get("shadow");
     const row = urlParams.get("row");
-
-    console.log("speedParam from URL:", speedParam);
+    const rows = row ? parseInt(row, 10) : null;
+    const background = urlParams.get("background");
 
     if (theme === "dark") setIsDarkTheme(true);
     if (animated === "on") setShouldAnimate(true);
     if (text) setTextColor(text);
     if (star) setStarColor(star);
-    if (background) setBackgroundColor(background);
+    if (cardBackground) setCardBackgroundColor(cardBackground);
     if (tagColor) setTagColor(tagColor);
     if (tagTextColor) setTagTextColor(tagTextColor);
     if (cardBorderRadius) setBorderRadius(cardBorderRadius);
@@ -52,7 +53,8 @@ const TestimonialGridHorizontal: React.FC = () => {
     if (Height) setCardHeight(Height);
     if (alignCard) setAlign(alignCard);
     if (shadowColor) setShadowColor(shadowColor);
-    if (row) setRowNumber(row);
+    if (rows) setRowNumber(rows);
+    if (background) setBackgroundColor(background);
   }, []);
 
   const cardBorderRad =
@@ -71,7 +73,7 @@ const TestimonialGridHorizontal: React.FC = () => {
       ? "10px"
       : radius === "high"
       ? "20px"
-      : "10px";
+      : "";
 
   const alignmentClass =
     align === "top"
@@ -91,14 +93,15 @@ const TestimonialGridHorizontal: React.FC = () => {
     duration = "slow";
   }
 
-  let rows = 1;
-  if (rowNumber === "two") {
-    rows = 2;
-  }
   return (
     <div
-      className="overflow-hidden relative"
-      style={{ borderRadius: containerRadius }}
+      className="overflow-hidden relative w-full h-full"
+      style={{
+        borderRadius: containerRadius,
+        background: isValidColor(backgroundColor)
+          ? `#${backgroundColor}`
+          : "transparent",
+      }}
     >
       {shouldAnimate ? (
         <>
@@ -106,7 +109,7 @@ const TestimonialGridHorizontal: React.FC = () => {
             className="absolute top-0 left-0 bottom-0 w-16 opacity-70 z-20"
             style={{
               background: isValidColor(shadowColor)
-                ? `linear-gradient(90deg,${shadowColor}, transparent)`
+                ? `linear-gradient(90deg,#${shadowColor}, transparent)`
                 : "",
               borderTopLeftRadius: containerRadius,
               borderBottomLeftRadius: containerRadius,
@@ -117,20 +120,25 @@ const TestimonialGridHorizontal: React.FC = () => {
             className="absolute top-0 right-0 bottom-0 w-16 opacity-70 z-20"
             style={{
               background: isValidColor(shadowColor)
-                ? `linear-gradient(90deg,transparent, ${shadowColor})`
+                ? `linear-gradient(90deg,transparent, #${shadowColor})`
                 : "",
               borderTopRightRadius: containerRadius,
               borderBottomRightRadius: containerRadius,
             }}
           ></div>
           <div
-            className={`grid gap-4 p-4 ${alignmentClass} place-items-center`}
+            className={`grid h-full ${`grid-rows-${rowNumber}`} grid-flow-col gap-4 p-4 ${alignmentClass} place-items-center`}
+            style={{
+              background: isValidColor(backgroundColor)
+                ? `#${backgroundColor}`
+                : "transparent",
+            }}
           >
             <InfiniteMovingCards
               items={testimonials}
               direction="right"
               speed={duration}
-              backgroundColor={backgroundColor}
+              cardBackgroundColor={cardBackgroundColor}
               textColor={textColor}
               isDarkTheme={isDarkTheme}
               cardBorderRad={cardBorderRad}
@@ -140,12 +148,12 @@ const TestimonialGridHorizontal: React.FC = () => {
               cardHeight={cardHeight}
               shadowColor={shadowColor}
             />
-            {rows === 2 && (
+            {rowNumber === 2 && (
               <InfiniteMovingCards
                 items={testimonials}
                 direction="right"
                 speed={duration}
-                backgroundColor={backgroundColor}
+                cardBackgroundColor={cardBackgroundColor}
                 textColor={textColor}
                 isDarkTheme={isDarkTheme}
                 cardBorderRad={cardBorderRad}
@@ -160,14 +168,20 @@ const TestimonialGridHorizontal: React.FC = () => {
         </>
       ) : (
         <div
-          className={`grid grid-rows-${rows} grid-flow-col gap-4 p-4 overflow-x-auto h-full ${alignmentClass}`}
+          className={`grid ${`grid-rows-${rowNumber}`} grid-flow-col gap-4 p-2 md:p-4 overflow-x-auto ${
+            rowNumber === 2 ? "h-full" : "h-[80vh]"
+          }  md:h-full ${alignmentClass}`}
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
         >
           {testimonials.map((testimonial, index) => (
             <TestimonialCard
               key={index}
               index={index}
               testimonial={testimonial}
-              backgroundColor={backgroundColor}
+              cardBackgroundColor={cardBackgroundColor}
               textColor={textColor}
               isDarkTheme={isDarkTheme}
               cardBorderRad={cardBorderRad}
@@ -175,6 +189,7 @@ const TestimonialGridHorizontal: React.FC = () => {
               tagColor={tagColor}
               tagTextColor={tagTextColor}
               cardHeight={cardHeight}
+              cardWidth="400"
             />
           ))}
         </div>

@@ -1,6 +1,5 @@
 import profile from "../assets/images/avatar.webp";
 import image1 from "../assets/images/test1.webp";
-import image2 from "../assets/images/test2.webp";
 import image3 from "../assets/images/test3.webp";
 import v1 from "../assets/videos/screen2.mp4";
 import { Testimonial } from "@/interface";
@@ -60,7 +59,7 @@ export const testimonials: Testimonial[] = [
     importedFrom: "LinkedIn",
     role: "Operations Manager at OptiFlow",
     avatar: profile,
-    image: image2,
+    image: image1,
   },
   {
     item: 7,

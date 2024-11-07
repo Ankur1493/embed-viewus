@@ -1,25 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { testimonials } from "../data/testimonialData";
 import twitter from "../assets/images/twitter_logo.png";
 import linkedIn from "../assets/images/linkedIn_logo.png";
 import product from "../assets/images/ProductHunt_logo.png";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
-import { Heart, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { isValidColor } from "./IsValidColor";
 import { motion, useAnimation } from "framer-motion";
 
 const TestimonialGrid1: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [textColor, setTextColor] = useState("");
   const [starColor, setStarColor] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("");
+  const [cardBackgroundColor, setCardBackgroundColor] = useState("");
   const [tagColor, setTagColor] = useState("");
   const [tagTextColor, setTagTextColor] = useState("");
   const [borderRadius, setBorderRadius] = useState("");
   const [radius, setRadius] = useState("");
   const [shadowColor, setShadowColor] = useState("");
   const controls = useAnimation();
+  const [columns, setColumns] = useState(4);
 
   useEffect(() => {
     if (shouldAnimate) {
@@ -40,51 +43,65 @@ const TestimonialGrid1: React.FC = () => {
     const speed = urlParams.get("speed");
     const text = urlParams.get("text");
     const star = urlParams.get("star");
+    const cardBackground = urlParams.get("cardBackground");
     const background = urlParams.get("background");
     const tagColor = urlParams.get("tag");
     const tagTextColor = urlParams.get("tagText");
     const cardBorderRadius = urlParams.get("cardBorderRadius");
     const divRadius = urlParams.get("radius");
     const shadowColor = urlParams.get("shadow");
+    const columnParam = urlParams.get("columns");
+
+    if (columnParam) {
+      const columnCount = parseInt(columnParam);
+      if (columnCount === 2 || columnCount === 3 || columnCount === 4) {
+        setColumns(columnCount);
+      }
+    }
 
     if (theme === "dark") setIsDarkTheme(true);
-
     if (animated === "on") setShouldAnimate(true);
-
     if (text) setTextColor(text);
-
     if (star) setStarColor(star);
-
-    if (background) setBackgroundColor(background);
-
+    if (cardBackground) setCardBackgroundColor(cardBackground);
     if (tagColor) setTagColor(tagColor);
-
     if (tagTextColor) setTagTextColor(tagTextColor);
-
     if (shadowColor) setShadowColor(shadowColor);
-
     if (cardBorderRadius) setBorderRadius(cardBorderRadius);
-
     if (divRadius) setRadius(divRadius);
-
+    if (background) setBackgroundColor(background);
+    let duration = 50;
+    if (speed === "medium") {
+      duration = 35;
+    } else if (speed === "high") {
+      duration = 25;
+    }
     if (shouldAnimate) {
-      const animateTestimonials = async () => {
-        let duration = 50;
-        if (speed === "medium") {
-          duration = 35;
-        } else if (speed === "high") {
-          duration = 25;
+      // const animateTestimonials = async () => {
+
+      //   await controls.start({
+      //     y: ["0%", "-100%"],
+      //     transition: {
+      //       duration: duration,
+      //       ease: "linear",
+      //       repeat: Infinity,
+      //     },
+      //   });
+      // };
+      // animateTestimonials();
+      const animateScroll = async () => {
+        if (containerRef.current) {
+          const containerHeight = containerRef.current.offsetHeight;
+          await controls.start({
+            y: -containerHeight / 2,
+            transition: { duration, ease: "linear", repeat: Infinity },
+          });
+          controls.set({ y: 0 });
+          animateScroll();
         }
-        await controls.start({
-          y: ["0%", "-100%"],
-          transition: {
-            duration: duration,
-            ease: "linear",
-            repeat: Infinity,
-          },
-        });
       };
-      animateTestimonials();
+
+      animateScroll();
     }
   }, [controls, shouldAnimate]);
 
@@ -108,8 +125,13 @@ const TestimonialGrid1: React.FC = () => {
 
   return (
     <div
-      className={`relative overflow-hidden ${shouldAnimate ? "h-[90vh]" : ""}`}
-      style={{ borderRadius: containerRadius }}
+      className={`relative overflow-hidden ${shouldAnimate ? "h-[100vh]" : ""}`}
+      style={{
+        borderRadius: containerRadius,
+        background: isValidColor(backgroundColor)
+          ? `#${backgroundColor}`
+          : "transparent",
+      }}
     >
       {shouldAnimate && (
         <>
@@ -117,7 +139,7 @@ const TestimonialGrid1: React.FC = () => {
             className="absolute top-0 left-0 right-0 h-16 opacity-70 z-20 "
             style={{
               background: isValidColor(shadowColor)
-                ? `linear-gradient(${shadowColor}, transparent)`
+                ? `linear-gradient(#${shadowColor}, transparent)`
                 : "",
             }}
           ></div>
@@ -125,23 +147,35 @@ const TestimonialGrid1: React.FC = () => {
             className="absolute bottom-0 left-0 right-0 h-16 opacity-70 z-20 "
             style={{
               background: isValidColor(shadowColor)
-                ? `linear-gradient(transparent, ${shadowColor})`
+                ? `linear-gradient(transparent, #${shadowColor})`
                 : "",
             }}
           ></div>
         </>
       )}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 auto-rows-auto"
         animate={controls}
+        ref={containerRef}
+        // transition={{ duration: duration, ease: "linear" }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4"
+        style={{
+          width: "100%",
+          borderRadius: containerRadius,
+          background: isValidColor(backgroundColor)
+            ? `#${backgroundColor}`
+            : "transparent",
+          display: "grid",
+          gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          gap: "16px",
+        }}
       >
         {[...testimonials, ...testimonials].map((testimonial, index) => (
           <Card
             key={`${testimonial.item}-${index}`}
             className={`border border-gray-200 ${
-              !isValidColor(backgroundColor) && isDarkTheme
+              !isValidColor(cardBackgroundColor) && isDarkTheme
                 ? "bg-gray-800"
-                : !isValidColor(backgroundColor) && !isDarkTheme
+                : !isValidColor(cardBackgroundColor) && !isDarkTheme
                 ? "bg-white"
                 : ""
             } ${
@@ -156,10 +190,10 @@ const TestimonialGrid1: React.FC = () => {
                 : "md:row-span-1"
             }`}
             style={{
-              backgroundColor: isValidColor(backgroundColor)
-                ? backgroundColor
+              backgroundColor: isValidColor(cardBackgroundColor)
+                ? `#${cardBackgroundColor}`
                 : undefined,
-              color: isValidColor(textColor) ? textColor : undefined,
+              color: isValidColor(textColor) ? `#${textColor}` : undefined,
               borderRadius: cardBorderRad,
             }}
           >
@@ -212,7 +246,9 @@ const TestimonialGrid1: React.FC = () => {
                   {Array.from({ length: testimonial.star }).map(() => (
                     <Star
                       style={{
-                        fill: isValidColor(starColor) ? starColor : "#71D4FE",
+                        fill: isValidColor(starColor)
+                          ? `#${starColor}`
+                          : "#71D4FE",
                       }}
                       color="none"
                     />
@@ -244,10 +280,10 @@ const TestimonialGrid1: React.FC = () => {
                       className="px-3 py-1 rounded-full text-[14px] flex items-center"
                       style={{
                         backgroundColor: isValidColor(tagColor)
-                          ? tagColor
+                          ? `#${tagColor}`
                           : "#C2F19D",
                         color: isValidColor(tagTextColor)
-                          ? tagTextColor
+                          ? `#${tagTextColor}`
                           : "black",
                       }}
                     >
@@ -255,13 +291,6 @@ const TestimonialGrid1: React.FC = () => {
                     </span>
                   ))}
                 </div>
-              )}
-              {testimonial.liked === true && (
-                <Heart
-                  size={25}
-                  color="red-500"
-                  className="fill-red-500 right-0"
-                />
               )}
             </CardFooter>
           </Card>
