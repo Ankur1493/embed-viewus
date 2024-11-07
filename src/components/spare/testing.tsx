@@ -9,9 +9,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Star, Heart } from "lucide-react";
-import { isValidColor } from "./IsValidColor";
+import { isValidColor } from "../IsValidColor";
 
-import { testimonials } from "../data/testimonialData";
+import { testimonials } from "../../data/testimonialData";
 import twitter from "../assets/images/twitter_logo.png";
 import linkedIn from "../assets/images/linkedIn_logo.png";
 import product from "../assets/images/ProductHunt_logo.png";

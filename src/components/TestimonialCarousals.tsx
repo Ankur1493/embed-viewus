@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { testimonials } from "../data/testimonialData";
-import InfiniteMovingCards from "./ui/vertical-moving-cards";
+import TestimonialCard from "./TestimonialCard";
 import { isValidColor } from "./IsValidColor";
-// import TestimonialGrid2 from "./TestimonialGrid2";
+import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
-const TestimonialGridUpward: React.FC = () => {
+const TestimonialCarousals: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const [textColor, setTextColor] = useState("");
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [textColor, setTextColor] = useState("");
   const [starColor, setStarColor] = useState("");
   const [cardBackgroundColor, setCardBackgroundColor] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("");
@@ -15,9 +15,11 @@ const TestimonialGridUpward: React.FC = () => {
   const [tagTextColor, setTagTextColor] = useState("");
   const [borderRadius, setBorderRadius] = useState("");
   const [radius, setRadius] = useState("");
-  const [shadowColor, setShadowColor] = useState("");
   const [speed, setSpeed] = useState("");
-  const [columns, setColumns] = useState(4);
+  const [cardHeight, setCardHeight] = useState("");
+  const [align, setAlign] = useState("");
+  const [shadowColor, setShadowColor] = useState("");
+  const [rowNumber, setRowNumber] = useState(1);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -31,40 +33,27 @@ const TestimonialGridUpward: React.FC = () => {
     const tagTextColor = urlParams.get("tagText");
     const cardBorderRadius = urlParams.get("cardBorderRadius");
     const divRadius = urlParams.get("radius");
+    const Height = urlParams.get("height");
+    const alignCard = urlParams.get("align");
     const shadowColor = urlParams.get("shadow");
+    const row = urlParams.get("row");
+    const rows = row ? parseInt(row, 10) : null;
     const background = urlParams.get("background");
-    const columnParam = urlParams.get("columns");
-
-    if (columnParam) {
-      const columnCount = parseInt(columnParam);
-      if (columnCount === 2 || columnCount === 3 || columnCount === 4) {
-        setColumns(columnCount);
-      }
-    }
 
     if (theme === "dark") setIsDarkTheme(true);
-
     if (animated === "on") setShouldAnimate(true);
-
     if (text) setTextColor(text);
-
     if (star) setStarColor(star);
-
     if (cardBackground) setCardBackgroundColor(cardBackground);
-
     if (tagColor) setTagColor(tagColor);
-
     if (tagTextColor) setTagTextColor(tagTextColor);
-
-    if (shadowColor) setShadowColor(shadowColor);
-
     if (cardBorderRadius) setBorderRadius(cardBorderRadius);
-
     if (divRadius) setRadius(divRadius);
-
     if (speedParam) setSpeed(speedParam);
-
+    if (Height) setCardHeight(Height);
+    if (alignCard) setAlign(alignCard);
     if (shadowColor) setShadowColor(shadowColor);
+    if (rows) setRowNumber(rows);
     if (background) setBackgroundColor(background);
   }, []);
 
@@ -86,6 +75,15 @@ const TestimonialGridUpward: React.FC = () => {
       ? "20px"
       : "";
 
+  const alignmentClass =
+    align === "top"
+      ? "items-start"
+      : align === "center"
+      ? "items-center"
+      : align === "end"
+      ? "items-end"
+      : "items-start";
+
   let duration: "normal" | "slow" | "fast" | undefined = "slow";
   if (speed === "medium") {
     duration = "normal";
@@ -97,43 +95,48 @@ const TestimonialGridUpward: React.FC = () => {
 
   return (
     <div
-      className={`relative w ${shouldAnimate ? "h-[90vh]" : ""}`}
-      style={{ borderRadius: containerRadius }}
+      className="overflow-hidden relative w-full h-full"
+      style={{
+        borderRadius: containerRadius,
+        background: isValidColor(backgroundColor)
+          ? `#${backgroundColor}`
+          : "transparent",
+      }}
     >
       {shouldAnimate ? (
         <>
           <div
-            className="absolute top-0 left-0 right-0 h-16 opacity-70 z-20 "
+            className="absolute top-0 left-0 bottom-0 w-16 opacity-70 z-20"
             style={{
               background: isValidColor(shadowColor)
-                ? `linear-gradient(#${shadowColor}, transparent)`
+                ? `linear-gradient(90deg,#${shadowColor}, transparent)`
                 : "",
+              borderTopLeftRadius: containerRadius,
+              borderBottomLeftRadius: containerRadius,
+            }}
+          ></div>
+
+          <div
+            className="absolute top-0 right-0 bottom-0 w-16 opacity-70 z-20"
+            style={{
+              background: isValidColor(shadowColor)
+                ? `linear-gradient(90deg,transparent, #${shadowColor})`
+                : "",
+              borderTopRightRadius: containerRadius,
+              borderBottomRightRadius: containerRadius,
             }}
           ></div>
           <div
-            className="absolute bottom-0 left-0 right-0 h-16 opacity-70 z-20 "
+            className={`grid h-full ${`grid-rows-${rowNumber}`} grid-flow-col gap-4 p-4 ${alignmentClass} place-items-center`}
             style={{
-              background: isValidColor(shadowColor)
-                ? `linear-gradient(transparent, #${shadowColor})`
-                : "",
-            }}
-          ></div>
-          <div
-            className="relative h-[100vh] overflow-y-hidden px-4"
-            style={{
-              width: "100%",
-              borderRadius: containerRadius,
               background: isValidColor(backgroundColor)
                 ? `#${backgroundColor}`
                 : "transparent",
-              display: "grid",
-              gridTemplateColumns: `repeat(${columns}, 1fr)`,
-              gap: "16px",
             }}
           >
             <InfiniteMovingCards
               items={testimonials}
-              direction="up"
+              direction="right"
               speed={duration}
               cardBackgroundColor={cardBackgroundColor}
               textColor={textColor}
@@ -142,25 +145,39 @@ const TestimonialGridUpward: React.FC = () => {
               starColor={starColor}
               tagColor={tagColor}
               tagTextColor={tagTextColor}
+              cardHeight={cardHeight}
               shadowColor={shadowColor}
             />
+            {rowNumber === 2 && (
+              <InfiniteMovingCards
+                items={testimonials}
+                direction="right"
+                speed={duration}
+                cardBackgroundColor={cardBackgroundColor}
+                textColor={textColor}
+                isDarkTheme={isDarkTheme}
+                cardBorderRad={cardBorderRad}
+                starColor={starColor}
+                tagColor={tagColor}
+                tagTextColor={tagTextColor}
+                cardHeight={cardHeight}
+                shadowColor={shadowColor}
+              />
+            )}
           </div>
         </>
       ) : (
         <div
-          className={`grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 auto-rows-auto`}
+          className={`grid ${`grid-rows-${rowNumber}`} grid-flow-col gap-4 p-2 md:p-4 overflow-x-auto ${
+            rowNumber === 2 ? "h-full" : "h-[80vh]"
+          }  md:h-full ${alignmentClass}`}
           style={{
-            borderRadius: containerRadius,
-            background: isValidColor(backgroundColor)
-              ? `#${backgroundColor}`
-              : "transparent",
-            display: "grid",
-            gridTemplateColumns: `repeat(${columns})`,
-            gap: "16px",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
-          {/* {[...testimonials, ...testimonials].map((testimonial, index) => (
-            <TestimonialGrid2
+          {testimonials.map((testimonial, index) => (
+            <TestimonialCard
               key={index}
               index={index}
               testimonial={testimonial}
@@ -171,12 +188,14 @@ const TestimonialGridUpward: React.FC = () => {
               starColor={starColor}
               tagColor={tagColor}
               tagTextColor={tagTextColor}
+              cardHeight={cardHeight}
+              cardWidth="400"
             />
-          ))} */}
+          ))}
         </div>
       )}
     </div>
   );
 };
 
-export default TestimonialGridUpward;
+export default TestimonialCarousals;
