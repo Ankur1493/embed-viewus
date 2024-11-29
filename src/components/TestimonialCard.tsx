@@ -41,7 +41,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 }) => {
   return (
     <Card
-      key={`${testimonial.item}-${index}`}
+      key={`${testimonial.id}-${index}`}
       className={`border border-gray-200 ${
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
@@ -67,42 +67,42 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     >
       <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
         <div className="flex flex-row items-center gap-2">
-          {testimonial.avatar && (
+          {testimonial.image && (
             <div className="w-6 h-6 md:w-10 md:h-10 overflow-hidden rounded-full">
               <img
-                src={testimonial.avatar}
-                alt={`${testimonial.author}'s avatar`}
+                src={testimonial.image}
+                alt={`${testimonial.firstName}'s avatar`}
                 className="w-full h-full object-cover"
               />
             </div>
           )}
           <div className={`text-sm flex flex-col`}>
-            <strong>{testimonial.author}</strong>
-            {testimonial.role && (
-              <span className="text-opacity-90">{testimonial.role}</span>
+            <strong>{testimonial.firstName}</strong>
+            {testimonial.jobTitle && (
+              <span className="text-opacity-90">{testimonial.jobTitle}</span>
             )}
           </div>
         </div>
-        {testimonial.importedFrom && (
+        {testimonial.reviewType === 2 && (
           <div className="w-7 h-7 overflow-hidden rounded-full">
             <img
               src={
-                testimonial.importedFrom === "Twitter"
+                testimonial.importedReviewType === 0
                   ? twitter
-                  : testimonial.importedFrom === "LinkedIn"
+                  : testimonial.importedReviewType === 1
                   ? linkedIn
                   : product
               }
-              alt={testimonial.importedFrom}
+              alt="imported"
               className="w-full h-full object-cover"
             />
           </div>
         )}
       </CardHeader>
       <CardContent className="p-2 px-4 flex flex-col gap-2 justify-center">
-        {testimonial.star && (
+        {testimonial.stars && (
           <div className="flex">
-            {Array.from({ length: testimonial.star }).map((_, i) => (
+            {Array.from({ length: testimonial.stars }).map((_, i) => (
               <Star
                 key={i}
                 style={{
@@ -113,18 +113,18 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             ))}
           </div>
         )}
-        {testimonial.content && <p>"{testimonial.content}"</p>}
-        {testimonial.image && (
+        {testimonial.review && <p>"{testimonial.review}"</p>}
+        {testimonial.importedImage && (
           <img
-            src={testimonial.image}
+            src={testimonial.importedImage}
             alt="Image"
             className="w-[70%] md:w-full h-auto mt-2 object-cover"
           />
         )}
-        {testimonial.video && (
+        {testimonial.importedVideo && (
           <video
             controls
-            src={testimonial.video}
+            src={testimonial.importedVideo}
             className="w-full h-auto pt-6 object-cover"
           />
         )}

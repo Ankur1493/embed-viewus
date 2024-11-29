@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { testimonials } from "../data/testimonialData";
 import TestimonialCard from "./TestimonialCard";
 import { isValidColor } from "./IsValidColor";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
+import { Testimonial } from "@/interface";
 
-const TestimonialCarousals: React.FC = () => {
+interface TestimonialCarousalProps {
+  testimonials: Testimonial[];
+}
+
+const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
+  testimonials,
+}) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [textColor, setTextColor] = useState("");

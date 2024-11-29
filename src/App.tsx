@@ -1,16 +1,38 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import WallOfLove from "./pages/WallOfLove";
 import TestimonialCarousals from "./components/TestimonialCarousals";
 import TestimonialGrid from "./components/TestimonialGrid";
+import axios from "axios";
+
 function App() {
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await axios.get(`/api/review?slug=bakedui`);
+        setTestimonials(response.data);
+        console.log(testimonials);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
   return (
     <Router>
       <Routes>
         <Route path="/w/wall-of-love" element={<WallOfLove />} />
-        <Route path="/w/embed-testimonials" element={<TestimonialGrid />} />
+        <Route
+          path="/w/embed-testimonials"
+          element={<TestimonialGrid testimonials={testimonials} />}
+        />
         <Route
           path="/w/embed-testimonials/carousal"
-          element={<TestimonialCarousals />}
+          element={<TestimonialCarousals testimonials={testimonials} />}
         />
       </Routes>
     </Router>

@@ -1,13 +1,17 @@
 export interface Testimonial {
-  item: number;
-  author: string;
-  content?: string;
-  role?: string;
-  avatar?: string;
-  importedFrom?: string;
+  id: string;
+  spaceId: string;
+  slug?: string;
+  firstName: string;
+  lastname?: string;
   image?: string;
-  video?: string;
-  star?: number;
+  importedImage?: string;
+  importedReviewType: number;
+  importedVideo?: string;
+  jobTitle?: string;
+  review?: string;
+  reviewType?: number;
+  stars?: number;
   tags?: string[];
   liked?: boolean;
 }
