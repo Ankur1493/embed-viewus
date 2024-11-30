@@ -174,8 +174,8 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
         </>
       ) : (
         <div
-          className={`grid ${`grid-rows-${rowNumber}`} grid-flow-col gap-4 p-2 md:p-4 overflow-x-auto ${
-            rowNumber === 2 ? "h-full" : "h-[80vh]"
+          className={`grid ${`grid-rows-${rowNumber}`} grid-flow-col gap-4 p-2 md:p-4 overflow-x-auto overflow-y-hidden ${
+            rowNumber === 2 ? "h-full" : "h-fulll"
           }  md:h-full ${alignmentClass}`}
           style={{
             scrollbarWidth: "none",

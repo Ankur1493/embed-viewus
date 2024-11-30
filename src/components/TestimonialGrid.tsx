@@ -8,6 +8,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import { Star } from "lucide-react";
 import { isValidColor } from "./IsValidColor";
 import { motion, useAnimation } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
@@ -28,6 +29,16 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
   const [shadowColor, setShadowColor] = useState("");
   const controls = useAnimation();
   const [columns, setColumns] = useState(4);
+
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     console.log("Testimonials:", testimonials);
@@ -130,9 +141,19 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
       ? "20px"
       : "";
 
+  const getResponsiveColumns = () => {
+    if (windowWidth < 640) return 1;
+    if (windowWidth <= 855) return 2;
+    if (windowWidth <= 1024) return Math.min(columns, 3);
+    return columns;
+  };
+
   return (
     <div
-      className={`relative overflow-hidden ${shouldAnimate ? "h-[100vh]" : ""}`}
+      className={cn(
+        "relative overflow-hidden",
+        shouldAnimate ? "h-[100vh]" : ""
+      )}
       style={{
         borderRadius: containerRadius,
         background: isValidColor(backgroundColor)
@@ -164,7 +185,7 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
         animate={controls}
         ref={containerRef}
         // transition={{ duration: duration, ease: "linear" }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4"
+        className="p-4"
         style={{
           width: "100%",
           borderRadius: containerRadius,
@@ -172,7 +193,7 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
             ? `#${backgroundColor}`
             : "transparent",
           display: "grid",
-          gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          gridTemplateColumns: `repeat(${getResponsiveColumns()}, 1fr)`,
           gap: "16px",
         }}
       >
@@ -182,28 +203,25 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
         ).map((testimonial, index) => (
           <Card
             key={`${testimonial.id}-${index}`}
-            className={`border border-gray-200  ${
+            className={cn(
+              "border border-gray-200 shadow hover:ring ring-gray-200 ring-opacity-50 transition-all",
               (testimonial.importedImage &&
                 testimonial.importedImage.length > 0) ||
-              (testimonial.importedVideo &&
-                testimonial.importedVideo.length > 0)
-                ? testimonial.importedImage && testimonial.importedVideo
-                  ? "row-span-3" // both image and video are present
-                  : "row-span-2" // only image or only video is present
-                : "row-span-1" // neither image nor video is present
-            } ${
+                (testimonial.importedVideo &&
+                  testimonial.importedVideo.length > 0)
+                ? "row-span-2"
+                : "row-span-1",
               !isValidColor(cardBackgroundColor) && isDarkTheme
                 ? "bg-gray-800"
                 : !isValidColor(cardBackgroundColor) && !isDarkTheme
                 ? "bg-white"
-                : ""
-            } ${
+                : "",
               !isValidColor(textColor) && isDarkTheme
                 ? "text-white"
                 : !isValidColor(textColor) && !isDarkTheme
                 ? "text-black"
                 : ""
-            }`}
+            )}
             style={{
               backgroundColor: isValidColor(cardBackgroundColor)
                 ? `#${cardBackgroundColor}`
@@ -279,18 +297,22 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
               {testimonial.reviewType === 2 &&
                 (testimonial.importedImage &&
                 testimonial.importedImage.length > 0 ? (
-                  <img
-                    src={testimonial.importedImage}
-                    alt="Image"
-                    className="w-full min-h-64 h-auto max-h-96 rounded-md mt-2"
-                  />
+                  <div className="w-full min-h-64 h-auto max-h-80 rounded-md mt-2 overflow-hidden">
+                    <img
+                      src={testimonial.importedImage}
+                      alt="Image"
+                      className="w-full h-full min-h-64 object-cotain rounded-md"
+                    />
+                  </div>
                 ) : testimonial.importedVideo &&
                   testimonial.importedVideo.length > 0 ? (
-                  <video
-                    controls
-                    src={testimonial.importedVideo}
-                    className="w-full min-h-56 h-auto max-h-88 rounded-md pt-6"
-                  />
+                  <div className="w-full min-h-56 h-auto max-h-88 rounded-md pt-6 overflow-hidden">
+                    <video
+                      controls
+                      src={testimonial.importedVideo}
+                      className="w-full min-h-56 h-full rounded-md object-cover"
+                    />
+                  </div>
                 ) : null)}
             </CardContent>
             <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
@@ -299,7 +321,7 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
                   {testimonial.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 rounded-full text-[12px] flex items-center"
+                      className="px-3 py-1 rounded-full text-[13px] flex items-center"
                       style={{
                         backgroundColor: isValidColor(tagColor)
                           ? `#${tagColor}`

@@ -11,6 +11,7 @@ import twitter from "@/assets/images/twitter_logo.png";
 import linkedIn from "@/assets/images/linkedIn_logo.png";
 import product from "@/assets/images/ProductHunt_logo.png";
 import { Testimonial } from "@/interface";
+import { cn } from "@/lib/utils";
 
 interface TestimonialCardProps {
   index: number;
@@ -37,24 +38,23 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   tagColor = "#C2F19D",
   tagTextColor = "black",
   cardHeight,
-  cardWidth,
 }) => {
   return (
     <Card
       key={`${testimonial.id}-${index}`}
-      className={`border border-gray-200 ${
+      className={cn(
+        "border border-gray-200 shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
           : !isValidColor(cardBackgroundColor) && !isDarkTheme
           ? "bg-white"
-          : ""
-      } ${
+          : "",
         !isValidColor(textColor) && isDarkTheme
           ? "text-white"
           : !isValidColor(textColor) && !isDarkTheme
           ? "text-black"
           : ""
-      } md:w-80 w-56 min-w-[270px] h-full`}
+      )}
       style={{
         backgroundColor: isValidColor(cardBackgroundColor)
           ? `#${cardBackgroundColor}`
@@ -62,20 +62,22 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
         borderRadius: cardBorderRad,
         height: cardHeight === "fit" ? "fit-content" : undefined,
-        minWidth: cardWidth ? `${cardWidth}px` : undefined,
+        // minWidth: cardWidth ? `${cardWidth}px` : undefined,
       }}
     >
       <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
         <div className="flex flex-row items-center gap-2">
-          {testimonial.image && (
-            <div className="w-6 h-6 md:w-10 md:h-10 overflow-hidden rounded-full">
+          <div className="w-6 h-6 md:w-10 md:h-10 overflow-hidden rounded-full flex items-center justify-center bg-[#71D4FE]">
+            {testimonial.image ? (
               <img
                 src={testimonial.image}
-                alt={`${testimonial.firstName}'s avatar`}
+                alt={testimonial.firstName.charAt(0)}
                 className="w-full h-full object-cover"
               />
-            </div>
-          )}
+            ) : (
+              <span>{testimonial.firstName.charAt(0)}</span>
+            )}
+          </div>
           <div className={`text-sm flex flex-col`}>
             <strong>{testimonial.firstName}</strong>
             {testimonial.jobTitle && (
@@ -94,7 +96,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                   : product
               }
               alt="imported"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
         )}
@@ -114,20 +116,25 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           </div>
         )}
         {testimonial.review && <p>"{testimonial.review}"</p>}
-        {testimonial.importedImage && (
-          <img
-            src={testimonial.importedImage}
-            alt="Image"
-            className="w-[70%] md:w-full h-auto mt-2 object-cover"
-          />
-        )}
-        {testimonial.importedVideo && (
-          <video
-            controls
-            src={testimonial.importedVideo}
-            className="w-full h-auto pt-6 object-cover"
-          />
-        )}
+        {testimonial.reviewType === 2 &&
+          (testimonial.importedImage && testimonial.importedImage.length > 0 ? (
+            <div className="w-full h-56 max-h-64 rounded-md mt-2 overflow-hidden">
+              <img
+                src={testimonial.importedImage}
+                alt="Image"
+                className="w-full h-full object-cover rounded-md"
+              />
+            </div>
+          ) : testimonial.importedVideo &&
+            testimonial.importedVideo.length > 0 ? (
+            <div className="w-full h-64 max-h-64 rounded-md mt-2 overflow-hidden flex items-start">
+              <video
+                controls
+                src={testimonial.importedVideo}
+                className="w-full h-full object-cover rounded-md"
+              />
+            </div>
+          ) : null)}
       </CardContent>
       <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
         {testimonial.tags && testimonial.tags.length > 0 && (
