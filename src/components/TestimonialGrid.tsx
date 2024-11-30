@@ -176,10 +176,22 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
           gap: "16px",
         }}
       >
-        {[...testimonials, ...testimonials].map((testimonial, index) => (
+        {(shouldAnimate
+          ? [...testimonials, ...testimonials]
+          : testimonials
+        ).map((testimonial, index) => (
           <Card
             key={`${testimonial.id}-${index}`}
-            className={`border border-gray-200 ${
+            className={`border border-gray-200  ${
+              (testimonial.importedImage &&
+                testimonial.importedImage.length > 0) ||
+              (testimonial.importedVideo &&
+                testimonial.importedVideo.length > 0)
+                ? testimonial.importedImage && testimonial.importedVideo
+                  ? "row-span-3" // both image and video are present
+                  : "row-span-2" // only image or only video is present
+                : "row-span-1" // neither image nor video is present
+            } ${
               !isValidColor(cardBackgroundColor) && isDarkTheme
                 ? "bg-gray-800"
                 : !isValidColor(cardBackgroundColor) && !isDarkTheme
@@ -203,15 +215,17 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
           >
             <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
               <div className="flex flex-row items-center gap-2">
-                {testimonial.image && (
-                  <div className="w-10 h-10 overflow-hidden rounded-full">
+                <div className="w-10 h-10 overflow-hidden rounded-full flex items-center justify-center bg-[#71D4FE]">
+                  {testimonial.image ? (
                     <img
                       src={testimonial.image}
-                      alt={`${testimonial.firstName}'s avatar`}
+                      alt={testimonial.firstName.charAt(0)}
                       className="w-full h-full object-cover"
                     />
-                  </div>
-                )}
+                  ) : (
+                    <span>{testimonial.firstName.charAt(0)}</span>
+                  )}
+                </div>
                 <div className={`text-sm flex flex-col`}>
                   <strong>{testimonial.firstName}</strong>
                   {testimonial.jobTitle && (
@@ -262,30 +276,30 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
                 </div>
               )}
               {testimonial.review && <p>"{testimonial.review}"</p>}
-              {testimonial.importedImage &&
-                testimonial.importedImage.length > 0 && (
+              {testimonial.reviewType === 2 &&
+                (testimonial.importedImage &&
+                testimonial.importedImage.length > 0 ? (
                   <img
                     src={testimonial.importedImage}
                     alt="Image"
-                    className="w-full h-auto mt-2"
+                    className="w-full min-h-64 h-auto max-h-96 rounded-md mt-2"
                   />
-                )}
-              {testimonial.importedVideo &&
-                testimonial.importedVideo.length > 0 && (
+                ) : testimonial.importedVideo &&
+                  testimonial.importedVideo.length > 0 ? (
                   <video
                     controls
                     src={testimonial.importedVideo}
-                    className="w-full h-auto pt-6"
+                    className="w-full min-h-56 h-auto max-h-88 rounded-md pt-6"
                   />
-                )}
+                ) : null)}
             </CardContent>
             <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
               {testimonial.tags && testimonial.tags.length > 0 && (
-                <div className="flex gap-1">
+                <div className="flex flex-wrap gap-1">
                   {testimonial.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 rounded-full text-[14px] flex items-center"
+                      className="px-3 py-1 rounded-full text-[12px] flex items-center"
                       style={{
                         backgroundColor: isValidColor(tagColor)
                           ? `#${tagColor}`
