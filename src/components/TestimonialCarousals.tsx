@@ -3,6 +3,8 @@ import TestimonialCard from "./TestimonialCard";
 import { isValidColor } from "./IsValidColor";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 import { Testimonial } from "@/interface";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface TestimonialCarousalProps {
   testimonials: Testimonial[];
@@ -26,6 +28,9 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
   const [align, setAlign] = useState("");
   const [shadowColor, setShadowColor] = useState("");
   const [rowNumber, setRowNumber] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage =
+    window.innerWidth > 1024 ? 4 : window.innerWidth >= 768 ? 2 : 1;
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -98,6 +103,33 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
   } else {
     duration = "slow";
   }
+
+  const visibleTestimonials = testimonials.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+  const totalPages = Math.ceil(testimonials.length / itemsPerPage);
+
+  const handleNext = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newItemsPerPage =
+        window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+      if (newItemsPerPage !== itemsPerPage) {
+        setCurrentPage(0);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [itemsPerPage]);
 
   return (
     <div
@@ -173,31 +205,51 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
           </div>
         </>
       ) : (
-        <div
-          className={`grid ${`grid-rows-${rowNumber}`} grid-flow-col gap-4 p-2 md:p-4 overflow-x-auto overflow-y-hidden ${
-            rowNumber === 2 ? "h-full" : "h-fulll"
-          }  md:h-full ${alignmentClass}`}
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
-        >
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard
-              key={index}
-              index={index}
-              testimonial={testimonial}
-              cardBackgroundColor={cardBackgroundColor}
-              textColor={textColor}
-              isDarkTheme={isDarkTheme}
-              cardBorderRad={cardBorderRad}
-              starColor={starColor}
-              tagColor={tagColor}
-              tagTextColor={tagTextColor}
-              cardHeight={cardHeight}
-              cardWidth="400"
-            />
-          ))}
+        <div className="relative w-full min-h-[90vh] md:min-h-[60vh] lg:min-h-[80vh] h-full lg:px-20 flex justify-center items-center flex flex-col">
+          <div
+            className={`grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 place-content-center gap-4 p-2 md:p-4  ${alignmentClass}`}
+          >
+            {visibleTestimonials.map((testimonial, index) => (
+              <TestimonialCard
+                key={index + currentPage * 4}
+                index={index + currentPage * 4}
+                testimonial={testimonial}
+                cardBackgroundColor={cardBackgroundColor}
+                textColor={textColor}
+                isDarkTheme={isDarkTheme}
+                cardBorderRad={cardBorderRad}
+                starColor={starColor}
+                tagColor={tagColor}
+                tagTextColor={tagTextColor}
+                cardHeight={cardHeight}
+                cardWidth="100%"
+              />
+            ))}
+          </div>
+          <div>
+            <div className=" flex gap-2 z-10">
+              <Button
+                variant="outline"
+                className="border bg-gray-200 hover:bg-gray-300"
+                size="icon"
+                onClick={handlePrev}
+                disabled={currentPage === 0}
+                aria-label="Previous testimonials"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                className="border bg-gray-200 hover:bg-gray-300"
+                size="icon"
+                onClick={handleNext}
+                disabled={currentPage === totalPages - 1}
+                aria-label="Next testimonials"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

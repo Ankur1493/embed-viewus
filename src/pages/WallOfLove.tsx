@@ -1,14 +1,14 @@
 function WallOfLove() {
   return (
-    <div className="w-full mx-20" style={{ height: "100%", margin: 0 }}>
-      <iframe
-        src="http://localhost:5173/w/embed-testimonials?animated=on&theme=&speed=high"
-        width="100%"
-        height="100%"
-        frameBorder="0"
-        scrolling="yes"
-        style={{ border: "none", height: "100%" }}
-      ></iframe>
+    <div className="w-full h-screen flex justify-center items-center bg-gray-100">
+      <div className="w-full h-full px-4 py-8">
+        <iframe
+          src="http://localhost:5173/w/embed-testimonials/carousal?height=&animated="
+          className="w-full h-full"
+          style={{ border: "none" }}
+          title="Wall of Love"
+        />
+      </div>
     </div>
   );
 }
