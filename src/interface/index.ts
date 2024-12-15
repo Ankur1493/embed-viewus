@@ -1,5 +1,5 @@
 export interface Testimonial {
-  id: string;
+  _id: string;
   spaceId: string;
   slug?: string;
   firstName: string;

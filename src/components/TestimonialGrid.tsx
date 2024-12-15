@@ -9,6 +9,7 @@ import { Star } from "lucide-react";
 import { isValidColor } from "./IsValidColor";
 import { motion, useAnimation } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { VideoPlayer } from "./VideoPlayer";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
@@ -127,19 +128,19 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
     borderRadius === "low"
       ? "5px"
       : borderRadius === "medium"
-      ? "10px"
-      : borderRadius === "high"
-      ? "20px"
-      : "";
+        ? "10px"
+        : borderRadius === "high"
+          ? "20px"
+          : "";
 
   const containerRadius =
     radius === "low"
       ? "5px"
       : radius === "medium"
-      ? "10px"
-      : radius === "high"
-      ? "20px"
-      : "";
+        ? "10px"
+        : radius === "high"
+          ? "20px"
+          : "";
 
   const getResponsiveColumns = () => {
     if (windowWidth < 640) return 1;
@@ -200,9 +201,9 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
         {(shouldAnimate
           ? [...testimonials, ...testimonials]
           : testimonials
-        ).map((testimonial, index) => (
+        ).map((testimonial) => (
           <Card
-            key={`${testimonial.id}-${index}`}
+            key={`${testimonial._id}`}
             className={cn(
               "border border-gray-200 shadow hover:ring ring-gray-200 ring-opacity-50 transition-all",
               (testimonial.importedImage &&
@@ -214,13 +215,13 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
               !isValidColor(cardBackgroundColor) && isDarkTheme
                 ? "bg-gray-800"
                 : !isValidColor(cardBackgroundColor) && !isDarkTheme
-                ? "bg-white"
-                : "",
+                  ? "bg-white"
+                  : "",
               !isValidColor(textColor) && isDarkTheme
                 ? "text-white"
                 : !isValidColor(textColor) && !isDarkTheme
-                ? "text-black"
-                : ""
+                  ? "text-black"
+                  : ""
             )}
             style={{
               backgroundColor: isValidColor(cardBackgroundColor)
@@ -293,27 +294,30 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
                   ))}
                 </div>
               )}
-              {testimonial.review && <p>"{testimonial.review}"</p>}
+              {testimonial.reviewType === 1 && (<VideoPlayer videoLink={testimonial.review!} />)}
+              {testimonial.reviewType !== 1 && testimonial.review && <p>"{testimonial.review}"</p>}
               {testimonial.reviewType === 2 &&
-                (testimonial.importedImage &&
-                testimonial.importedImage.length > 0 ? (
+                (testimonial.importedVideo && testimonial.importedVideo[0] !== "" &&
+                  testimonial.importedVideo.length > 0 ? (
+                  <div className="w-full min-h-56 h-auto max-h-88 rounded-md pt-6 overflow-hidden">
+                    <video
+                      controls
+                      autoPlay
+                      loop
+                      muted
+                      src={testimonial.importedVideo}
+                      className="w-full min-h-56 h-full rounded-md object-cover"
+                    />
+                  </div>
+                ) : testimonial.importedImage &&
+                  testimonial.importedImage.length > 0 ? (
                   <div className="w-full min-h-64 h-auto max-h-80 rounded-md mt-2 overflow-hidden">
                     <img
                       src={testimonial.importedImage}
                       alt="Image"
                       className="w-full h-full min-h-64 object-cotain rounded-md"
                     />
-                  </div>
-                ) : testimonial.importedVideo &&
-                  testimonial.importedVideo.length > 0 ? (
-                  <div className="w-full min-h-56 h-auto max-h-88 rounded-md pt-6 overflow-hidden">
-                    <video
-                      controls
-                      src={testimonial.importedVideo}
-                      className="w-full min-h-56 h-full rounded-md object-cover"
-                    />
-                  </div>
-                ) : null)}
+                  </div>) : null)}
             </CardContent>
             <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
               {testimonial.tags && testimonial.tags.length > 0 && (

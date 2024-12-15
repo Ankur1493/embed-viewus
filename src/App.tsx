@@ -11,9 +11,8 @@ function App() {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await axios.get(`/api/review?slug=bakedui`);
-        setTestimonials(response.data);
-        console.log(testimonials);
+        const response = await axios.get(`/api/review/like?slug=bakedui`);
+        setTestimonials(response.data.data.reviews);
       } catch (err) {
         console.log(err);
       }

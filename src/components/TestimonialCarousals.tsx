@@ -72,28 +72,28 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
     borderRadius === "low"
       ? "5px"
       : borderRadius === "medium"
-      ? "10px"
-      : borderRadius === "high"
-      ? "20px"
-      : "";
+        ? "10px"
+        : borderRadius === "high"
+          ? "20px"
+          : "";
 
   const containerRadius =
     radius === "low"
       ? "5px"
       : radius === "medium"
-      ? "10px"
-      : radius === "high"
-      ? "20px"
-      : "";
+        ? "10px"
+        : radius === "high"
+          ? "20px"
+          : "";
 
   const alignmentClass =
     align === "top"
       ? "items-start"
       : align === "center"
-      ? "items-center"
-      : align === "end"
-      ? "items-end"
-      : "items-start";
+        ? "items-center"
+        : align === "end"
+          ? "items-end"
+          : "items-start";
 
   let duration: "normal" | "slow" | "fast" | undefined = "slow";
   if (speed === "medium") {
@@ -205,7 +205,7 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
           </div>
         </>
       ) : (
-        <div className="relative w-full min-h-[90vh] md:min-h-[60vh] lg:min-h-[80vh] h-full lg:px-20 flex justify-center items-center flex flex-col">
+        <div className="relative w-full min-h-[90vh] md:min-h-[60vh] lg:min-h-[80vh] h-full lg:px-20 flex justify-center items-center flex-col">
           <div
             className={`grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 place-content-center gap-4 p-2 md:p-4  ${alignmentClass}`}
           >
