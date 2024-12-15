@@ -128,19 +128,19 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
     borderRadius === "low"
       ? "5px"
       : borderRadius === "medium"
-      ? "10px"
-      : borderRadius === "high"
-      ? "20px"
-      : "";
+        ? "10px"
+        : borderRadius === "high"
+          ? "20px"
+          : "";
 
   const containerRadius =
     radius === "low"
       ? "5px"
       : radius === "medium"
-      ? "10px"
-      : radius === "high"
-      ? "20px"
-      : "";
+        ? "10px"
+        : radius === "high"
+          ? "20px"
+          : "";
 
   const getResponsiveColumns = () => {
     if (windowWidth < 640) return 1;
@@ -216,13 +216,13 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
               !isValidColor(cardBackgroundColor) && isDarkTheme
                 ? "bg-gray-800"
                 : !isValidColor(cardBackgroundColor) && !isDarkTheme
-                ? "bg-white"
-                : "",
+                  ? "bg-white"
+                  : "",
               !isValidColor(textColor) && isDarkTheme
                 ? "text-white"
                 : !isValidColor(textColor) && !isDarkTheme
-                ? "text-black"
-                : ""
+                  ? "text-black"
+                  : ""
             )}
             style={{
               backgroundColor: isValidColor(cardBackgroundColor)
@@ -238,7 +238,7 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
                 <div className="w-10 h-10 overflow-hidden rounded-full flex items-center justify-center bg-[#71D4FE]">
                   {testimonial.image ? (
                     <img
-                      src={testimonial.image}
+                      src={`https://d3eyp937ijscg0.cloudfront.net/${testimonial.image}`}
                       alt={testimonial.firstName.charAt(0)}
                       className="w-full h-full object-cover"
                     />
@@ -303,8 +303,8 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
               )}
               {testimonial.reviewType === 2 &&
                 (testimonial.importedVideo &&
-                testimonial.importedVideo[0] !== "" &&
-                testimonial.importedVideo.length > 0 ? (
+                  testimonial.importedVideo[0] !== "" &&
+                  testimonial.importedVideo.length > 0 ? (
                   <div className="w-full min-h-56 h-auto max-h-88 rounded-md pt-6 overflow-hidden">
                     <video
                       controls
