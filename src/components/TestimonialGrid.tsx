@@ -128,19 +128,19 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
     borderRadius === "low"
       ? "5px"
       : borderRadius === "medium"
-        ? "10px"
-        : borderRadius === "high"
-          ? "20px"
-          : "";
+      ? "10px"
+      : borderRadius === "high"
+      ? "20px"
+      : "";
 
   const containerRadius =
     radius === "low"
       ? "5px"
       : radius === "medium"
-        ? "10px"
-        : radius === "high"
-          ? "20px"
-          : "";
+      ? "10px"
+      : radius === "high"
+      ? "20px"
+      : "";
 
   const getResponsiveColumns = () => {
     if (windowWidth < 640) return 1;
@@ -209,19 +209,20 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
               (testimonial.importedImage &&
                 testimonial.importedImage.length > 0) ||
                 (testimonial.importedVideo &&
-                  testimonial.importedVideo.length > 0)
+                  testimonial.importedVideo.length > 0) ||
+                testimonial.reviewType === 1
                 ? "row-span-2"
                 : "row-span-1",
               !isValidColor(cardBackgroundColor) && isDarkTheme
                 ? "bg-gray-800"
                 : !isValidColor(cardBackgroundColor) && !isDarkTheme
-                  ? "bg-white"
-                  : "",
+                ? "bg-white"
+                : "",
               !isValidColor(textColor) && isDarkTheme
                 ? "text-white"
                 : !isValidColor(textColor) && !isDarkTheme
-                  ? "text-black"
-                  : ""
+                ? "text-black"
+                : ""
             )}
             style={{
               backgroundColor: isValidColor(cardBackgroundColor)
@@ -294,11 +295,16 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
                   ))}
                 </div>
               )}
-              {testimonial.reviewType === 1 && (<VideoPlayer videoLink={testimonial.review!} />)}
-              {testimonial.reviewType !== 1 && testimonial.review && <p>"{testimonial.review}"</p>}
+              {testimonial.reviewType === 1 && (
+                <VideoPlayer videoLink={testimonial.review!} />
+              )}
+              {testimonial.reviewType !== 1 && testimonial.review && (
+                <p>"{testimonial.review}"</p>
+              )}
               {testimonial.reviewType === 2 &&
-                (testimonial.importedVideo && testimonial.importedVideo[0] !== "" &&
-                  testimonial.importedVideo.length > 0 ? (
+                (testimonial.importedVideo &&
+                testimonial.importedVideo[0] !== "" &&
+                testimonial.importedVideo.length > 0 ? (
                   <div className="w-full min-h-56 h-auto max-h-88 rounded-md pt-6 overflow-hidden">
                     <video
                       controls
@@ -317,7 +323,8 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials }) => {
                       alt="Image"
                       className="w-full h-full min-h-64 object-cotain rounded-md"
                     />
-                  </div>) : null)}
+                  </div>
+                ) : null)}
             </CardContent>
             <CardFooter className="flex justify-between p-0 py-2 pb-4 px-4">
               {testimonial.tags && testimonial.tags.length > 0 && (

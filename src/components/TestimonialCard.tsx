@@ -44,17 +44,18 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border border-gray-200 shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
+        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
+        isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
           : !isValidColor(cardBackgroundColor) && !isDarkTheme
-            ? "bg-white"
-            : "",
+          ? "bg-white"
+          : "",
         !isValidColor(textColor) && isDarkTheme
           ? "text-white"
           : !isValidColor(textColor) && !isDarkTheme
-            ? "text-black"
-            : ""
+          ? "text-black"
+          : ""
       )}
       style={{
         backgroundColor: isValidColor(cardBackgroundColor)
@@ -93,8 +94,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 testimonial.importedReviewType === 0
                   ? twitter
                   : testimonial.importedReviewType === 1
-                    ? linkedIn
-                    : product
+                  ? linkedIn
+                  : product
               }
               alt="imported"
               className="w-full h-full object-contain"
@@ -116,11 +117,16 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             ))}
           </div>
         )}
-        {testimonial.reviewType === 1 && (<VideoPlayer videoLink={testimonial.review!} />)}
-        {testimonial.reviewType !== 1 && testimonial.review && <p>"{testimonial.review}"</p>}
+        {testimonial.reviewType === 1 && (
+          <VideoPlayer videoLink={testimonial.review!} />
+        )}
+        {testimonial.reviewType !== 1 && testimonial.review && (
+          <p>"{testimonial.review}"</p>
+        )}
         {testimonial.reviewType === 2 &&
-          (testimonial.importedVideo && testimonial.importedVideo[0] !== "" &&
-            testimonial.importedVideo.length > 0 ? (
+          (testimonial.importedVideo &&
+          testimonial.importedVideo[0] !== "" &&
+          testimonial.importedVideo.length > 0 ? (
             <div className="w-full h-64 max-h-64 rounded-md mt-2 overflow-hidden flex items-start">
               <video
                 controls
@@ -128,7 +134,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-          ) : testimonial.importedImage && testimonial.importedImage.length > 0 ? (
+          ) : testimonial.importedImage &&
+            testimonial.importedImage.length > 0 ? (
             <div className="w-full h-56 max-h-64 rounded-md mt-2 overflow-hidden">
               <img
                 src={testimonial.importedImage}

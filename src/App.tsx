@@ -7,11 +7,12 @@ import axios from "axios";
 
 function App() {
   const [testimonials, setTestimonials] = useState([]);
-
+  const urlParams = new URLSearchParams(window.location.search);
+  const slug = urlParams.get("slug");
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await axios.get(`https://www.viewus.in/api/review/like?slug=bakedui`);
+        const response = await axios.get(`/api/review/like?slug=${slug}`);
         setTestimonials(response.data.data.reviews);
       } catch (err) {
         console.log(err);
@@ -19,7 +20,7 @@ function App() {
     };
 
     fetchTestimonials();
-  }, []);
+  }, [slug]);
 
   return (
     <Router>
