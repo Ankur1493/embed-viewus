@@ -11,7 +11,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "http://localhost:3000", // Proxying all /api requests to Next.js API
+      "/api": "https://www.viewus.in", // Proxying all /api requests to Next.js API
     },
   },
 });
