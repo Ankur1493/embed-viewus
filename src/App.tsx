@@ -1,9 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import WallOfLove from "./pages/WallOfLove";
 import TestimonialCarousals from "./components/TestimonialCarousals";
 import TestimonialGrid from "./components/TestimonialGrid";
 import axios from "axios";
+import { TestimonialGrid2 } from "./components/TestimonialGrid2";
+
+const queryClient = new QueryClient();
 
 function App() {
   const [testimonials, setTestimonials] = useState([]);
@@ -23,19 +27,25 @@ function App() {
   }, [slug]);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/w/wall-of-love" element={<WallOfLove />} />
-        <Route
-          path="/w/embed-testimonials"
-          element={<TestimonialGrid testimonials={testimonials} />}
-        />
-        <Route
-          path="/w/embed-testimonials/carousal"
-          element={<TestimonialCarousals testimonials={testimonials} />}
-        />
-      </Routes>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={<TestimonialGrid2 testimonials={testimonials} />}
+          />
+          <Route path="/w/wall-of-love" element={<WallOfLove />} />
+          <Route
+            path="/w/embed-testimonials"
+            element={<TestimonialGrid testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/embed-testimonials/carousal"
+            element={<TestimonialCarousals testimonials={testimonials} />}
+          />
+        </Routes>
+      </Router>
+    </QueryClientProvider>
   );
 }
 
