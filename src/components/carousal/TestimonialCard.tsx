@@ -6,13 +6,13 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import { isValidColor } from "./IsValidColor";
+import { isValidColor } from "../IsValidColor";
 import twitter from "@/assets/images/twitter_logo.png";
 import linkedIn from "@/assets/images/linkedIn_logo.png";
 import product from "@/assets/images/ProductHunt_logo.png";
 import { Testimonial } from "@/interface";
 import { cn } from "@/lib/utils";
-import { VideoPlayer } from "./VideoPlayer";
+import { VideoPlayer } from "../VideoPlayer";
 
 interface TestimonialCardProps {
   index: number;
@@ -44,7 +44,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
+        "border w-full  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"

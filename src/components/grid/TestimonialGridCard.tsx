@@ -6,13 +6,13 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import { isValidColor } from "./IsValidColor";
+import { isValidColor } from "../IsValidColor";
 import twitter from "@/assets/images/twitter_logo.png";
 import linkedIn from "@/assets/images/linkedIn_logo.png";
 import product from "@/assets/images/ProductHunt_logo.png";
 import { Testimonial } from "@/interface";
 import { cn } from "@/lib/utils";
-import { VideoPlayer } from "./VideoPlayer";
+import { VideoPlayer } from "../VideoPlayer";
 
 interface TestimonialGridCardProps {
   index: number;

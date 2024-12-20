@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Testimonial } from "@/interface";
 import TestimonialCard from "./TestimonialCard";
-import { isValidColor } from "./IsValidColor";
-import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
+import { isValidColor } from "../IsValidColor";
+import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
 
 interface TestimonialCarousalProps {
   testimonials: Testimonial[];
@@ -32,7 +32,10 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
     shadowColor: "",
   });
 
-  const [cardsPerGroup, setCardsPerGroup] = useState(4);
+  const [cardsPerView, setCardsPerView] = useState(4);
+  const [totalSlides, setTotalSlides] = useState(
+    Math.ceil(testimonials.length / cardsPerView)
+  );
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -56,9 +59,31 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
       align: urlParams.get("align") || prevState.align,
       shadowColor: urlParams.get("shadow") || prevState.shadowColor,
     }));
-    const numCards = parseInt(urlParams.get("cards") || "4", 5);
-    setCardsPerGroup(isNaN(numCards) ? 4 : Math.max(1, Math.min(numCards, 8)));
-  }, []);
+
+    const handleResize = () => {
+      const width = window.innerWidth;
+      let newCardsPerView;
+
+      if (width < 640) {
+        newCardsPerView = 1;
+      } else if (width < 1024) {
+        newCardsPerView = 2;
+      } else {
+        const numCards = parseInt(urlParams.get("cards") || "4", 10);
+        newCardsPerView = Math.max(1, Math.min(numCards, 4));
+      }
+
+      setCardsPerView(newCardsPerView);
+
+      const newTotalSlides = Math.ceil(testimonials.length / newCardsPerView);
+      setTotalSlides(newTotalSlides);
+      setCurrentIndex((prev) => Math.min(prev, newTotalSlides - 1));
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [testimonials.length]);
 
   const cardBorderRad =
     themeState.cardBorderRadius === "low"
@@ -87,34 +112,39 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
     duration = "slow";
   }
 
-  const totalGroups = Math.ceil(testimonials.length / cardsPerGroup);
-
   const scrollToGroup = (index: number) => {
-    if (carouselRef.current) {
-      const scrollWidth = carouselRef.current.scrollWidth;
-      const groupWidth = scrollWidth / totalGroups;
-      carouselRef.current.scrollTo({
-        left: groupWidth * index,
-        behavior: "smooth",
-      });
-    }
+    if (!carouselRef.current) return;
+
+    const container = carouselRef.current;
+    const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+    const maxScroll = scrollWidth - clientWidth;
+
+    const targetScroll = (scrollWidth / totalSlides) * index;
+
+    const boundedScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+
+    container.scrollTo({
+      left: boundedScroll,
+      behavior: "smooth",
+    });
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? totalGroups - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => {
+      const newIndex = (prevIndex - 1 + totalSlides) % totalSlides;
+      scrollToGroup(newIndex);
+      return newIndex;
+    });
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === totalGroups - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex((prevIndex) => {
+      const newIndex = (prevIndex + 1) % totalSlides;
+      scrollToGroup(newIndex);
+      return newIndex;
+    });
   };
-
-  useEffect(() => {
-    scrollToGroup(currentIndex);
-  }, [currentIndex]);
 
   return (
     <>
@@ -175,7 +205,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
         </div>
       ) : (
         <div
-          className="relative w-full max-w-7xl mx-auto py-6"
+          className="relative w-full mx-auto py-6"
           style={{
             borderRadius: containerRadius,
             background: isValidColor(themeState.backgroundColor)
@@ -185,38 +215,43 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
         >
           <div
             ref={carouselRef}
-            className="flex overflow-x-hidden snap-x snap-mandatory"
+            className="flex overflow-x-hidden snap-x snap-mandatory px-0"
           >
-            {Array.from({ length: totalGroups }).map((_, groupIndex) => (
+            {Array.from({ length: totalSlides }).map((_, groupIndex) => (
               <div
                 key={groupIndex}
-                className={`flex items-${themeState.align} justify-center w-full flex-shrink-0 snap-center gap-4 px-4`}
+                className={`flex items-${themeState.align} justify-center w-full flex-shrink-0 snap-center gap-4`}
               >
                 {testimonials
                   .slice(
-                    groupIndex * cardsPerGroup,
-                    groupIndex * cardsPerGroup + cardsPerGroup
+                    groupIndex * cardsPerView,
+                    groupIndex * cardsPerView + cardsPerView
                   )
                   .map((testimonial, index) => (
-                    <TestimonialCard
+                    <div
                       key={index}
-                      index={index}
-                      testimonial={testimonial}
-                      cardBackgroundColor={themeState.cardBackgroundColor}
-                      textColor={themeState.textColor}
-                      isDarkTheme={themeState.isDarkTheme}
-                      cardBorderRad={cardBorderRad}
-                      starColor={themeState.starColor}
-                      tagColor={themeState.tagColor}
-                      tagTextColor={themeState.tagTextColor}
-                      cardHeight={themeState.cardHeight}
-                    />
+                      className={`h-full px-0 flex items-${themeState.align} justify-center `}
+                    >
+                      <TestimonialCard
+                        key={index}
+                        index={index}
+                        testimonial={testimonial}
+                        cardBackgroundColor={themeState.cardBackgroundColor}
+                        textColor={themeState.textColor}
+                        isDarkTheme={themeState.isDarkTheme}
+                        cardBorderRad={cardBorderRad}
+                        starColor={themeState.starColor}
+                        tagColor={themeState.tagColor}
+                        tagTextColor={themeState.tagTextColor}
+                        cardHeight={themeState.cardHeight}
+                      />
+                    </div>
                   ))}
               </div>
             ))}
           </div>
 
-          <div className="absolute inset-y-0 -left-4 flex items-center">
+          <div className="absolute inset-y-0 left-0 flex items-center opacity-60">
             <Button
               variant="outline"
               size="icon"
@@ -227,7 +262,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
             </Button>
           </div>
 
-          <div className="absolute inset-y-0 -right-4 flex items-center">
+          <div className="absolute inset-y-0 right-0 flex items-center opacity-60">
             <Button
               variant="outline"
               size="icon"
@@ -240,7 +275,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
 
           <div className="absolute bottom-2 left-0 right-0">
             <div className="flex justify-center space-x-2">
-              {Array.from({ length: totalGroups }).map((_, index) => (
+              {Array.from({ length: totalSlides }).map((_, index) => (
                 <div
                   key={index}
                   className={`h-2 w-2 rounded-full ${

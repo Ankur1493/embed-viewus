@@ -5,8 +5,8 @@ import WallOfLove from "./pages/WallOfLove";
 import TestimonialCarousals from "./components/TestimonialCarousals";
 import TestimonialGrid from "./components/TestimonialGrid";
 import axios from "axios";
-import { TestimonialGrid2 } from "./components/TestimonialGrid2";
-import TestimonialCarousal2 from "./components/TestimonialCarousal2";
+import { TestimonialGrid2 } from "./components/grid/TestimonialGrid2";
+import TestimonialCarousal2 from "./components/carousal/TestimonialCarousal2";
 
 const queryClient = new QueryClient();
 

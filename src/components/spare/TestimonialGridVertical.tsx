@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { isValidColor } from "../IsValidColor";
 import { Testimonial } from "@/interface";
 import VerticalMovingCards from "./vertical-moving-cards";
-import TestimonialCard from "../TestimonialCard";
+import TestimonialCard from "../carousal/TestimonialCard";
 // import TestimonialGrid2 from "./TestimonialGrid2";
 
 interface TestimonialGridProps {

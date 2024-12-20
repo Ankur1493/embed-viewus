@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Masonry from "masonry-layout";
 import { Testimonial } from "@/interface";
 import TestimonialGridCard from "./TestimonialGridCard";
-import { isValidColor } from "./IsValidColor";
+import { isValidColor } from "../IsValidColor";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
