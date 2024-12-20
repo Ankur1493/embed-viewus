@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import Masonry from "masonry-layout";
 import { Testimonial } from "@/interface";
-import { useGridItems } from "@/lib/api";
 import TestimonialGridCard from "./TestimonialGridCard";
 import { isValidColor } from "./IsValidColor";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
+  isLoading?: boolean;
+  error?: Error | null;
 }
 
 export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
   testimonials,
+  isLoading = false,
+  error = null,
 }) => {
   const gridRef = useRef<HTMLDivElement>(null);
-  const { data, isLoading, error } = useGridItems();
 
   const [themeState, setThemeState] = useState({
     isDarkTheme: false,
@@ -25,6 +27,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
     tagTextColor: "",
     cardBorderRadius: "",
     outerRadius: "",
+    columns: 4,
   });
 
   useEffect(() => {
@@ -40,6 +43,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       tagTextColor: urlParams.get("tagText"),
       cardBorderRadius: urlParams.get("cardRadius"),
       divRadius: urlParams.get("radius"),
+      columns: urlParams.get("columns"),
     };
 
     setThemeState((prevState) => {
@@ -62,6 +66,9 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
         ...(paramValues.background && {
           backgroundColor: paramValues.background,
         }),
+        ...(paramValues.columns && {
+          columns: parseInt(paramValues.columns) || 4,
+        }),
       };
     });
   }, []);
@@ -80,6 +87,19 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       high: "20px",
     }[themeState.outerRadius] || "";
 
+  const getColumnClass = (columns: number) => {
+    switch (columns) {
+      case 1:
+        return "w-full";
+      case 2:
+        return "w-full sm:w-[calc(50%-8px)]";
+      case 3:
+        return "w-full sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)]";
+      default:
+        return "w-full sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(25%-12px)]";
+    }
+  };
+
   // const getResponsiveColumns = () => {
   //   if (themeState.windowWidth < 640) return 1;
   //   if (themeState.windowWidth <= 855) return 2;
@@ -88,7 +108,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
   // };
 
   useEffect(() => {
-    if (gridRef.current && data) {
+    if (gridRef.current && testimonials) {
       new Masonry(gridRef.current, {
         itemSelector: ".grid-item",
         columnWidth: ".grid-sizer",
@@ -96,16 +116,31 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
         gutter: 16,
       });
     }
-  }, [data]);
+  }, [testimonials]);
 
-  if (isLoading) return <div className="text-center py-10">Loading...</div>;
-  if (error)
+  if (isLoading) {
     return (
-      <div className="text-center py-10 text-red-500">
-        Error: {error.message}
+      <div className="w-full text-center py-10">
+        <div className="animate-pulse">Loading testimonials...</div>
       </div>
     );
-  if (!data) return null;
+  }
+
+  if (error) {
+    return (
+      <div className="w-full text-center py-10">
+        <div className="text-red-500">Error: {error.message}</div>
+      </div>
+    );
+  }
+
+  if (!testimonials?.length) {
+    return (
+      <div className="w-full text-center py-10">
+        <div className="text-gray-500">No testimonials available</div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -118,7 +153,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       }}
     >
       <div ref={gridRef} className="relative w-full">
-        <div className="grid-sizer w-full sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(25%-12px)]" />
+        <div className={`grid-sizer ${getColumnClass(themeState.columns)}`} />
         {testimonials.map((testimonial, _index) => (
           <TestimonialGridCard
             key={_index}
@@ -131,6 +166,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
             starColor={themeState.starColor}
             tagColor={themeState.tagColor}
             tagTextColor={themeState.tagTextColor}
+            className={getColumnClass(themeState.columns)}
           />
         ))}
       </div>

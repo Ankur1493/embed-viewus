@@ -93,7 +93,7 @@ export const InfiniteMovingCards = ({
       ref={containerRef}
       className={`scroller relative z-20 w-full h-auto overflow-x-hidden  ${className}`}
       style={{
-        maskImage: `linear-gradient(to right, transparent, #${shadowColor} 5%, #${shadowColor} 95%, transparent)`,
+        maskImage: `linear-gradient(to right, transparent, #${shadowColor} 2%, #${shadowColor} 98%, transparent)`,
       }}
     >
       <ul

@@ -6,6 +6,7 @@ import TestimonialCarousals from "./components/TestimonialCarousals";
 import TestimonialGrid from "./components/TestimonialGrid";
 import axios from "axios";
 import { TestimonialGrid2 } from "./components/TestimonialGrid2";
+import TestimonialCarousal2 from "./components/TestimonialCarousal2";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,10 @@ function App() {
           <Route
             path="/"
             element={<TestimonialGrid2 testimonials={testimonials} />}
+          />
+          <Route
+            path="/w"
+            element={<TestimonialCarousal2 testimonials={testimonials} />}
           />
           <Route path="/w/wall-of-love" element={<WallOfLove />} />
           <Route

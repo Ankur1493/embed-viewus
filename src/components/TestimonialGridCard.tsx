@@ -24,6 +24,7 @@ interface TestimonialGridCardProps {
   starColor?: string;
   tagColor?: string;
   tagTextColor?: string;
+  className?: string;
 }
 
 const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
@@ -36,13 +37,14 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
   starColor = "71D4FE",
   tagColor = "C2F19D",
   tagTextColor = "black",
+  className = "",
 }) => {
   return (
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all grid-item w-full sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(25%-12px)] xl:w-[calc(25%-12px)] mb-4",
-
+        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all grid-item mb-4",
+        className,
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"

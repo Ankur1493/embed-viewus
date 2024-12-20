@@ -62,8 +62,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           ? `#${cardBackgroundColor}`
           : undefined,
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
-        borderRadius: cardBorderRad,
         height: cardHeight === "fit" ? "fit-content" : undefined,
+        borderRadius: cardBorderRad,
         // minWidth: cardWidth ? `${cardWidth}px` : undefined,
       }}
     >
@@ -156,7 +156,9 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                   backgroundColor: isValidColor(tagColor)
                     ? `#${tagColor}`
                     : "#C2F19D",
-                  color: isValidColor(tagTextColor) ? tagTextColor : "black",
+                  color: isValidColor(tagTextColor)
+                    ? `#${tagTextColor}`
+                    : "black",
                 }}
               >
                 {tag}
