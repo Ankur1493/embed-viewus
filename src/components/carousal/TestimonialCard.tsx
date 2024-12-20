@@ -82,8 +82,20 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           </div>
           <div className={`text-sm flex flex-col`}>
             <strong>{testimonial.firstName}</strong>
-            {testimonial.jobTitle && (
-              <span className="text-opacity-90">{testimonial.jobTitle}</span>
+            {testimonial.jobTitle && testimonial.company ? (
+              <span className="text-xs text-opacity-90">
+                {testimonial.jobTitle} at {testimonial.company}
+              </span>
+            ) : testimonial.jobTitle ? (
+              <span className="text-xs text-opacity-90">
+                {testimonial.jobTitle}
+              </span>
+            ) : (
+              testimonial.company && (
+                <span className="text-xs text-opacity-90">
+                  {testimonial.company}
+                </span>
+              )
             )}
           </div>
         </div>

@@ -9,6 +9,7 @@ export interface Testimonial {
   importedReviewType: number;
   importedVideo?: string;
   jobTitle?: string;
+  company?: string;
   review?: string;
   reviewType?: number;
   stars?: number;

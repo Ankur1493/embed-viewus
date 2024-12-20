@@ -3,6 +3,7 @@ import Masonry from "masonry-layout";
 import { Testimonial } from "@/interface";
 import TestimonialGridCard from "./TestimonialGridCard";
 import { isValidColor } from "../IsValidColor";
+import { Button } from "../ui/button";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
@@ -16,6 +17,10 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
   error = null,
 }) => {
   const gridRef = useRef<HTMLDivElement>(null);
+  const [visibleTestimonials, setVisibleTestimonials] = useState<Testimonial[]>(
+    []
+  );
+  const [displayCount, setDisplayCount] = useState(12);
 
   const [themeState, setThemeState] = useState({
     isDarkTheme: false,
@@ -73,6 +78,27 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
     });
   }, []);
 
+  useEffect(() => {
+    setVisibleTestimonials(testimonials.slice(0, displayCount));
+  }, [testimonials, displayCount]);
+
+  useEffect(() => {
+    if (gridRef.current && visibleTestimonials.length > 0) {
+      new Masonry(gridRef.current, {
+        itemSelector: ".grid-item",
+        columnWidth: ".grid-sizer",
+        percentPosition: true,
+        gutter: 16,
+      });
+    }
+  }, [visibleTestimonials]);
+
+  const loadMore = () => {
+    setDisplayCount((prevCount) =>
+      Math.min(prevCount + 12, testimonials.length)
+    );
+  };
+
   const cardBorderRad =
     {
       low: "5px",
@@ -99,13 +125,6 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
         return "w-full sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(25%-12px)]";
     }
   };
-
-  // const getResponsiveColumns = () => {
-  //   if (themeState.windowWidth < 640) return 1;
-  //   if (themeState.windowWidth <= 855) return 2;
-  //   if (themeState.windowWidth <= 1024) return Math.min(themeState.columns, 3);
-  //   return themeState.columns;
-  // };
 
   useEffect(() => {
     if (gridRef.current && testimonials) {
@@ -144,7 +163,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
 
   return (
     <div
-      className="w-full h-full mx-auto p-4 flex justify-center items-center"
+      className="w-full h-full mx-auto p-4 flex flex-col justify-center items-center"
       style={{
         borderRadius: containerRadius,
         background: isValidColor(themeState.backgroundColor)
@@ -154,7 +173,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
     >
       <div ref={gridRef} className="relative w-full">
         <div className={`grid-sizer ${getColumnClass(themeState.columns)}`} />
-        {testimonials.map((testimonial, _index) => (
+        {visibleTestimonials.map((testimonial, _index) => (
           <TestimonialGridCard
             key={_index}
             index={_index}
@@ -170,6 +189,16 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
           />
         ))}
       </div>
+      {displayCount < testimonials.length && (
+        <div>
+          <Button
+            onClick={loadMore}
+            className="mt-8 bg-white border shadow-md text-black hover:bg-gray-200"
+          >
+            Load More
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

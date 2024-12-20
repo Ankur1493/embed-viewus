@@ -80,10 +80,20 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
           </div>
           <div className={`text-sm flex flex-col`}>
             <strong>{testimonial.firstName}</strong>
-            {testimonial.jobTitle && (
+            {testimonial.jobTitle && testimonial.company ? (
+              <span className="text-xs text-opacity-90">
+                {testimonial.jobTitle} at {testimonial.company}
+              </span>
+            ) : testimonial.jobTitle ? (
               <span className="text-xs text-opacity-90">
                 {testimonial.jobTitle}
               </span>
+            ) : (
+              testimonial.company && (
+                <span className="text-xs text-opacity-90">
+                  {testimonial.company}
+                </span>
+              )
             )}
           </div>
         </div>
