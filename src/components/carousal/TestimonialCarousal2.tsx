@@ -5,6 +5,9 @@ import { Testimonial } from "@/interface";
 import TestimonialCard from "./TestimonialCard";
 import { isValidColor } from "../IsValidColor";
 import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
+import { useSwipeable } from "react-swipeable";
+import SmallScreenTestimonialCarousel from "./SmallScreenTestimonialCarousal";
+import MediumScreenTestimonialCarousel from "./MediumScreenTestimonialCarousal";
 
 interface TestimonialCarousalProps {
   testimonials: Testimonial[];
@@ -32,10 +35,8 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
     shadowColor: "",
   });
 
-  const [cardsPerView, setCardsPerView] = useState(4);
-  const [totalSlides, setTotalSlides] = useState(
-    Math.ceil(testimonials.length / cardsPerView)
-  );
+  const [cardsPerGroup, setCardsPerGroup] = useState(4);
+  const [screenSize, setScreenSize] = useState("large");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -60,29 +61,8 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
       shadowColor: urlParams.get("shadow") || prevState.shadowColor,
     }));
 
-    const handleResize = () => {
-      const width = window.innerWidth;
-      let newCardsPerView;
-
-      if (width < 640) {
-        newCardsPerView = 1;
-      } else if (width < 1024) {
-        newCardsPerView = 2;
-      } else {
-        const numCards = parseInt(urlParams.get("cards") || "4", 10);
-        newCardsPerView = Math.max(1, Math.min(numCards, 4));
-      }
-
-      setCardsPerView(newCardsPerView);
-
-      const newTotalSlides = Math.ceil(testimonials.length / newCardsPerView);
-      setTotalSlides(newTotalSlides);
-      setCurrentIndex((prev) => Math.min(prev, newTotalSlides - 1));
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const numCards = parseInt(urlParams.get("cards") || "4", 5);
+    setCardsPerGroup(isNaN(numCards) ? 4 : Math.max(1, Math.min(numCards, 4)));
   }, [testimonials.length]);
 
   const cardBorderRad =
@@ -103,6 +83,25 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
       ? "20px"
       : "";
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setScreenSize("small");
+      } else if (window.innerWidth < 1024) {
+        setScreenSize("medium");
+      } else {
+        setScreenSize("large");
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   let duration: "normal" | "slow" | "fast" | undefined = "slow";
   if (themeState.speed === "medium") {
     duration = "normal";
@@ -112,39 +111,46 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
     duration = "slow";
   }
 
+  const getCardsPerView = () => {
+    if (screenSize === "small") return 1;
+    if (screenSize === "medium") return 2;
+    return cardsPerGroup;
+  };
+
+  const totalGroups = Math.ceil(testimonials.length / getCardsPerView());
+
   const scrollToGroup = (index: number) => {
-    if (!carouselRef.current) return;
-
-    const container = carouselRef.current;
-    const scrollWidth = container.scrollWidth;
-    const clientWidth = container.clientWidth;
-    const maxScroll = scrollWidth - clientWidth;
-
-    const targetScroll = (scrollWidth / totalSlides) * index;
-
-    const boundedScroll = Math.max(0, Math.min(targetScroll, maxScroll));
-
-    container.scrollTo({
-      left: boundedScroll,
-      behavior: "smooth",
-    });
+    if (carouselRef.current) {
+      const scrollWidth = carouselRef.current.scrollWidth;
+      const groupWidth = scrollWidth / totalGroups;
+      carouselRef.current.scrollTo({
+        left: groupWidth * index,
+        behavior: "smooth",
+      });
+    }
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => {
-      const newIndex = (prevIndex - 1 + totalSlides) % totalSlides;
-      scrollToGroup(newIndex);
-      return newIndex;
-    });
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? totalGroups - 1 : prevIndex - 1
+    );
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => {
-      const newIndex = (prevIndex + 1) % totalSlides;
-      scrollToGroup(newIndex);
-      return newIndex;
-    });
+    setCurrentIndex((prevIndex) =>
+      prevIndex === totalGroups - 1 ? 0 : prevIndex + 1
+    );
   };
+
+  useEffect(() => {
+    scrollToGroup(currentIndex);
+  }, [currentIndex]);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleNext(),
+    onSwipedRight: () => handlePrev(),
+    trackMouse: true,
+  });
 
   return (
     <>
@@ -204,88 +210,103 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
           </div>
         </div>
       ) : (
-        <div
-          className="relative w-full mx-auto py-6"
-          style={{
-            borderRadius: containerRadius,
-            background: isValidColor(themeState.backgroundColor)
-              ? `#${themeState.backgroundColor}`
-              : "transparent",
-          }}
-        >
-          <div
-            ref={carouselRef}
-            className="flex overflow-x-hidden snap-x snap-mandatory px-0"
-          >
-            {Array.from({ length: totalSlides }).map((_, groupIndex) => (
+        <>
+          {screenSize === "small" ? (
+            <SmallScreenTestimonialCarousel
+              testimonials={testimonials}
+              themeState={themeState}
+            />
+          ) : screenSize === "medium" ? (
+            <MediumScreenTestimonialCarousel
+              testimonials={testimonials}
+              themeState={themeState}
+            />
+          ) : (
+            <div
+              {...handlers}
+              className="relative w-full mx-auto py-6"
+              style={{
+                borderRadius: containerRadius,
+                background: isValidColor(themeState.backgroundColor)
+                  ? `#${themeState.backgroundColor}`
+                  : "transparent",
+              }}
+            >
               <div
-                key={groupIndex}
-                className={`flex items-${themeState.align} justify-center w-full flex-shrink-0 snap-center gap-4`}
+                ref={carouselRef}
+                className="flex overflow-x-hidden snap-x snap-mandatory px-0"
               >
-                {testimonials
-                  .slice(
-                    groupIndex * cardsPerView,
-                    groupIndex * cardsPerView + cardsPerView
-                  )
-                  .map((testimonial, index) => (
+                {Array.from({ length: totalGroups }).map((_, groupIndex) => (
+                  <div
+                    key={groupIndex}
+                    className={`flex items-${themeState.align} justify-center w-full flex-shrink-0 snap-center gap-4`}
+                  >
+                    {testimonials
+                      .slice(
+                        groupIndex * getCardsPerView(),
+                        groupIndex * getCardsPerView() + getCardsPerView()
+                      )
+                      .map((testimonial, index) => (
+                        <div
+                          key={index}
+                          className={`h-full px-0 flex items-${themeState.align} justify-center `}
+                        >
+                          <TestimonialCard
+                            key={index}
+                            index={index}
+                            testimonial={testimonial}
+                            cardBackgroundColor={themeState.cardBackgroundColor}
+                            textColor={themeState.textColor}
+                            isDarkTheme={themeState.isDarkTheme}
+                            cardBorderRad={cardBorderRad}
+                            starColor={themeState.starColor}
+                            tagColor={themeState.tagColor}
+                            tagTextColor={themeState.tagTextColor}
+                            cardHeight={themeState.cardHeight}
+                          />
+                        </div>
+                      ))}
+                  </div>
+                ))}
+              </div>
+
+              <div className="absolute inset-y-0 left-0 flex items-center opacity-60">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={handlePrev}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="absolute inset-y-0 right-0 flex items-center opacity-60">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={handleNext}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="absolute bottom-2 left-0 right-0">
+                <div className="flex justify-center space-x-2">
+                  {Array.from({ length: totalGroups }).map((_, index) => (
                     <div
                       key={index}
-                      className={`h-full px-0 flex items-${themeState.align} justify-center `}
-                    >
-                      <TestimonialCard
-                        key={index}
-                        index={index}
-                        testimonial={testimonial}
-                        cardBackgroundColor={themeState.cardBackgroundColor}
-                        textColor={themeState.textColor}
-                        isDarkTheme={themeState.isDarkTheme}
-                        cardBorderRad={cardBorderRad}
-                        starColor={themeState.starColor}
-                        tagColor={themeState.tagColor}
-                        tagTextColor={themeState.tagTextColor}
-                        cardHeight={themeState.cardHeight}
-                      />
-                    </div>
+                      className={`h-2 w-2 rounded-full ${
+                        index === currentIndex ? "bg-primary" : "bg-gray-300"
+                      }`}
+                    />
                   ))}
+                </div>
               </div>
-            ))}
-          </div>
-
-          <div className="absolute inset-y-0 left-0 flex items-center opacity-60">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 rounded-full"
-              onClick={handlePrev}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="absolute inset-y-0 right-0 flex items-center opacity-60">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 rounded-full"
-              onClick={handleNext}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="absolute bottom-2 left-0 right-0">
-            <div className="flex justify-center space-x-2">
-              {Array.from({ length: totalSlides }).map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-2 w-2 rounded-full ${
-                    index === currentIndex ? "bg-primary" : "bg-gray-300"
-                  }`}
-                />
-              ))}
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
     </>
   );
