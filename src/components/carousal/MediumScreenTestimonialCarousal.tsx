@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Testimonial } from "@/interface";
+import { Testimonial, ThemeState } from "@/interface";
 import TestimonialCard from "./TestimonialCard";
 import { useSwipeable } from "react-swipeable";
 
 interface MediumScreenTestimonialCarouselProps {
   testimonials: Testimonial[];
-  themeState: any;
+  themeState: ThemeState;
 }
 
 const MediumScreenTestimonialCarousel: React.FC<

@@ -4,11 +4,14 @@ import { Testimonial } from "@/interface";
 import TestimonialGridCard from "./TestimonialGridCard";
 import { isValidColor } from "../IsValidColor";
 import { Button } from "../ui/button";
+import { AnimatedTestimonialGrid } from "./animated-testimonial-grid";
+import { ThemeState } from "@/interface";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
   isLoading?: boolean;
   error?: Error | null;
+  themeState: ThemeState;
 }
 
 export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
@@ -33,12 +36,14 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
     cardBorderRadius: "",
     outerRadius: "",
     columns: 4,
+    isAnimate: false,
   });
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
     const paramValues = {
+      animate: urlParams.get("animated"),
       theme: urlParams.get("theme"),
       text: urlParams.get("text"),
       star: urlParams.get("star"),
@@ -46,14 +51,15 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       background: urlParams.get("background"),
       tagColor: urlParams.get("tag"),
       tagTextColor: urlParams.get("tagText"),
-      cardBorderRadius: urlParams.get("cardRadius"),
-      divRadius: urlParams.get("radius"),
+      cardBorderRadius: urlParams.get("cardBorderRadius"),
+      divRadius: urlParams.get("outerRadius"),
       columns: urlParams.get("columns"),
     };
 
     setThemeState((prevState) => {
       return {
         ...prevState,
+        ...(paramValues.animate === "on" && { isAnimate: true }),
         ...(paramValues.theme === "dark" && { isDarkTheme: true }),
         ...(paramValues.text && { textColor: paramValues.text }),
         ...(paramValues.star && { starColor: paramValues.star }),
@@ -100,18 +106,22 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
   };
 
   const cardBorderRad =
-    {
-      low: "5px",
-      medium: "10px",
-      high: "20px",
-    }[themeState.cardBorderRadius] || "";
+    themeState.cardBorderRadius === "low"
+      ? "5px"
+      : themeState.cardBorderRadius === "medium"
+      ? "10px"
+      : themeState.cardBorderRadius === "high"
+      ? "20px"
+      : "";
 
   const containerRadius =
-    {
-      low: "5px",
-      medium: "10px",
-      high: "20px",
-    }[themeState.outerRadius] || "";
+    themeState.outerRadius === "low"
+      ? "5px"
+      : themeState.outerRadius === "medium"
+      ? "10px"
+      : themeState.outerRadius === "high"
+      ? "20px"
+      : "";
 
   const getColumnClass = (columns: number) => {
     switch (columns) {
@@ -135,6 +145,9 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
         gutter: 16,
       });
     }
+    console.log("radius", themeState.cardBorderRadius);
+    console.log("outerRadius", cardBorderRad);
+    console.log("testimonial", testimonials);
   }, [testimonials]);
 
   if (isLoading) {
@@ -171,32 +184,44 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
           : "transparent",
       }}
     >
-      <div ref={gridRef} className="relative w-full">
-        <div className={`grid-sizer ${getColumnClass(themeState.columns)}`} />
-        {visibleTestimonials.map((testimonial, _index) => (
-          <TestimonialGridCard
-            key={_index}
-            index={_index}
-            testimonial={testimonial}
-            cardBackgroundColor={themeState.cardBackgroundColor}
-            textColor={themeState.textColor}
-            isDarkTheme={themeState.isDarkTheme}
-            cardBorderRad={cardBorderRad}
-            starColor={themeState.starColor}
-            tagColor={themeState.tagColor}
-            tagTextColor={themeState.tagTextColor}
-            className={getColumnClass(themeState.columns)}
-          />
-        ))}
-      </div>
-      {displayCount < testimonials.length && (
-        <div>
-          <Button
-            onClick={loadMore}
-            className="mt-8 bg-white border shadow-md text-black hover:bg-gray-200"
-          >
-            Load More
-          </Button>
+      {themeState.isAnimate ? (
+        <AnimatedTestimonialGrid
+          testimonials={testimonials}
+          themeState={themeState}
+          columns={themeState.columns}
+        />
+      ) : (
+        <div className="w-full h-full mx-auto p-4 flex flex-col justify-center items-center">
+          <div ref={gridRef} className="relative w-full">
+            <div
+              className={`grid-sizer ${getColumnClass(themeState.columns)}`}
+            />
+            {visibleTestimonials.map((testimonial, _index) => (
+              <TestimonialGridCard
+                key={_index}
+                index={_index}
+                testimonial={testimonial}
+                cardBackgroundColor={themeState.cardBackgroundColor}
+                textColor={themeState.textColor}
+                isDarkTheme={themeState.isDarkTheme}
+                cardBorderRad={cardBorderRad}
+                starColor={themeState.starColor}
+                tagColor={themeState.tagColor}
+                tagTextColor={themeState.tagTextColor}
+                className={getColumnClass(themeState.columns)}
+              />
+            ))}
+          </div>
+          {displayCount < testimonials.length && (
+            <div>
+              <Button
+                onClick={loadMore}
+                className="mt-8 bg-white border shadow-md text-black hover:bg-gray-200"
+              >
+                Load More
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

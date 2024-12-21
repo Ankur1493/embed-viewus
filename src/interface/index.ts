@@ -16,3 +16,18 @@ export interface Testimonial {
   tags?: string[];
   liked?: boolean;
 }
+
+export interface ThemeState {
+  isDarkTheme?: boolean;
+  textColor?: string;
+  starColor?: string;
+  backgroundColor?: string;
+  cardBackgroundColor?: string;
+  tagColor?: string;
+  tagTextColor?: string;
+  cardBorderRadius?: string;
+  outerRadius?: string;
+  columns?: number;
+  cardHeight?: string;
+  isAnimate?: boolean;
+}

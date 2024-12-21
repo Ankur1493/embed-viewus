@@ -42,11 +42,9 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
 }) => {
   const hasMediaContent = () => {
     return (
-      // For reviewType 1, ensure review is a video
       (testimonial.reviewType === 1 &&
         testimonial.review &&
-        !testimonial.review.includes("content")) || // Skip if it contains 'content'
-      // For reviewType 2, check for imported video or image
+        !testimonial.review.includes("content")) ||
       (testimonial.reviewType === 2 &&
         ((testimonial.importedVideo &&
           testimonial.importedVideo[0] !== "" &&
