@@ -1,40 +1,82 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Quote } from "lucide-react";
+import { Testimonial } from "@/interface";
+import { isValidColor } from "../IsValidColor";
+import { cn } from "@/lib/utils";
 
-interface Testimonial {
-  id: string;
-  name: string;
-  jobTitle?: string;
-  company?: string;
-  image?: string;
-  stars: number;
-  review: string;
-  tags?: string[];
+interface TestimonialGridCard2Props {
+  index: number;
+  testimonial: Testimonial;
+  cardBackgroundColor?: string;
+  textColor?: string;
+  isDarkTheme?: boolean;
+  cardBorderRad?: string;
+  starColor?: string;
+  tagColor?: string;
+  tagTextColor?: string;
+  className?: string;
 }
 
-const TestimonialGridCard2 = ({ testimonial }) => {
+const TestimonialGridCard2: React.FC<TestimonialGridCard2Props> = ({
+  index,
+  testimonial,
+  cardBackgroundColor = "",
+  textColor = "",
+  isDarkTheme = false,
+  cardBorderRad = "",
+  starColor = "71D4FE",
+  tagColor = "C2F19D",
+  tagTextColor = "black",
+  className = "",
+}) => {
   return (
-    <Card className="border w-full max-w-md overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-105">
+    <Card
+      key={`${testimonial._id}-${index}`}
+      className={cn(
+        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all grid-item mb-4",
+        className,
+        isDarkTheme ? "border-gray-800" : "border-gray-200",
+        !isValidColor(cardBackgroundColor) && isDarkTheme
+          ? "bg-gray-800"
+          : !isValidColor(cardBackgroundColor) && !isDarkTheme
+          ? "bg-white"
+          : "",
+        !isValidColor(textColor) && isDarkTheme
+          ? "text-white"
+          : !isValidColor(textColor) && !isDarkTheme
+          ? "text-black"
+          : ""
+      )}
+      style={{
+        backgroundColor: isValidColor(cardBackgroundColor)
+          ? `#${cardBackgroundColor}`
+          : undefined,
+        color: isValidColor(textColor) ? `#${textColor}` : undefined,
+        borderRadius: cardBorderRad,
+      }}
+    >
       <CardContent className="p-6">
         <div className="flex items-center mb-4">
           <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
             {testimonial.image ? (
               <img
                 src={testimonial.image}
-                alt={testimonial.name}
+                alt={testimonial.firstName.charAt(0)}
                 width={48}
                 height={48}
                 className="object-cover"
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xl font-bold">
-                {testimonial.name.charAt(0)}
+                {testimonial.firstName.charAt(0)}
               </div>
             )}
           </div>
           <div>
-            <h3 className="font-bold text-lg">{testimonial.name}</h3>
+            <h3 className="font-bold text-lg">
+              {testimonial.firstName} {testimonial.lastname}
+            </h3>
             {(testimonial.jobTitle || testimonial.company) && (
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {testimonial.jobTitle}{" "}
@@ -43,18 +85,16 @@ const TestimonialGridCard2 = ({ testimonial }) => {
             )}
           </div>
         </div>
-        <div className="mb-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              className={`inline-block w-5 h-5 ${
-                i < testimonial.stars
-                  ? "text-yellow-400 fill-current"
-                  : "text-gray-300"
-              }`}
-            />
-          ))}
-        </div>
+        {testimonial.stars && (
+          <div className="mb-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                className={`inline-block w-5 h-5 ${"text-yellow-400 fill-current"}`}
+              />
+            ))}
+          </div>
+        )}
         <div className="relative mb-4">
           <Quote className="absolute top-0 left-0 w-8 h-8 text-gray-300 transform -translate-x-2 -translate-y-2" />
           <p className="text-gray-700 dark:text-gray-300 italic pl-6">

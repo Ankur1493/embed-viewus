@@ -4,8 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Testimonial } from "@/interface";
 import { isValidColor } from "../IsValidColor";
 import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
-import { useSwipeable } from "react-swipeable";
-import TestimonialCard2 from "./TestimonialCard2";
+import TestimonialCardLong from "./TestimonialCardLong";
 
 interface TestimonialCarousalProps {
   testimonials: Testimonial[];
@@ -84,40 +83,38 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
     duration = "slow";
   }
 
-  const totalGroups = Math.ceil(testimonials.length / 1);
-
-  const scrollToGroup = (index: number) => {
+  const scrollToCard = (index: number) => {
     if (carouselRef.current) {
-      const scrollWidth = carouselRef.current.scrollWidth;
-      const groupWidth = scrollWidth / totalGroups;
-      carouselRef.current.scrollTo({
-        left: groupWidth * index,
-        behavior: "smooth",
-      });
+      const cards = carouselRef.current.children;
+      if (cards[index]) {
+        const cardLeft = (cards[index] as HTMLElement).offsetLeft;
+        const containerWidth = carouselRef.current.offsetWidth;
+        const cardWidth = (cards[index] as HTMLElement).offsetWidth;
+        const scrollPosition = cardLeft - (containerWidth - cardWidth) / 2;
+
+        carouselRef.current.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth",
+        });
+      }
     }
   };
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? totalGroups - 1 : prevIndex - 1
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === totalGroups - 1 ? 0 : prevIndex + 1
+      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   useEffect(() => {
-    scrollToGroup(currentIndex);
+    scrollToCard(currentIndex);
   }, [currentIndex]);
-
-  const handlers = useSwipeable({
-    onSwipedLeft: () => handleNext(),
-    onSwipedRight: () => handlePrev(),
-    trackMouse: true,
-  });
 
   return (
     <>
@@ -158,7 +155,6 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
       ) : (
         <>
           <div
-            {...handlers}
             className="relative w-full mx-auto py-6"
             style={{
               borderRadius: containerRadius,
@@ -169,39 +165,32 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
           >
             <div
               ref={carouselRef}
-              className="flex overflow-x-hidden snap-x snap-mandatory px-0"
+              className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+              style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+              }}
             >
-              {Array.from({ length: totalGroups }).map((_, groupIndex) => (
+              {testimonials.map((testimonial, index) => (
                 <div
-                  key={groupIndex}
-                  className={`flex items-${themeState.align} justify-center min-w-2xl w-full flex-shrink-0 snap-center gap-4`}
+                  key={testimonial._id}
+                  className="flex-shrink-0 px-4 snap-center max-w-xl"
                 >
-                  {testimonials
-                    .slice(groupIndex * 1, groupIndex * 1 + 1)
-                    .map((testimonial, index) => (
-                      <div
-                        key={index}
-                        className={`h-full w-full px-0 flex items-${themeState.align} justify-center `}
-                      >
-                        <TestimonialCard2
-                          key={index}
-                          index={index}
-                          testimonial={testimonial}
-                          cardBackgroundColor={themeState.cardBackgroundColor}
-                          textColor={themeState.textColor}
-                          isDarkTheme={themeState.isDarkTheme}
-                          cardBorderRad={cardBorderRad}
-                          starColor={themeState.starColor}
-                          tagColor={themeState.tagColor}
-                          tagTextColor={themeState.tagTextColor}
-                          cardHeight={themeState.cardHeight}
-                        />
-                      </div>
-                    ))}
+                  <TestimonialCardLong
+                    index={index}
+                    testimonial={testimonial}
+                    cardBackgroundColor={themeState.cardBackgroundColor}
+                    textColor={themeState.textColor}
+                    isDarkTheme={themeState.isDarkTheme}
+                    cardBorderRad={cardBorderRad}
+                    starColor={themeState.starColor}
+                    tagColor={themeState.tagColor}
+                    tagTextColor={themeState.tagTextColor}
+                    cardHeight={themeState.cardHeight}
+                  />
                 </div>
               ))}
             </div>
-
             <div className="absolute inset-y-0 left-0 flex items-center opacity-60">
               <Button
                 variant="outline"
@@ -226,7 +215,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
 
             <div className="absolute bottom-2 left-0 right-0">
               <div className="flex justify-center space-x-2">
-                {Array.from({ length: totalGroups }).map((_, index) => (
+                {testimonials.map((_, index) => (
                   <div
                     key={index}
                     className={`h-2 w-2 rounded-full ${

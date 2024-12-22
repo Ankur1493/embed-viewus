@@ -125,7 +125,7 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
                 style={{
                   fill: isValidColor(starColor) ? `#${starColor}` : "#71D4FE",
                 }}
-                color="none"
+                color="none inline-block w-5 h-5"
               />
             ))}
           </div>

@@ -5,14 +5,14 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { Quote, Star } from "lucide-react";
 import { isValidColor } from "../IsValidColor";
 import twitter from "@/assets/images/twitter_logo.png";
 import linkedIn from "@/assets/images/linkedIn_logo.png";
 import product from "@/assets/images/ProductHunt_logo.png";
 import { Testimonial } from "@/interface";
 import { cn } from "@/lib/utils";
-import { VideoPlayer } from "../VideoPlayer";
+// import { VideoPlayer } from "../VideoPlayer";
 
 interface TestimonialCardProps {
   index: number;
@@ -40,24 +40,24 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
   tagTextColor = "black",
   cardHeight,
 }) => {
-  const hasMediaContent = () => {
-    return (
-      (testimonial.reviewType === 1 &&
-        testimonial.review &&
-        !testimonial.review.includes("content")) ||
-      (testimonial.reviewType === 2 &&
-        ((testimonial.importedVideo &&
-          testimonial.importedVideo[0] !== "" &&
-          testimonial.importedVideo.length > 0) ||
-          (testimonial.importedImage && testimonial.importedImage.length > 0)))
-    );
-  };
+  // const hasMediaContent = () => {
+  //   return (
+  //     (testimonial.reviewType === 1 &&
+  //       testimonial.review &&
+  //       !testimonial.review.includes("content")) ||
+  //     (testimonial.reviewType === 2 &&
+  //       ((testimonial.importedVideo &&
+  //         testimonial.importedVideo[0] !== "" &&
+  //         testimonial.importedVideo.length > 0) ||
+  //         (testimonial.importedImage && testimonial.importedImage.length > 0)))
+  //   );
+  // };
 
   return (
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border w-ful border-none flex flex-row  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all  max-w-2xl min-w-2xl h-56 h-full",
+        "relative border  border-none flex flex-row  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all  w-xl h-56 h-full",
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
@@ -81,14 +81,15 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
       }}
     >
       <div
-        className={
-          (cn("flex flex-col w-full "),
-          (testimonial.importedImage &&
-            testimonial.importedImage?.length > 0) ||
-          (testimonial.importedVideo && testimonial.importedVideo?.length > 0)
-            ? "basis-3/5"
-            : "")
-        }
+        // className={
+        //   (cn("flex flex-col w-full "),
+        //   (testimonial.importedImage &&
+        //     testimonial.importedImage?.length > 0) ||
+        //   (testimonial.importedVideo && testimonial.importedVideo?.length > 0)
+        //     ? "basis-3/5"
+        //     : "")
+        // }
+        className="w-full"
       >
         <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
           <div className="flex flex-row items-center gap-2">
@@ -139,14 +140,15 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
           )}
         </CardHeader>
         <CardContent
-          className={cn(
-            (testimonial.importedImage &&
-              testimonial.importedImage?.length > 0) ||
-              (testimonial.importedVideo &&
-                testimonial.importedVideo?.length > 0)
-              ? "w-96"
-              : "w-full"
-          )}
+          // className={cn(
+          //   (testimonial.importedImage &&
+          //     testimonial.importedImage?.length > 0) ||
+          //     (testimonial.importedVideo &&
+          //       testimonial.importedVideo?.length > 0)
+          //     ? "w-96"
+          //     : "w-full"
+          // )}
+          className="w-full"
         >
           {testimonial.stars && (
             <div className="flex">
@@ -189,7 +191,7 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
           )}
         </CardFooter>
       </div>
-      {hasMediaContent() && (
+      {/* {hasMediaContent() && (
         <CardContent
           className={
             "p-0 basis-2/5 border-l  flex min-w-xl flex-col gap-2 justify-center"
@@ -221,7 +223,8 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
               </div>
             ) : null)}
         </CardContent>
-      )}
+      )} */}
+      <Quote className="absolute bottom-0 right-6 w-20 h-20 text-gray-300 transform -translate-x-2 -translate-y-2" />
     </Card>
   );
 };
