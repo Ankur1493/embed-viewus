@@ -149,13 +149,14 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
               tagTextColor={themeState.tagTextColor}
               cardHeight={themeState.cardHeight}
               shadowColor={themeState.shadowColor}
+              card={"longCard"}
             />
           </div>
         </div>
       ) : (
         <>
           <div
-            className="relative w-full mx-auto py-6"
+            className="relative w-full mx-auto py-6 px-10"
             style={{
               borderRadius: containerRadius,
               background: isValidColor(themeState.backgroundColor)
@@ -174,7 +175,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
               {testimonials.map((testimonial, index) => (
                 <div
                   key={testimonial._id}
-                  className="flex-shrink-0 px-4 snap-center max-w-xl"
+                  className="flex-shrink-0 px-2 snap-center max-w-xl"
                 >
                   <TestimonialCardLong
                     index={index}

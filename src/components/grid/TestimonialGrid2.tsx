@@ -6,7 +6,6 @@ import { isValidColor } from "../IsValidColor";
 import { Button } from "../ui/button";
 import { AnimatedTestimonialGrid } from "./animated-testimonial-grid";
 import { ThemeState } from "@/interface";
-import TestimonialGridCard2 from "./TestimonialGridCard2";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];

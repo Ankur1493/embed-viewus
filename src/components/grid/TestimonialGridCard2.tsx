@@ -25,9 +25,9 @@ const TestimonialGridCard2: React.FC<TestimonialGridCard2Props> = ({
   textColor = "",
   isDarkTheme = false,
   cardBorderRad = "",
-  starColor = "71D4FE",
-  tagColor = "C2F19D",
-  tagTextColor = "black",
+  // starColor = "71D4FE",
+  // tagColor = "C2F19D",
+  // tagTextColor = "black",
   className = "",
 }) => {
   return (

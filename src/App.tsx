@@ -8,6 +8,7 @@ import axios from "axios";
 import { TestimonialGrid2 } from "./components/grid/TestimonialGrid2";
 import TestimonialCarousal2 from "./components/carousal/TestimonialCarousal2";
 import TestimonialCarousalLong from "./components/carousal/TestimonialCarousalLong";
+import TestimonialCarousalAnimated from "./components/carousal/TestimonialCarousalAnimated";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,12 @@ function App() {
           <Route
             path="/w/carousal"
             element={<TestimonialCarousalLong testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/carousal/animated"
+            element={
+              <TestimonialCarousalAnimated testimonials={testimonials} />
+            }
           />
           <Route path="/w/wall-of-love" element={<WallOfLove />} />
           <Route

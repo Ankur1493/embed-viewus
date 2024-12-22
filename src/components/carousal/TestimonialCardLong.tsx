@@ -28,7 +28,7 @@ interface TestimonialCardProps {
   cardWidth?: string;
 }
 
-const TestimonialCard2: React.FC<TestimonialCardProps> = ({
+const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
   index,
   testimonial,
   cardBackgroundColor = "",
@@ -57,7 +57,7 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "relative border  border-none flex flex-row  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all  w-xl h-56 h-full",
+        "relative border border-none flex flex-row  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all w-xl h-56 h-full",
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
@@ -229,4 +229,4 @@ const TestimonialCard2: React.FC<TestimonialCardProps> = ({
   );
 };
 
-export default TestimonialCard2;
+export default TestimonialCardLong;
