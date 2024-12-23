@@ -44,7 +44,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border w-full  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
+        "border w-full my-2 shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"

@@ -2,6 +2,7 @@ import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Testimonial } from "@/interface";
+import profile from "@/assets/images/profile2.jpg";
 
 interface TestimonialProps {
   testimonials: Testimonial[];
@@ -84,12 +85,20 @@ export const AnimatedTestimonials: React.FC<TestimonialProps> = ({
                       className="h-full w-full rounded-3xl object-cover object-center"
                     />
                   ) : (
-                    <div className="bg-blue-200 rounded-3xl w-full h-full flex items-center justify-center">
-                      <div className="text-7xl font-semibold">
-                        {testimonial.firstName.charAt(0)}
-                        {testimonial.lastname && testimonial.lastname.charAt(0)}
-                      </div>
-                    </div>
+                    // <div className="bg-blue-200 rounded-3xl w-full h-full flex items-center justify-center">
+                    //   <div className="text-7xl font-semibold">
+                    //     {testimonial.firstName.charAt(0)}
+                    //     {testimonial.lastname && testimonial.lastname.charAt(0)}
+                    //   </div>
+                    // </div>
+                    <img
+                      src={profile}
+                      // alt=""
+                      width={500}
+                      height={500}
+                      draggable={false}
+                      className="h-full w-full rounded-3xl object-cover object-center"
+                    />
                   )}
                 </motion.div>
               ))}

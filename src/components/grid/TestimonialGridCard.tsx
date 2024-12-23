@@ -134,7 +134,7 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
           <VideoPlayer videoLink={testimonial.review!} />
         )}
         {testimonial.reviewType !== 1 && testimonial.review && (
-          <p>"{testimonial.review}"</p>
+          <p className="italic">"{testimonial.review}"</p>
         )}
         {testimonial.reviewType === 2 &&
           (testimonial.importedVideo &&

@@ -9,6 +9,9 @@ import { TestimonialGrid2 } from "./components/grid/TestimonialGrid2";
 import TestimonialCarousal2 from "./components/carousal/TestimonialCarousal2";
 import TestimonialCarousalLong from "./components/carousal/TestimonialCarousalLong";
 import TestimonialCarousalAnimated from "./components/carousal/TestimonialCarousalAnimated";
+import Testimonial4Grid from "./components/grid/Testimonial4Grid";
+import Testimonial5Grid from "./components/grid/Testimonial5Grid";
+import Testimonial6Grid from "./components/grid/Testimonial6Grid";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +39,18 @@ function App() {
           <Route
             path="/"
             element={<TestimonialGrid2 testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/grid"
+            element={<Testimonial4Grid testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/grid5"
+            element={<Testimonial5Grid testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/grid6"
+            element={<Testimonial6Grid testimonials={testimonials} />}
           />
           <Route
             path="/w"

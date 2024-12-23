@@ -6,6 +6,7 @@ import { isValidColor } from "../IsValidColor";
 import { Button } from "../ui/button";
 import { AnimatedTestimonialGrid } from "./animated-testimonial-grid";
 import { ThemeState } from "@/interface";
+import TestimonialGridCard2 from "./TestimonialGridCard2";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
@@ -197,7 +198,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
               className={`grid-sizer ${getColumnClass(themeState.columns)}`}
             />
             {visibleTestimonials.map((testimonial, _index) => (
-              <TestimonialGridCard
+              <TestimonialGridCard2
                 key={_index}
                 index={_index}
                 testimonial={testimonial}
