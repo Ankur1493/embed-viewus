@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import TestimonialCard from "../TestimonialCard";
+import TestimonialCard from "../carousal/TestimonialCard";
 import { Testimonial } from "@/interface";
 import "../TestimonialCarousal.css";
+import TestimonialCardLong from "../carousal/TestimonialCardLong";
 
 export const InfiniteMovingCards = ({
   items,
@@ -18,6 +19,7 @@ export const InfiniteMovingCards = ({
   tagTextColor,
   cardHeight,
   shadowColor,
+  card,
 }: {
   items: Testimonial[];
   direction?: "left" | "right";
@@ -33,6 +35,7 @@ export const InfiniteMovingCards = ({
   tagTextColor?: string;
   cardHeight?: string;
   shadowColor?: string;
+  card?: string;
 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLUListElement>(null);
@@ -79,11 +82,11 @@ export const InfiniteMovingCards = ({
   const getSpeed = () => {
     if (containerRef.current) {
       if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "140s");
+        containerRef.current.style.setProperty("--animation-duration", "40s");
       } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "150s");
+        containerRef.current.style.setProperty("--animation-duration", "80s");
       } else {
-        containerRef.current.style.setProperty("--animation-duration", "200s");
+        containerRef.current.style.setProperty("--animation-duration", "120s");
       }
     }
   };
@@ -93,7 +96,7 @@ export const InfiniteMovingCards = ({
       ref={containerRef}
       className={`scroller relative z-20 w-full h-auto overflow-x-hidden  ${className}`}
       style={{
-        maskImage: `linear-gradient(to right, transparent, #${shadowColor} 5%, #${shadowColor} 95%, transparent)`,
+        maskImage: `linear-gradient(to right, transparent, #${shadowColor} 2%, #${shadowColor} 98%, transparent)`,
       }}
     >
       <ul
@@ -103,19 +106,37 @@ export const InfiniteMovingCards = ({
         } ${pauseOnHover && "hover:[animation-play-state:paused]"}`}
       >
         {items.map((testimonial, idx) => (
-          <li key={idx} className="flex-shrink-0">
-            <TestimonialCard
-              index={idx}
-              testimonial={testimonial}
-              cardBackgroundColor={cardBackgroundColor}
-              textColor={textColor}
-              isDarkTheme={isDarkTheme}
-              cardBorderRad={cardBorderRad}
-              starColor={starColor}
-              tagColor={tagColor}
-              tagTextColor={tagTextColor}
-              cardHeight={cardHeight}
-            />
+          <li
+            key={idx}
+            className="flex-shrink-0 max-w-sm md:max-w-xl lg:max-w-2xl"
+          >
+            {card === "longCard" ? (
+              <TestimonialCardLong
+                index={idx}
+                testimonial={testimonial}
+                cardBackgroundColor={cardBackgroundColor}
+                textColor={textColor}
+                isDarkTheme={isDarkTheme}
+                cardBorderRad={cardBorderRad}
+                starColor={starColor}
+                tagColor={tagColor}
+                tagTextColor={tagTextColor}
+                cardHeight={cardHeight}
+              />
+            ) : (
+              <TestimonialCard
+                index={idx}
+                testimonial={testimonial}
+                cardBackgroundColor={cardBackgroundColor}
+                textColor={textColor}
+                isDarkTheme={isDarkTheme}
+                cardBorderRad={cardBorderRad}
+                starColor={starColor}
+                tagColor={tagColor}
+                tagTextColor={tagTextColor}
+                cardHeight={cardHeight}
+              />
+            )}
           </li>
         ))}
       </ul>

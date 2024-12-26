@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -6,15 +6,15 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import { isValidColor } from "./IsValidColor";
+import { isValidColor } from "../IsValidColor";
 import twitter from "@/assets/images/twitter_logo.png";
 import linkedIn from "@/assets/images/linkedIn_logo.png";
 import product from "@/assets/images/ProductHunt_logo.png";
 import { Testimonial } from "@/interface";
 import { cn } from "@/lib/utils";
-import { VideoPlayer } from "./VideoPlayer";
+import { VideoPlayer } from "../VideoPlayer";
 
-interface TestimonialCardProps {
+interface TestimonialGridCardProps {
   index: number;
   testimonial: Testimonial;
   cardBackgroundColor?: string;
@@ -24,27 +24,30 @@ interface TestimonialCardProps {
   starColor?: string;
   tagColor?: string;
   tagTextColor?: string;
-  cardHeight?: string;
-  cardWidth?: string;
+  className?: string;
 }
 
-const TestimonialCard: React.FC<TestimonialCardProps> = ({
+const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
   index,
   testimonial,
   cardBackgroundColor = "",
   textColor = "",
   isDarkTheme = false,
   cardBorderRad = "",
-  starColor = "#71D4FE",
-  tagColor = "#C2F19D",
+  starColor = "71D4FE",
+  tagColor = "C2F19D",
   tagTextColor = "black",
-  cardHeight,
+  className = "",
 }) => {
+  useEffect(() => {
+    console.log("radius", cardBorderRad);
+  }, []);
   return (
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all md:w-80 w-72 h-full",
+        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all grid-item mb-4",
+        className,
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
@@ -63,8 +66,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           : undefined,
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
         borderRadius: cardBorderRad,
-        height: cardHeight === "fit" ? "fit-content" : undefined,
-        // minWidth: cardWidth ? `${cardWidth}px` : undefined,
       }}
     >
       <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
@@ -82,8 +83,20 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           </div>
           <div className={`text-sm flex flex-col`}>
             <strong>{testimonial.firstName}</strong>
-            {testimonial.jobTitle && (
-              <span className="text-opacity-90">{testimonial.jobTitle}</span>
+            {testimonial.jobTitle && testimonial.company ? (
+              <span className="text-xs text-opacity-90">
+                {testimonial.jobTitle} at {testimonial.company}
+              </span>
+            ) : testimonial.jobTitle ? (
+              <span className="text-xs text-opacity-90">
+                {testimonial.jobTitle}
+              </span>
+            ) : (
+              testimonial.company && (
+                <span className="text-xs text-opacity-90">
+                  {testimonial.company}
+                </span>
+              )
             )}
           </div>
         </div>
@@ -112,7 +125,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 style={{
                   fill: isValidColor(starColor) ? `#${starColor}` : "#71D4FE",
                 }}
-                color="none"
+                color="none inline-block w-5 h-5"
               />
             ))}
           </div>
@@ -121,7 +134,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           <VideoPlayer videoLink={testimonial.review!} />
         )}
         {testimonial.reviewType !== 1 && testimonial.review && (
-          <p>"{testimonial.review}"</p>
+          <p className="italic">"{testimonial.review}"</p>
         )}
         {testimonial.reviewType === 2 &&
           (testimonial.importedVideo &&
@@ -156,7 +169,9 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                   backgroundColor: isValidColor(tagColor)
                     ? `#${tagColor}`
                     : "#C2F19D",
-                  color: isValidColor(tagTextColor) ? tagTextColor : "black",
+                  color: isValidColor(tagTextColor)
+                    ? `#${tagTextColor}`
+                    : "black",
                 }}
               >
                 {tag}
@@ -169,4 +184,4 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   );
 };
 
-export default TestimonialCard;
+export default TestimonialGridCard;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import TestimonialCard from "./TestimonialCard";
+import TestimonialCard from "./carousal/TestimonialCard";
 import { isValidColor } from "./IsValidColor";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 import { Testimonial } from "@/interface";

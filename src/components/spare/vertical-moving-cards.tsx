@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import TestimonialCard from "../TestimonialCard";
+import TestimonialCard from "../carousal/TestimonialCard";
 import { Testimonial } from "@/interface";
-import "../TestimonialGrid.css";
+// import "../TestimonialGrid.css";
 
-export default function InfiniteMovingCards({
+export default function VerticalMovingCards({
   items,
   direction = "up",
   speed = "normal",
