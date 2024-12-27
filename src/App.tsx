@@ -19,9 +19,7 @@ function App() {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await axios.get(
-          `https://viewus.in/api/review/like?slug=${slug}`
-        );
+        const response = await axios.get(`/api/review/like?slug=${slug}`);
         setTestimonials(response.data.data.reviews);
       } catch (err) {
         console.log(err);
