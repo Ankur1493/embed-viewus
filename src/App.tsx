@@ -72,6 +72,17 @@ function App() {
           element={<TestimonialCarousals testimonials={testimonials} />}
         />
       </Routes>
+      <div className="fixed bottom-0 right-0 p-4">
+        <button
+          className="bg-gray-200 flex gap-2 justify-center items-center text-black rounded-full px-4 py-1 group border  hover:bg-gradient-to-r from-sky-500 to-pink-400  transition duration-300 ease-in-out scale-105"
+          onClick={() => window.open("https://viewus.in/login", "_blank")}
+        >
+          <img src="/src/assets/images/logo.png" alt="" className="w-4 h-4" />
+          <span className=" text-xs group-hover:text-white">
+            Collect testimonials with Viewus
+          </span>
+        </button>
+      </div>
     </Router>
   );
 }
