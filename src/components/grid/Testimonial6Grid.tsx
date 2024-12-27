@@ -88,7 +88,7 @@ export default function Testimonial6Grid({
                 Merged&Share
               </span>
             </h1>
-            <p className="text-xs md:text-md">
+            <p className="text-xs md:text-lg">
               See what people have to say about us{" "}
             </p>
           </div>
