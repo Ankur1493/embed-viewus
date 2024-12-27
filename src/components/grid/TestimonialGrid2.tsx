@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Masonry from "masonry-layout";
 import { Testimonial } from "@/interface";
-import TestimonialGridCard from "./TestimonialGridCard";
 import { isValidColor } from "../IsValidColor";
 import { Button } from "../ui/button";
 import { AnimatedTestimonialGrid } from "./animated-testimonial-grid";
 import { ThemeState } from "@/interface";
-import TestimonialGridCard2 from "./TestimonialGridCard2";
+import TestimonialGridCard from "./TestimonialGridCard2";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
@@ -198,7 +197,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
               className={`grid-sizer ${getColumnClass(themeState.columns)}`}
             />
             {visibleTestimonials.map((testimonial, _index) => (
-              <TestimonialGridCard2
+              <TestimonialGridCard
                 key={_index}
                 index={_index}
                 testimonial={testimonial}
