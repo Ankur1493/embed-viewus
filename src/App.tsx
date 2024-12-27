@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import WallOfLove from "./pages/WallOfLove";
 import TestimonialCarousals from "./components/TestimonialCarousals";
@@ -14,14 +13,15 @@ import Testimonial5Grid from "./components/grid/Testimonial5Grid";
 import Testimonial6Grid from "./components/grid/Testimonial6Grid";
 
 function App() {
-  const client = new QueryClient();
   const [testimonials, setTestimonials] = useState([]);
   const urlParams = new URLSearchParams(window.location.search);
   const slug = urlParams.get("slug");
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await axios.get(`/api/review/like?slug=${slug}`);
+        const response = await axios.get(
+          `https://www.viewus.in/api/review/like?slug=${slug}`
+        );
         setTestimonials(response.data.data.reviews);
       } catch (err) {
         console.log(err);
@@ -32,51 +32,47 @@ function App() {
   }, [slug]);
 
   return (
-    <QueryClientProvider client={client}>
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={<TestimonialGrid2 testimonials={testimonials} />}
-          />
-          <Route
-            path="/w/grid"
-            element={<Testimonial4Grid testimonials={testimonials} />}
-          />
-          <Route
-            path="/w/grid5"
-            element={<Testimonial5Grid testimonials={testimonials} />}
-          />
-          <Route
-            path="/w/grid6"
-            element={<Testimonial6Grid testimonials={testimonials} />}
-          />
-          <Route
-            path="/w"
-            element={<TestimonialCarousal2 testimonials={testimonials} />}
-          />
-          <Route
-            path="/w/carousal"
-            element={<TestimonialCarousalLong testimonials={testimonials} />}
-          />
-          <Route
-            path="/w/carousal/animated"
-            element={
-              <TestimonialCarousalAnimated testimonials={testimonials} />
-            }
-          />
-          <Route path="/w/wall-of-love" element={<WallOfLove />} />
-          <Route
-            path="/w/embed-testimonials"
-            element={<TestimonialGrid testimonials={testimonials} />}
-          />
-          <Route
-            path="/w/embed-testimonials/carousal"
-            element={<TestimonialCarousals testimonials={testimonials} />}
-          />
-        </Routes>
-      </Router>
-    </QueryClientProvider>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={<TestimonialGrid2 testimonials={testimonials} />}
+        />
+        <Route
+          path="/w/grid"
+          element={<Testimonial4Grid testimonials={testimonials} />}
+        />
+        <Route
+          path="/w/grid5"
+          element={<Testimonial5Grid testimonials={testimonials} />}
+        />
+        <Route
+          path="/w/grid6"
+          element={<Testimonial6Grid testimonials={testimonials} />}
+        />
+        <Route
+          path="/w"
+          element={<TestimonialCarousal2 testimonials={testimonials} />}
+        />
+        <Route
+          path="/w/carousal"
+          element={<TestimonialCarousalLong testimonials={testimonials} />}
+        />
+        <Route
+          path="/w/carousal/animated"
+          element={<TestimonialCarousalAnimated testimonials={testimonials} />}
+        />
+        <Route path="/w/wall-of-love" element={<WallOfLove />} />
+        <Route
+          path="/w/embed-testimonials"
+          element={<TestimonialGrid testimonials={testimonials} />}
+        />
+        <Route
+          path="/w/embed-testimonials/carousal"
+          element={<TestimonialCarousals testimonials={testimonials} />}
+        />
+      </Routes>
+    </Router>
   );
 }
 
