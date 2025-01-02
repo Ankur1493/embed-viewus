@@ -62,7 +62,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           ? `#${cardBackgroundColor}`
           : undefined,
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
-        height: cardHeight === "fit" ? "fit-content" : undefined,
+        height: cardHeight === "full" ? "full" : "fit-content",
         borderRadius: cardBorderRad,
         // minWidth: cardWidth ? `${cardWidth}px` : undefined,
       }}

@@ -25,6 +25,9 @@ interface TestimonialCardProps {
   tagColor?: string;
   tagTextColor?: string;
   cardHeight?: string;
+  imageBackground?: string;
+  quoteColor?: string;
+  cardBorderColor?: string;
   cardWidth?: string;
 }
 
@@ -36,8 +39,11 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
   isDarkTheme = false,
   cardBorderRad = "",
   starColor = "#71D4FE",
+  imageBackground = "#71D4FE",
   tagColor = "#C2F19D",
+  quoteColor = "#D1D5DB",
   tagTextColor = "black",
+  cardBorderColor = "",
   cardHeight,
 }) => {
   // const hasMediaContent = () => {
@@ -57,8 +63,7 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "relative border border-none flex flex-row  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all w-xl h-56 h-full",
-        isDarkTheme ? "border-gray-800" : "border-gray-200",
+        "relative border flex flex-row  shadow transition-all h-full w-full max-w-xs md:max-w-2xl mx-auto",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
           : !isValidColor(cardBackgroundColor) && !isDarkTheme
@@ -68,7 +73,10 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
           ? "text-white"
           : !isValidColor(textColor) && !isDarkTheme
           ? "text-black"
-          : ""
+          : "",
+        testimonial.tags && testimonial.tags.length > 0
+          ? "pb-10 mdpb-8"
+          : "pb-4"
       )}
       style={{
         backgroundColor: isValidColor(cardBackgroundColor)
@@ -77,6 +85,9 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
         height: cardHeight === "fit" ? "fit-content" : undefined,
         borderRadius: cardBorderRad,
+        borderColor: isValidColor(cardBorderColor)
+          ? `#${cardBorderColor}`
+          : "transparent",
         // minWidth: cardWidth ? `${cardWidth}px` : undefined,
       }}
     >
@@ -93,10 +104,21 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
       >
         <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
           <div className="flex flex-row items-center gap-2">
-            <div className="w-6 h-6 md:w-10 md:h-10 overflow-hidden rounded-full flex items-center justify-center bg-[#71D4FE]">
+            <div
+              className="w-6 h-6 md:w-10 md:h-10 overflow-hidden rounded-full flex items-center justify-center bg-[#71D4FE]"
+              style={{
+                backgroundColor: isValidColor(imageBackground)
+                  ? `#${imageBackground}`
+                  : "#71D4FE",
+              }}
+            >
               {testimonial.image ? (
                 <img
-                  src={testimonial.image}
+                  src={
+                    testimonial.image.startsWith("http")
+                      ? testimonial.image
+                      : `https://d3eyp937ijscg0.cloudfront.net/${testimonial.image}`
+                  }
                   alt={testimonial.firstName.charAt(0)}
                   className="w-full h-full object-cover"
                 />
@@ -159,22 +181,23 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
                     fill: isValidColor(starColor) ? `#${starColor}` : "#71D4FE",
                   }}
                   color="none"
+                  className="w-4 h-4 md:w-6 md:h-6"
                 />
               ))}
             </div>
           )}
           {testimonial.reviewType !== 1 && testimonial.review && (
-            <p>"{testimonial.review}"</p>
+            <p className="text-xs md:text-sm z-10">"{testimonial.review}"</p>
           )}
         </CardContent>
 
-        <CardFooter className="flex justify-start items-start flex-col gap-2 p-0 py-2 pb-4 px-4">
+        <CardFooter className="absolute bottom-2 flex justify-start items-start flex-col gap-2 p-0 py-2 pb-4 px-4">
           {testimonial.tags && testimonial.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-4">
               {testimonial.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full px-2 py-1 text-xs font-medium"
+                  className="rounded-full px-2 py-1 text-xs font-medium z-10"
                   style={{
                     backgroundColor: isValidColor(tagColor)
                       ? `#${tagColor}`
@@ -224,7 +247,14 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
             ) : null)}
         </CardContent>
       )} */}
-      <Quote className="absolute bottom-0 right-6 w-20 h-20 text-gray-300 transform -translate-x-2 -translate-y-2" />
+      <Quote
+        className={cn(
+          "absolute bottom-0 right-6 w-20 h-20  transform -translate-x-2 -translate-y-2"
+        )}
+        style={{
+          color: isValidColor(quoteColor) ? `#${quoteColor}` : "#D1D5DB",
+        }}
+      />
     </Card>
   );
 };

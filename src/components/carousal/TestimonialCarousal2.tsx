@@ -234,12 +234,12 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
             >
               <div
                 ref={carouselRef}
-                className="flex overflow-x-hidden snap-x snap-mandatory px-0 bg-gray-200"
+                className="flex overflow-x-hidden snap-x snap-mandatory px-0"
               >
                 {Array.from({ length: totalGroups }).map((_, groupIndex) => (
                   <div
                     key={groupIndex}
-                    className={`flex items-${themeState.align} bg-gray-200 py-2 justify-center w-full flex-shrink-0 snap-center gap-4`}
+                    className={`flex items-${themeState.align} py-2 justify-center w-full flex-shrink-0 snap-center gap-4`}
                   >
                     {testimonials
                       .slice(
@@ -249,7 +249,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
                       .map((testimonial, index) => (
                         <div
                           key={index}
-                          className={`h-full px-0 flex bg-gray-200 items-${themeState.align} justify-center `}
+                          className={`h-full px-0 flex py-1 items-${themeState.align} justify-center `}
                         >
                           <TestimonialCard
                             key={index}

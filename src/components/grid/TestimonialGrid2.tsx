@@ -34,6 +34,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
     tagColor: "",
     tagTextColor: "",
     cardBorderRadius: "",
+    cardBorderColor: "",
     outerRadius: "",
     columns: 4,
     isAnimate: false,
@@ -52,6 +53,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       tagColor: urlParams.get("tag"),
       tagTextColor: urlParams.get("tagText"),
       cardBorderRadius: urlParams.get("cardBorderRadius"),
+      cardBorderColor: urlParams.get("cardBorderColor"),
       divRadius: urlParams.get("outerRadius"),
       columns: urlParams.get("columns"),
     };

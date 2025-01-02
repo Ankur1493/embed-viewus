@@ -16,10 +16,14 @@ export const InfiniteMovingCards = ({
   cardBorderRad,
   starColor,
   tagColor,
+  imageBackground,
+  quoteColor,
   tagTextColor,
   cardHeight,
   shadowColor,
+  cardBorderColor,
   card,
+  startIndex,
 }: {
   items: Testimonial[];
   direction?: "left" | "right";
@@ -32,10 +36,14 @@ export const InfiniteMovingCards = ({
   cardBorderRad?: string;
   starColor?: string;
   tagColor?: string;
+  imageBackground?: string;
+  quoteColor?: string;
   tagTextColor?: string;
   cardHeight?: string;
   shadowColor?: string;
+  cardBorderColor?: string;
   card?: string;
+  startIndex?: number;
 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLUListElement>(null);
@@ -82,14 +90,24 @@ export const InfiniteMovingCards = ({
   const getSpeed = () => {
     if (containerRef.current) {
       if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "40s");
-      } else if (speed === "normal") {
         containerRef.current.style.setProperty("--animation-duration", "80s");
+      } else if (speed === "normal") {
+        containerRef.current.style.setProperty("--animation-duration", "100s");
       } else {
-        containerRef.current.style.setProperty("--animation-duration", "120s");
+        containerRef.current.style.setProperty("--animation-duration", "140s");
       }
     }
   };
+
+  const reorderItems = (items: Testimonial[], startIndex?: number) => {
+    const reorderedItems = [
+      ...items.slice(startIndex),
+      ...items.slice(0, startIndex),
+    ];
+    return reorderedItems;
+  };
+
+  const reorderedItems = reorderItems(items, startIndex);
 
   return (
     <div
@@ -105,10 +123,11 @@ export const InfiniteMovingCards = ({
           start && "animate-scroll"
         } ${pauseOnHover && "hover:[animation-play-state:paused]"}`}
       >
-        {items.map((testimonial, idx) => (
+        {reorderedItems.map((testimonial, idx) => (
           <li
             key={idx}
-            className="flex-shrink-0 max-w-sm md:max-w-xl lg:max-w-2xl"
+            // className="max-w-sm md:max-w-xl lg:max-w-2xl lg:min-w-2xl px-auto"
+            className="w-md md:w-full"
           >
             {card === "longCard" ? (
               <TestimonialCardLong
@@ -120,7 +139,10 @@ export const InfiniteMovingCards = ({
                 cardBorderRad={cardBorderRad}
                 starColor={starColor}
                 tagColor={tagColor}
+                imageBackground={imageBackground}
+                quoteColor={quoteColor}
                 tagTextColor={tagTextColor}
+                cardBorderColor={cardBorderColor}
                 cardHeight={cardHeight}
               />
             ) : (

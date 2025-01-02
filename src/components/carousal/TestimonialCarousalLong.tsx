@@ -24,12 +24,18 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
     backgroundColor: "",
     tagColor: "",
     tagTextColor: "",
+    imageBackground: "",
+    quoteColor: "",
     cardBorderRadius: "",
+    cardBorderColor: "",
     outerRadius: "",
     speed: "",
     cardHeight: "",
     align: "",
     shadowColor: "",
+    rows: "",
+    direction1: "",
+    direction2: "",
   });
 
   useEffect(() => {
@@ -46,15 +52,34 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
       backgroundColor: urlParams.get("background") || prevState.backgroundColor,
       tagColor: urlParams.get("tag") || prevState.tagColor,
       tagTextColor: urlParams.get("tagText") || prevState.tagTextColor,
+      imageBackground: urlParams.get("image") || prevState.imageBackground,
+      quoteColor: urlParams.get("quote") || prevState.quoteColor,
       cardBorderRadius:
         urlParams.get("cardBorderRadius") || prevState.cardBorderRadius,
+      cardBorderColor:
+        urlParams.get("cardBorderColor") || prevState.cardBorderColor,
       outerRadius: urlParams.get("outerRadius") || prevState.outerRadius,
       speed: urlParams.get("speed") || prevState.speed,
       cardHeight: urlParams.get("height") || prevState.cardHeight,
       align: urlParams.get("align") || prevState.align,
       shadowColor: urlParams.get("shadow") || prevState.shadowColor,
+      rows: urlParams.get("rows") || prevState.rows,
+      direction1: urlParams.get("direction1") || prevState.direction1,
+      direction2: urlParams.get("direction2") || prevState.direction2,
     }));
   }, []);
+
+  const validDirection1 =
+    themeState.direction1 === "left" || themeState.direction1 === "right"
+      ? themeState.direction1
+      : "right";
+
+  const validDirection2 =
+    themeState.direction2 === "left" || themeState.direction2 === "right"
+      ? themeState.direction2
+      : "left";
+
+  const noOfRows = themeState.rows === "2" ? 2 : 1;
 
   const cardBorderRad =
     themeState.cardBorderRadius === "low"
@@ -131,32 +156,82 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
           <div
             className={`grid h-full grid-flow-col gap-4 p-4 place-items-center`}
             style={{
+              borderRadius: containerRadius,
               background: isValidColor(themeState.backgroundColor)
                 ? `#${themeState.backgroundColor}`
                 : "transparent",
             }}
           >
-            <InfiniteMovingCards
-              items={testimonials}
-              direction="right"
-              speed={duration}
-              cardBackgroundColor={themeState.cardBackgroundColor}
-              textColor={themeState.textColor}
-              isDarkTheme={themeState.isDarkTheme}
-              cardBorderRad={cardBorderRad}
-              starColor={themeState.starColor}
-              tagColor={themeState.tagColor}
-              tagTextColor={themeState.tagTextColor}
-              cardHeight={themeState.cardHeight}
-              shadowColor={themeState.shadowColor}
-              card={"longCard"}
-            />
+            {noOfRows === 2 ? (
+              <div
+                className="grid grid-rows-2 gap-2"
+                style={{ borderRadius: containerRadius }}
+              >
+                <InfiniteMovingCards
+                  items={testimonials}
+                  direction={validDirection1}
+                  speed={duration}
+                  cardBackgroundColor={themeState.cardBackgroundColor}
+                  textColor={themeState.textColor}
+                  isDarkTheme={themeState.isDarkTheme}
+                  cardBorderRad={cardBorderRad}
+                  starColor={themeState.starColor}
+                  tagColor={themeState.tagColor}
+                  tagTextColor={themeState.tagTextColor}
+                  imageBackground={themeState.imageBackground}
+                  quoteColor={themeState.quoteColor}
+                  cardHeight={themeState.cardHeight}
+                  shadowColor={themeState.shadowColor}
+                  cardBorderColor={themeState.cardBorderColor}
+                  card={"longCard"}
+                  startIndex={0}
+                />
+                <InfiniteMovingCards
+                  items={testimonials}
+                  direction={validDirection2}
+                  speed={duration}
+                  cardBackgroundColor={themeState.cardBackgroundColor}
+                  textColor={themeState.textColor}
+                  isDarkTheme={themeState.isDarkTheme}
+                  cardBorderRad={cardBorderRad}
+                  starColor={themeState.starColor}
+                  tagColor={themeState.tagColor}
+                  tagTextColor={themeState.tagTextColor}
+                  imageBackground={themeState.imageBackground}
+                  quoteColor={themeState.quoteColor}
+                  cardHeight={themeState.cardHeight}
+                  shadowColor={themeState.shadowColor}
+                  cardBorderColor={themeState.cardBorderColor}
+                  card={"longCard"}
+                  startIndex={Math.floor(testimonials.length / 2)}
+                />
+              </div>
+            ) : (
+              <InfiniteMovingCards
+                items={testimonials}
+                direction={validDirection1}
+                speed={duration}
+                cardBackgroundColor={themeState.cardBackgroundColor}
+                textColor={themeState.textColor}
+                isDarkTheme={themeState.isDarkTheme}
+                cardBorderRad={cardBorderRad}
+                starColor={themeState.starColor}
+                tagColor={themeState.tagColor}
+                tagTextColor={themeState.tagTextColor}
+                imageBackground={themeState.imageBackground}
+                quoteColor={themeState.quoteColor}
+                cardHeight={themeState.cardHeight}
+                shadowColor={themeState.shadowColor}
+                cardBorderColor={themeState.cardBorderColor}
+                card={"longCard"}
+              />
+            )}
           </div>
         </div>
       ) : (
         <>
           <div
-            className="relative w-full mx-auto py-6 px-10"
+            className="relative w-full mx-auto py-6 px-4 md:px-10"
             style={{
               borderRadius: containerRadius,
               background: isValidColor(themeState.backgroundColor)
@@ -175,7 +250,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
               {testimonials.map((testimonial, index) => (
                 <div
                   key={testimonial._id}
-                  className="flex-shrink-0 px-2 snap-center max-w-xl"
+                  className="flex-shrink-0 py-1 flex justify-center items-center px-2 snap-center max-w-xl"
                 >
                   <TestimonialCardLong
                     index={index}
@@ -185,8 +260,11 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                     isDarkTheme={themeState.isDarkTheme}
                     cardBorderRad={cardBorderRad}
                     starColor={themeState.starColor}
+                    imageBackground={themeState.imageBackground}
+                    quoteColor={themeState.quoteColor}
                     tagColor={themeState.tagColor}
                     tagTextColor={themeState.tagTextColor}
+                    cardBorderColor={themeState.cardBorderColor}
                     cardHeight={themeState.cardHeight}
                   />
                 </div>
@@ -196,7 +274,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
               <Button
                 variant="outline"
                 size="icon"
-                className="h-8 w-8 rounded-full"
+                className="w-6 h-6 md:h-8 md:w-8 rounded-full"
                 onClick={handlePrev}
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -207,7 +285,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
               <Button
                 variant="outline"
                 size="icon"
-                className="h-8 w-8 rounded-full"
+                className="w-6 h-6 md:h-8 md:w-8 rounded-full"
                 onClick={handleNext}
               >
                 <ChevronRight className="h-4 w-4" />
