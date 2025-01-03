@@ -145,7 +145,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
     <>
       {themeState.shouldAnimate ? (
         <div
-          className="overflow-hidden relative w-full h-full"
+          className="overflow-hidden relative w-full h-full py-10"
           style={{
             borderRadius: containerRadius,
             background: isValidColor(themeState.backgroundColor)
@@ -153,6 +153,23 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
               : "transparent",
           }}
         >
+          <div className="absolute -bottom-2 right-0 p-4 z-50">
+            <button
+              className="flex gap-2 justify-center items-center text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+              onClick={() => window.open("https://viewus.in/login", "_blank")}
+            >
+              <div className="group-hover:bg-white rounded-full p-1 ">
+                <img
+                  src="/src/assets/images/logo.png"
+                  alt=""
+                  className="w-4 h-4"
+                />
+              </div>
+              <span className=" text-xs group-hover:text-white">
+                Collect testimonials with Viewus
+              </span>
+            </button>
+          </div>
           <div
             className={`grid h-full grid-flow-col gap-4 p-4 place-items-center`}
             style={{
@@ -239,6 +256,23 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                 : "transparent",
             }}
           >
+            <div className="absolute -bottom-12 right-0 p-4 z-50">
+              <button
+                className="flex gap-2 justify-center items-center text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+                onClick={() => window.open("https://viewus.in/login", "_blank")}
+              >
+                <div className="group-hover:bg-white rounded-full p-1 ">
+                  <img
+                    src="/src/assets/images/logo.png"
+                    alt=""
+                    className="w-4 h-4"
+                  />
+                </div>
+                <span className=" text-xs group-hover:text-white">
+                  Collect testimonials with Viewus
+                </span>
+              </button>
+            </div>
             <div
               ref={carouselRef}
               className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"

@@ -146,7 +146,7 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
             </div>
           </div>
           {testimonial.reviewType === 2 && (
-            <div className="w-7 h-7 overflow-hidden rounded-full">
+            <div className="w-8 h-8 overflow-hidden rounded-full">
               <img
                 src={
                   testimonial.importedReviewType === 0
