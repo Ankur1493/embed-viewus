@@ -184,7 +184,6 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
               tagColor={tagColor}
               tagTextColor={tagTextColor}
               cardHeight={cardHeight}
-              shadowColor={shadowColor}
             />
             {rowNumber === 2 && (
               <InfiniteMovingCards
@@ -199,7 +198,6 @@ const TestimonialCarousals: React.FC<TestimonialCarousalProps> = ({
                 tagColor={tagColor}
                 tagTextColor={tagTextColor}
                 cardHeight={cardHeight}
-                shadowColor={shadowColor}
               />
             )}
           </div>

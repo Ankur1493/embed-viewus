@@ -20,7 +20,6 @@ export const InfiniteMovingCards = ({
   quoteColor,
   tagTextColor,
   cardHeight,
-  shadowColor,
   cardBorderColor,
   card,
   startIndex,
@@ -40,7 +39,6 @@ export const InfiniteMovingCards = ({
   quoteColor?: string;
   tagTextColor?: string;
   cardHeight?: string;
-  shadowColor?: string;
   cardBorderColor?: string;
   card?: string;
   startIndex?: number;
@@ -112,14 +110,11 @@ export const InfiniteMovingCards = ({
   return (
     <div
       ref={containerRef}
-      className={`scroller relative z-20 w-full h-auto overflow-x-hidden  ${className}`}
-      style={{
-        maskImage: `linear-gradient(to right, transparent, #${shadowColor} 2%, #${shadowColor} 98%, transparent)`,
-      }}
+      className={`scroller relative z-20 w-full h-auto overflow-x-hidden rounded-xl ${className}`}
     >
       <ul
         ref={scrollerRef}
-        className={`flex min-w-full h-fit shrink-0 gap-4 py-1 w-max flex-nowrap ${
+        className={`flex min-w-full h-fit shrink-0 gap-4 w-max flex-nowrap ${
           start && "animate-scroll"
         } ${pauseOnHover && "hover:[animation-play-state:paused]"}`}
       >

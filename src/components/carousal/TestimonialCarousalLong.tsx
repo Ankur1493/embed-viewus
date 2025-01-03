@@ -5,6 +5,7 @@ import { Testimonial } from "@/interface";
 import { isValidColor } from "../IsValidColor";
 import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
 import TestimonialCardLong from "./TestimonialCardLong";
+import { ArrowUpRight } from "lucide-react";
 
 interface TestimonialCarousalProps {
   testimonials: Testimonial[];
@@ -155,7 +156,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
         >
           <div className="absolute -bottom-2 right-0 p-4 z-50">
             <button
-              className="flex gap-2 justify-center items-center text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+              className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
               onClick={() => window.open("https://viewus.in/login", "_blank")}
             >
               <div className="group-hover:bg-white rounded-full p-1 ">
@@ -165,13 +166,17 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                   className="w-4 h-4"
                 />
               </div>
-              <span className=" text-xs group-hover:text-white">
-                Collect testimonials with Viewus
+              <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+                Collect testimonials with Viewus{" "}
+                <ArrowUpRight
+                  className="w-4 h-4 group-hover:text-white"
+                  strokeWidth={2.75}
+                />
               </span>
             </button>
           </div>
           <div
-            className={`grid h-full grid-flow-col gap-4 p-4 place-items-center`}
+            className={`grid h-full relative grid-flow-col gap-4 p-4 place-items-center`}
             style={{
               borderRadius: containerRadius,
               background: isValidColor(themeState.backgroundColor)
@@ -179,9 +184,30 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                 : "transparent",
             }}
           >
+            {" "}
+            <div
+              className={`absolute py-1 inset-y-0 left-0 w-1/4 z-50 pointer-events-none  rounded-lg `}
+              style={{
+                background: `linear-gradient(to right, #${
+                  isValidColor(themeState.shadowColor)
+                    ? themeState.shadowColor
+                    : ""
+                }, transparent)`,
+              }}
+            />
+            <div
+              className={`absolute inset-y-0 right-0 w-1/4 z-50 pointer-events-none  rounded-lg `}
+              style={{
+                background: `linear-gradient(to left, #${
+                  isValidColor(themeState.shadowColor)
+                    ? themeState.shadowColor
+                    : ""
+                }, transparent)`,
+              }}
+            />
             {noOfRows === 2 ? (
               <div
-                className="grid grid-rows-2 gap-2"
+                className="grid grid-rows-2 gap-4 relative"
                 style={{ borderRadius: containerRadius }}
               >
                 <InfiniteMovingCards
@@ -198,7 +224,6 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                   imageBackground={themeState.imageBackground}
                   quoteColor={themeState.quoteColor}
                   cardHeight={themeState.cardHeight}
-                  shadowColor={themeState.shadowColor}
                   cardBorderColor={themeState.cardBorderColor}
                   card={"longCard"}
                   startIndex={0}
@@ -217,7 +242,6 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                   imageBackground={themeState.imageBackground}
                   quoteColor={themeState.quoteColor}
                   cardHeight={themeState.cardHeight}
-                  shadowColor={themeState.shadowColor}
                   cardBorderColor={themeState.cardBorderColor}
                   card={"longCard"}
                   startIndex={Math.floor(testimonials.length / 2)}
@@ -238,7 +262,6 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                 imageBackground={themeState.imageBackground}
                 quoteColor={themeState.quoteColor}
                 cardHeight={themeState.cardHeight}
-                shadowColor={themeState.shadowColor}
                 cardBorderColor={themeState.cardBorderColor}
                 card={"longCard"}
               />
@@ -256,9 +279,9 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                 : "transparent",
             }}
           >
-            <div className="absolute -bottom-12 right-0 p-4 z-50">
+            <div className="absolute -bottom-8 right-4 z-50">
               <button
-                className="flex gap-2 justify-center items-center text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+                className="flex gap-2 justify-center bg-white items-center text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
                 onClick={() => window.open("https://viewus.in/login", "_blank")}
               >
                 <div className="group-hover:bg-white rounded-full p-1 ">
@@ -268,8 +291,12 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                     className="w-4 h-4"
                   />
                 </div>
-                <span className=" text-xs group-hover:text-white">
-                  Collect testimonials with Viewus
+                <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+                  Collect testimonials with Viewus{" "}
+                  <ArrowUpRight
+                    className="w-4 h-4 group-hover:text-white"
+                    strokeWidth={2.75}
+                  />
                 </span>
               </button>
             </div>

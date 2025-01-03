@@ -114,7 +114,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       ? "10px"
       : themeState.cardBorderRadius === "high"
       ? "20px"
-      : "";
+      : "10px";
 
   const containerRadius =
     themeState.outerRadius === "low"

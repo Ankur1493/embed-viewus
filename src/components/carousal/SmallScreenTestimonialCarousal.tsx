@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Testimonial, ThemeState } from "@/interface";
 import TestimonialCard from "./TestimonialCard";
 import { useSwipeable } from "react-swipeable";
@@ -36,7 +36,7 @@ const SmallScreenTestimonialCarousel: React.FC<
   return (
     <div
       {...handlers}
-      className="relative flex items-center justify-center w-full py-6"
+      className=" flex items-center justify-center px-4 w-screen py-6"
       style={{
         borderRadius: themeState.outerRadius,
         background: themeState.backgroundColor
@@ -46,7 +46,7 @@ const SmallScreenTestimonialCarousel: React.FC<
     >
       <div className="overflow-hidden">
         <div
-          className="flex transition-transform duration-300 ease-in-out"
+          className="flex transition-transform duration-500 ease-in-out"
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
             width: `${testimonials.length * 100}%`,
@@ -96,7 +96,7 @@ const SmallScreenTestimonialCarousel: React.FC<
       </div>
 
       <div className="absolute bottom-2 left-0 right-0">
-        <div className="flex justify-center space-x-2">
+        <div className="flex justify-center">
           {testimonials.map((_, index) => (
             <div
               key={index}
@@ -106,6 +106,23 @@ const SmallScreenTestimonialCarousel: React.FC<
             />
           ))}
         </div>
+      </div>
+      <div className="absolute -bottom-12 right-0 z-50">
+        <button
+          className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+          onClick={() => window.open("https://viewus.in/login", "_blank")}
+        >
+          <div className="group-hover:bg-white rounded-full p-1 ">
+            <img src="/src/assets/images/logo.png" alt="" className="w-4 h-4" />
+          </div>
+          <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+            Collect testimonials with Viewus{" "}
+            <ArrowUpRight
+              className="w-4 h-4 group-hover:text-white"
+              strokeWidth={2.75}
+            />
+          </span>
+        </button>
       </div>
     </div>
   );

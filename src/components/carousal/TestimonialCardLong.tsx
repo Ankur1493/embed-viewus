@@ -44,7 +44,6 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
   quoteColor = "#D1D5DB",
   tagTextColor = "black",
   cardBorderColor = "",
-  cardHeight,
 }) => {
   // const hasMediaContent = () => {
   //   return (
@@ -63,7 +62,7 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "relative border flex flex-row  shadow transition-all h-full w-full max-w-xs md:max-w-2xl mx-auto",
+        "relative border flex flex-row  shadow transition-all h-full w-full max-w-xs md:max-w-2xl py-2 mx-auto",
         !isValidColor(cardBackgroundColor) && isDarkTheme
           ? "bg-gray-800"
           : !isValidColor(cardBackgroundColor) && !isDarkTheme
@@ -83,12 +82,10 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
           ? `#${cardBackgroundColor}`
           : undefined,
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
-        height: cardHeight === "fit" ? "fit-content" : undefined,
         borderRadius: cardBorderRad,
         borderColor: isValidColor(cardBorderColor)
           ? `#${cardBorderColor}`
           : "transparent",
-        // minWidth: cardWidth ? `${cardWidth}px` : undefined,
       }}
     >
       <div
