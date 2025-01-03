@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Testimonial } from "@/interface";
 import TestimonialCard from "./TestimonialCard";
 import { isValidColor } from "../IsValidColor";
@@ -28,6 +28,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
     tagColor: "",
     tagTextColor: "",
     cardBorderRadius: "",
+    cardBorderColor: "",
     outerRadius: "",
     speed: "",
     cardHeight: "",
@@ -52,6 +53,8 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
       backgroundColor: urlParams.get("background") || prevState.backgroundColor,
       tagColor: urlParams.get("tag") || prevState.tagColor,
       tagTextColor: urlParams.get("tagText") || prevState.tagTextColor,
+      cardBorderColor:
+        urlParams.get("cardBorderColor") || prevState.cardBorderColor,
       cardBorderRadius:
         urlParams.get("cardBorderRadius") || prevState.cardBorderRadius,
       outerRadius: urlParams.get("outerRadius") || prevState.outerRadius,
@@ -164,6 +167,27 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
               : "transparent",
           }}
         >
+          <div className="absolute -bottom-2 right-0 p-4 z-50">
+            <button
+              className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+              onClick={() => window.open("https://viewus.in/login", "_blank")}
+            >
+              <div className="group-hover:bg-white rounded-full p-1 ">
+                <img
+                  src="/src/assets/images/logo.png"
+                  alt=""
+                  className="w-4 h-4"
+                />
+              </div>
+              <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+                Collect testimonials with Viewus{" "}
+                <ArrowUpRight
+                  className="w-4 h-4 group-hover:text-white"
+                  strokeWidth={2.75}
+                />
+              </span>
+            </button>
+          </div>
           {/* <div
             className="absolute top-0 left-0 bottom-0 w-8 opacity-70 z-20"
             style={{
@@ -201,11 +225,11 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
               textColor={themeState.textColor}
               isDarkTheme={themeState.isDarkTheme}
               cardBorderRad={cardBorderRad}
+              cardBorderColor={themeState.cardBorderColor}
               starColor={themeState.starColor}
               tagColor={themeState.tagColor}
               tagTextColor={themeState.tagTextColor}
               cardHeight={themeState.cardHeight}
-              shadowColor={themeState.shadowColor}
             />
           </div>
         </div>
@@ -232,14 +256,37 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
                   : "transparent",
               }}
             >
+              <div className="absolute -bottom-2 right-4 z-50">
+                <button
+                  className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+                  onClick={() =>
+                    window.open("https://viewus.in/login", "_blank")
+                  }
+                >
+                  <div className="group-hover:bg-white rounded-full p-1 ">
+                    <img
+                      src="/src/assets/images/logo.png"
+                      alt=""
+                      className="w-4 h-4"
+                    />
+                  </div>
+                  <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+                    Collect testimonials with Viewus{" "}
+                    <ArrowUpRight
+                      className="w-4 h-4 group-hover:text-white"
+                      strokeWidth={2.75}
+                    />
+                  </span>
+                </button>
+              </div>
               <div
                 ref={carouselRef}
-                className="flex overflow-x-hidden snap-x snap-mandatory px-0 bg-gray-200"
+                className="flex overflow-x-hidden snap-x snap-mandatory px-0"
               >
                 {Array.from({ length: totalGroups }).map((_, groupIndex) => (
                   <div
                     key={groupIndex}
-                    className={`flex items-${themeState.align} bg-gray-200 py-2 justify-center w-full flex-shrink-0 snap-center gap-4`}
+                    className={`flex items-${themeState.align} py-2 justify-center w-full flex-shrink-0 snap-center gap-4`}
                   >
                     {testimonials
                       .slice(
@@ -249,7 +296,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
                       .map((testimonial, index) => (
                         <div
                           key={index}
-                          className={`h-full px-0 flex bg-gray-200 items-${themeState.align} justify-center `}
+                          className={`h-full px-0 flex py-1 items-${themeState.align} justify-center `}
                         >
                           <TestimonialCard
                             key={index}
@@ -260,6 +307,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
                             isDarkTheme={themeState.isDarkTheme}
                             cardBorderRad={cardBorderRad}
                             starColor={themeState.starColor}
+                            cardBorderColor={themeState.cardBorderColor}
                             tagColor={themeState.tagColor}
                             tagTextColor={themeState.tagTextColor}
                             cardHeight={themeState.cardHeight}

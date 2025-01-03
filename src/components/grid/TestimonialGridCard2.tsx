@@ -113,7 +113,11 @@ const TestimonialGridCard2: React.FC<TestimonialGridCard2Props> = ({
           <div className="w-6 h-6 md:w-10 md:h-10 overflow-hidden rounded-full flex items-center justify-center bg-[#71D4FE]">
             {testimonial.image ? (
               <img
-                src={testimonial.image}
+                src={
+                  testimonial.image.startsWith("http")
+                    ? testimonial.image
+                    : `https://d3eyp937ijscg0.cloudfront.net/${testimonial.image}`
+                }
                 alt={testimonial.firstName.charAt(0)}
                 className="w-full h-full object-cover"
               />
