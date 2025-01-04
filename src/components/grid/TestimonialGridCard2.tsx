@@ -24,6 +24,7 @@ interface TestimonialGridCard2Props {
   starColor?: string;
   tagColor?: string;
   tagTextColor?: string;
+  cardBorderColor?: string;
   className?: string;
 }
 
@@ -37,6 +38,7 @@ const TestimonialGridCard2: React.FC<TestimonialGridCard2Props> = ({
   starColor = "71D4FE",
   tagColor = "C2F19D",
   tagTextColor = "black",
+  cardBorderColor = "",
   className = "",
 }) => {
   if (testimonial.reviewType === 1) {
@@ -105,6 +107,7 @@ const TestimonialGridCard2: React.FC<TestimonialGridCard2Props> = ({
           : undefined,
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
         borderRadius: cardBorderRad,
+        borderColor: isValidColor(cardBorderColor) ? `#${cardBorderColor}` : "",
       }}
     >
       {" "}

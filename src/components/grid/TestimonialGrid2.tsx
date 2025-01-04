@@ -69,6 +69,9 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
           cardBackgroundColor: paramValues.cardBackground,
         }),
         ...(paramValues.tagColor && { tagColor: paramValues.tagColor }),
+        ...(paramValues.cardBorderColor && {
+          cardBorderColor: paramValues.cardBorderColor,
+        }),
         ...(paramValues.tagTextColor && {
           tagTextColor: paramValues.tagTextColor,
         }),
@@ -210,6 +213,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
                 starColor={themeState.starColor}
                 tagColor={themeState.tagColor}
                 tagTextColor={themeState.tagTextColor}
+                cardBorderColor={themeState.cardBorderColor}
                 className={getColumnClass(themeState.columns)}
               />
             ))}

@@ -33,7 +33,8 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
     speed: "",
     cardHeight: "",
     align: "",
-    shadowColor: "",
+    shadowColor: "fffffff",
+    direction1: "right",
   });
 
   const [cardsPerGroup, setCardsPerGroup] = useState(4);
@@ -62,11 +63,17 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
       cardHeight: urlParams.get("height") || prevState.cardHeight,
       align: urlParams.get("align") || prevState.align,
       shadowColor: urlParams.get("shadow") || prevState.shadowColor,
+      direction1: urlParams.get("direction1") || prevState.shadowColor,
     }));
 
     const numCards = parseInt(urlParams.get("cards") || "4", 5);
     setCardsPerGroup(isNaN(numCards) ? 4 : Math.max(1, Math.min(numCards, 4)));
   }, [testimonials.length]);
+
+  const validDirection1 =
+    themeState.direction1 === "left" || themeState.direction1 === "right"
+      ? themeState.direction1
+      : "right";
 
   const cardBorderRad =
     themeState.cardBorderRadius === "low"
@@ -164,10 +171,10 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
             borderRadius: containerRadius,
             background: isValidColor(themeState.backgroundColor)
               ? `#${themeState.backgroundColor}`
-              : "transparent",
+              : "",
           }}
         >
-          <div className="absolute -bottom-2 right-0 p-4 z-50">
+          <div className="absolute -bottom-3 right-0 p-4 z-50">
             <button
               className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
               onClick={() => window.open("https://viewus.in/login", "_blank")}
@@ -188,38 +195,38 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
               </span>
             </button>
           </div>
-          {/* <div
-            className="absolute top-0 left-0 bottom-0 w-8 opacity-70 z-20"
-            style={{
-              background: isValidColor(themeState.shadowColor)
-                ? `linear-gradient(90deg,#${themeState.shadowColor}, transparent)`
-                : "",
-              borderTopLeftRadius: containerRadius,
-              borderBottomLeftRadius: containerRadius,
-            }}
-          ></div>
 
           <div
-            className="absolute top-0 right-0 bottom-0 w-8 opacity-70 z-20"
-            style={{
-              background: isValidColor(themeState.shadowColor)
-                ? `linear-gradient(90deg,transparent, #${themeState.shadowColor})`
-                : "",
-              borderTopRightRadius: containerRadius,
-              borderBottomRightRadius: containerRadius,
-            }}
-          ></div> */}
-          <div
-            className={`grid h-full grid-flow-col gap-4 p-4 place-items-center`}
+            className={`grid relative h-full grid-flow-col gap-4 p-4 place-items-center`}
             style={{
               background: isValidColor(themeState.backgroundColor)
                 ? `#${themeState.backgroundColor}`
                 : "transparent",
             }}
           >
+            <div
+              className={`absolute py-1 inset-y-0 left-0 w-1/4 z-50 pointer-events-none  rounded-lg `}
+              style={{
+                background: `linear-gradient(to right, #${
+                  isValidColor(themeState.shadowColor)
+                    ? themeState.shadowColor
+                    : ""
+                }, transparent)`,
+              }}
+            />
+            <div
+              className={`absolute inset-y-0 right-0 w-1/4 z-50 pointer-events-none  rounded-lg `}
+              style={{
+                background: `linear-gradient(to left, #${
+                  isValidColor(themeState.shadowColor)
+                    ? themeState.shadowColor
+                    : ""
+                }, transparent)`,
+              }}
+            />
             <InfiniteMovingCards
               items={testimonials}
-              direction="right"
+              direction={validDirection1}
               speed={duration}
               cardBackgroundColor={themeState.cardBackgroundColor}
               textColor={themeState.textColor}

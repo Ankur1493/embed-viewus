@@ -23,6 +23,7 @@ interface TestimonialGridCardProps {
   cardBorderRad?: string;
   starColor?: string;
   tagColor?: string;
+  cardBorderColor?: string;
   tagTextColor?: string;
   className?: string;
 }
@@ -37,6 +38,7 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
   starColor = "71D4FE",
   tagColor = "C2F19D",
   tagTextColor = "black",
+  cardBorderColor = "",
   className = "",
 }) => {
   useEffect(() => {
@@ -46,7 +48,7 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border  shadow hover:ring ring-gray-200 ring-opacity-50 transition-all grid-item mb-4",
+        "border  shadow-none hover:ring ring-gray-200 ring-opacity-50 transition-all grid-item mb-4",
         className,
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
@@ -66,6 +68,7 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
           : undefined,
         color: isValidColor(textColor) ? `#${textColor}` : undefined,
         borderRadius: cardBorderRad,
+        borderColor: isValidColor(cardBorderColor) ? `#${cardBorderColor}` : "",
       }}
     >
       <CardHeader className="flex flex-row justify-between items-start py-0 pt-4 pb-2">
