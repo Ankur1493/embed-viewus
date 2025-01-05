@@ -161,7 +161,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
             >
               <div className="group-hover:bg-white rounded-full p-1 ">
                 <img
-                  src="https://d3eyp937ijscg0.cloudfront.net/viewus_image/logo1.png"
+                  src="https://d3eyp937ijscg0.cloudfront.net/viewus_images/logo1.png"
                   alt=""
                   className="w-4 h-4"
                 />
