@@ -41,7 +41,7 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
   starColor = "#71D4FE",
   imageBackground = "#71D4FE",
   tagColor = "#C2F19D",
-  quoteColor = "#D1D5DB",
+  quoteColor = "",
   tagTextColor = "black",
   cardBorderColor = "",
 }) => {
@@ -249,7 +249,12 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
           "absolute bottom-0 right-6 w-20 h-20  transform -translate-x-2 -translate-y-2"
         )}
         style={{
-          color: isValidColor(quoteColor) ? `#${quoteColor}` : "#D1D5DB",
+          color:
+            quoteColor === "none"
+              ? "transparent"
+              : isValidColor(quoteColor)
+              ? `#${quoteColor}`
+              : "#D1D5DB",
         }}
       />
     </Card>
