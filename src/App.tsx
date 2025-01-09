@@ -11,6 +11,7 @@ import TestimonialCarousalAnimated from "./components/carousal/TestimonialCarous
 import Testimonial4Grid from "./components/grid/Testimonial4Grid";
 import Testimonial5Grid from "./components/grid/Testimonial5Grid";
 import Testimonial6Grid from "./components/grid/Testimonial6Grid";
+import IframeResizer from "./components/IframeResizer";
 
 function App() {
   const [testimonials, setTestimonials] = useState([]);
@@ -32,47 +33,50 @@ function App() {
   }, [slug]);
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={<TestimonialGrid2 testimonials={testimonials} />}
-        />
-        <Route
-          path="/w/grid"
-          element={<Testimonial4Grid testimonials={testimonials} />}
-        />
-        <Route
-          path="/w/grid5"
-          element={<Testimonial5Grid testimonials={testimonials} />}
-        />
-        <Route
-          path="/w/grid6"
-          element={<Testimonial6Grid testimonials={testimonials} />}
-        />
-        <Route
-          path="/w"
-          element={<TestimonialCarousal2 testimonials={testimonials} />}
-        />
-        <Route
-          path="/w/carousal"
-          element={<TestimonialCarousalLong testimonials={testimonials} />}
-        />
-        <Route
-          path="/w/carousal/animated"
-          element={<TestimonialCarousalAnimated testimonials={testimonials} />}
-        />
-        <Route path="/w/wall-of-love" element={<WallOfLove />} />
-        <Route
-          path="/w/embed-testimonials"
-          element={<TestimonialGrid testimonials={testimonials} />}
-        />
-        <Route
-          path="/w/embed-testimonials/carousal"
-          element={<TestimonialCarousals testimonials={testimonials} />}
-        />
-      </Routes>
-      {/* <div className="fixed bottom-0 right-0 p-4">
+    <IframeResizer>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={<TestimonialGrid2 testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/grid"
+            element={<Testimonial4Grid testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/grid5"
+            element={<Testimonial5Grid testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/grid6"
+            element={<Testimonial6Grid testimonials={testimonials} />}
+          />
+          <Route
+            path="/w"
+            element={<TestimonialCarousal2 testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/carousal"
+            element={<TestimonialCarousalLong testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/carousal/animated"
+            element={
+              <TestimonialCarousalAnimated testimonials={testimonials} />
+            }
+          />
+          <Route path="/w/wall-of-love" element={<WallOfLove />} />
+          <Route
+            path="/w/embed-testimonials"
+            element={<TestimonialGrid testimonials={testimonials} />}
+          />
+          <Route
+            path="/w/embed-testimonials/carousal"
+            element={<TestimonialCarousals testimonials={testimonials} />}
+          />
+        </Routes>
+        {/* <div className="fixed bottom-0 right-0 p-4">
         <button
           className="bg-gray-200 flex gap-2 justify-center items-center text-black rounded-full px-4 py-1 group border  hover:bg-gradient-to-r from-sky-500 to-pink-400  transition duration-300 ease-in-out scale-105"
           onClick={() => window.open("https://viewus.in/login", "_blank")}
@@ -83,7 +87,8 @@ function App() {
           </span>
         </button>
       </div> */}
-    </Router>
+      </Router>
+    </IframeResizer>
   );
 }
 
