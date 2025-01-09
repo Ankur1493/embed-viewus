@@ -23,12 +23,10 @@
           if (config.log) console.log("Received message:", data);
 
           if (data.type === "resize") {
-            const newHeight = data.height + 20;
+            const newHeight = data.height;
             if (config.log) console.log("Setting new height:", newHeight);
             iframe.style.height = `${newHeight}px`;
             iframe.style.maxHeight = "none";
-            if (config.log)
-              console.log("Resized iframe:", iframe.id, newHeight);
           }
         } catch (e) {
           if (config.log) console.error("Invalid message data:", event.data);
@@ -49,5 +47,20 @@
     });
   }
 
+  function init() {
+    if (document.querySelector("#testimonial-frame")) {
+      embedIframe("#testimonial-frame", {
+        log: false,
+        checkOrigin: false,
+      });
+    }
+  }
+
   global.embedIframe = embedIframe;
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })(window, document);

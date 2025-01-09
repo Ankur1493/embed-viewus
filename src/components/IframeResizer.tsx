@@ -1,4 +1,3 @@
-// src/components/IframeResizer.tsx
 import { ReactNode, useEffect, useRef } from "react";
 
 interface IframeResizerProps {
@@ -15,8 +14,6 @@ const IframeResizer: React.FC<IframeResizerProps> = ({ children }) => {
         const rect = containerRef.current.getBoundingClientRect();
         const height = Math.ceil(rect.height);
 
-        console.log("Sending height:", height); // Debug log
-
         window.parent.postMessage(
           {
             type: "resize",
@@ -28,11 +25,10 @@ const IframeResizer: React.FC<IframeResizerProps> = ({ children }) => {
       }
     };
 
-    // Handle incoming messages
     const handleMessage = (event: MessageEvent) => {
       const data =
         typeof event.data === "string" ? JSON.parse(event.data) : event.data;
-      console.log("Received message in iframe:", data); // Debug log
+      console.log("Received message in iframe:", data);
 
       if (data.type === "handshake") {
         sendSize();
@@ -41,7 +37,6 @@ const IframeResizer: React.FC<IframeResizerProps> = ({ children }) => {
 
     window.addEventListener("message", handleMessage);
 
-    // Create ResizeObserver
     const resizeObserver = new ResizeObserver(() => {
       if (resizeTimeoutRef.current) {
         clearTimeout(resizeTimeoutRef.current);
@@ -54,10 +49,8 @@ const IframeResizer: React.FC<IframeResizerProps> = ({ children }) => {
       resizeObserver.observe(document.body);
     }
 
-    // Initial size calculation
     setTimeout(sendSize, 100);
 
-    // Cleanup
     return () => {
       if (containerRef.current) {
         resizeObserver.disconnect();

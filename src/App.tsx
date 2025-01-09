@@ -11,7 +11,6 @@ import TestimonialCarousalAnimated from "./components/carousal/TestimonialCarous
 import Testimonial4Grid from "./components/grid/Testimonial4Grid";
 import Testimonial5Grid from "./components/grid/Testimonial5Grid";
 import Testimonial6Grid from "./components/grid/Testimonial6Grid";
-import ResizableIframe from "./components/ResizableFrame";
 import IframeResizer from "./components/IframeResizer";
 
 function App() {
@@ -41,7 +40,6 @@ function App() {
             path="/"
             element={<TestimonialGrid2 testimonials={testimonials} />}
           />
-          <Route path="/embed" element={<ResizableIframe />} />
           <Route
             path="/w/grid"
             element={<Testimonial4Grid testimonials={testimonials} />}
