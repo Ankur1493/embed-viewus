@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { AnimatedTestimonialGrid } from "./animated-testimonial-grid";
 import { ThemeState } from "@/interface";
 import TestimonialGridCard from "./TestimonialGridCard2";
+import { ArrowUpRight } from "lucide-react";
 
 interface TestimonialGridProps {
   testimonials: Testimonial[];
@@ -181,7 +182,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
 
   return (
     <div
-      className="w-full h-full mx-auto p-4 flex flex-col justify-center items-center"
+      className="w-full h-full mx-auto py-4 pb-16 flex flex-col justify-center items-center relative"
       style={{
         borderRadius: containerRadius,
         background: isValidColor(themeState.backgroundColor)
@@ -189,6 +190,27 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
           : "transparent",
       }}
     >
+      <div className="absolute bottom-2 right-4 z-50">
+        <button
+          className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+          onClick={() => window.open("https://viewus.in/login", "_blank")}
+        >
+          <div className="group-hover:bg-white rounded-full p-1 ">
+            <img
+              src="https://d3eyp937ijscg0.cloudfront.net/viewus_images/logo1.png"
+              alt=""
+              className="w-4 h-4"
+            />
+          </div>
+          <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+            Collect testimonials with Viewus{" "}
+            <ArrowUpRight
+              className="w-4 h-4 group-hover:text-white"
+              strokeWidth={2.75}
+            />
+          </span>
+        </button>
+      </div>
       {themeState.isAnimate ? (
         <AnimatedTestimonialGrid
           testimonials={testimonials}

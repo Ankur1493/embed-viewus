@@ -146,7 +146,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
     <>
       {themeState.shouldAnimate ? (
         <div
-          className="overflow-hidden relative w-full h-full py-10"
+          className="overflow-hidden relative w-full h-full py-10 pb-20"
           style={{
             borderRadius: containerRadius,
             background: isValidColor(themeState.backgroundColor)
@@ -271,7 +271,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
       ) : (
         <>
           <div
-            className="relative w-full mx-auto py-6 px-4 md:px-10"
+            className="relative w-full mx-auto py-6 px-4 md:px-10 pb-20 lg:pb-12"
             style={{
               borderRadius: containerRadius,
               background: isValidColor(themeState.backgroundColor)
@@ -279,14 +279,15 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                 : "transparent",
             }}
           >
-            <div className="absolute -bottom-8 right-4 z-50">
+            {" "}
+            <div className="absolute bottom-2 right-4 z-50">
               <button
-                className="flex gap-2 justify-center bg-white items-center text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+                className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
                 onClick={() => window.open("https://viewus.in/login", "_blank")}
               >
                 <div className="group-hover:bg-white rounded-full p-1 ">
                   <img
-                    src="/src/assets/images/logo.png"
+                    src="https://d3eyp937ijscg0.cloudfront.net/viewus_images/logo1.png"
                     alt=""
                     className="w-4 h-4"
                   />
@@ -341,7 +342,6 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                 <ChevronLeft className="h-4 w-4" />
               </Button>
             </div>
-
             <div className="absolute inset-y-0 right-0 flex items-center opacity-60">
               <Button
                 variant="outline"
@@ -352,8 +352,7 @@ const TestimonialCarousalLong: React.FC<TestimonialCarousalProps> = ({
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
-
-            <div className="absolute bottom-2 left-0 right-0">
+            <div className="absolute bottom-12 lg:bottom-2 left-0 right-0">
               <div className="flex justify-center space-x-2">
                 {testimonials.map((_, index) => (
                   <div

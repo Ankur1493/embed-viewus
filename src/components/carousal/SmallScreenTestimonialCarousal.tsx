@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Testimonial, ThemeState } from "@/interface";
 import TestimonialCard from "./TestimonialCard";
 import { useSwipeable } from "react-swipeable";
@@ -36,7 +36,7 @@ const SmallScreenTestimonialCarousel: React.FC<
   return (
     <div
       {...handlers}
-      className=" flex items-center justify-center px-4 w-screen py-6"
+      className="flex items-center justify-center w-screen py-6 relative"
       style={{
         borderRadius: themeState.outerRadius,
         background: themeState.backgroundColor
@@ -77,7 +77,7 @@ const SmallScreenTestimonialCarousel: React.FC<
         <Button
           variant="outline"
           size="icon"
-          className="h-10 w-10 rounded-full bg-white/80 shadow-md"
+          className="h-6 w-6 rounded-full bg-white/80 shadow-md"
           onClick={handlePrev}
         >
           <ChevronLeft className="h-6 w-6" />
@@ -88,14 +88,14 @@ const SmallScreenTestimonialCarousel: React.FC<
         <Button
           variant="outline"
           size="icon"
-          className="h-10 w-10 rounded-full bg-white/80 shadow-md"
+          className="h-6 w-6 rounded-full bg-white/80 shadow-md"
           onClick={handleNext}
         >
           <ChevronRight className="h-6 w-6" />
         </Button>
       </div>
 
-      <div className="absolute bottom-2 left-0 right-0">
+      <div className="absolute bottom-6 left-0 right-0">
         <div className="flex justify-center">
           {testimonials.map((_, index) => (
             <div
@@ -106,23 +106,6 @@ const SmallScreenTestimonialCarousel: React.FC<
             />
           ))}
         </div>
-      </div>
-      <div className="absolute -bottom-12 right-0 z-50">
-        <button
-          className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
-          onClick={() => window.open("https://viewus.in/login", "_blank")}
-        >
-          <div className="group-hover:bg-white rounded-full p-1 ">
-            <img src="/src/assets/images/logo.png" alt="" className="w-4 h-4" />
-          </div>
-          <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
-            Collect testimonials with Viewus{" "}
-            <ArrowUpRight
-              className="w-4 h-4 group-hover:text-white"
-              strokeWidth={2.75}
-            />
-          </span>
-        </button>
       </div>
     </div>
   );

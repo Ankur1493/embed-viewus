@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star } from "lucide-react";
+import { ArrowUpRight, Star } from "lucide-react";
 import { Testimonial } from "@/interface";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -78,7 +78,28 @@ export default function Testimonial6Grid({
     .slice(0, 5);
 
   return (
-    <div className="container mx-auto p-4 pb-10">
+    <div className="container mx-auto p-4 pb-12 relative">
+      <div className="absolute bottom-2 right-4 z-50">
+        <button
+          className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+          onClick={() => window.open("https://viewus.in/login", "_blank")}
+        >
+          <div className="group-hover:bg-white rounded-full p-1 ">
+            <img
+              src="https://d3eyp937ijscg0.cloudfront.net/viewus_images/logo1.png"
+              alt=""
+              className="w-4 h-4"
+            />
+          </div>
+          <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+            Collect testimonials with Viewus{" "}
+            <ArrowUpRight
+              className="w-4 h-4 group-hover:text-white"
+              strokeWidth={2.75}
+            />
+          </span>
+        </button>
+      </div>
       {themeState.slug === "merged-and-share" && (
         <div className="flex items-center justify-center py-10">
           <div className="flex flex-col items-center space-y-2">

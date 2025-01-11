@@ -166,7 +166,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
     <>
       {themeState.shouldAnimate ? (
         <div
-          className="overflow-hidden relative w-full h-full"
+          className="overflow-hidden relative w-full h-full pb-10"
           style={{
             borderRadius: containerRadius,
             background: isValidColor(themeState.backgroundColor)
@@ -174,7 +174,7 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
               : "",
           }}
         >
-          <div className="absolute -bottom-3 right-0 p-4 z-50">
+          <div className="absolute bottom-3 right-3 z-50">
             <button
               className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
               onClick={() => window.open("https://viewus.in/login", "_blank")}
@@ -243,27 +243,12 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
       ) : (
         <>
           {screenSize === "small" ? (
-            <SmallScreenTestimonialCarousel
-              testimonials={testimonials}
-              themeState={themeState}
-            />
-          ) : screenSize === "medium" ? (
-            <MediumScreenTestimonialCarousel
-              testimonials={testimonials}
-              themeState={themeState}
-            />
-          ) : (
-            <div
-              {...handlers}
-              className="relative w-full mx-auto py-6"
-              style={{
-                borderRadius: containerRadius,
-                background: isValidColor(themeState.backgroundColor)
-                  ? `#${themeState.backgroundColor}`
-                  : "transparent",
-              }}
-            >
-              <div className="absolute -bottom-2 right-4 z-50">
+            <div className="relative pb-12 ">
+              <SmallScreenTestimonialCarousel
+                testimonials={testimonials}
+                themeState={themeState}
+              />{" "}
+              <div className="absolute bottom-4 right-4 z-50">
                 <button
                   className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
                   onClick={() =>
@@ -272,7 +257,72 @@ const TestimonialCarousal2: React.FC<TestimonialCarousalProps> = ({
                 >
                   <div className="group-hover:bg-white rounded-full p-1 ">
                     <img
-                      src="/src/assets/images/logo.png"
+                      src="https://d3eyp937ijscg0.cloudfront.net/viewus_images/logo1.png"
+                      alt=""
+                      className="w-4 h-4"
+                    />
+                  </div>
+                  <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+                    Collect testimonials with Viewus{" "}
+                    <ArrowUpRight
+                      className="w-4 h-4 group-hover:text-white"
+                      strokeWidth={2.75}
+                    />
+                  </span>
+                </button>
+              </div>
+            </div>
+          ) : screenSize === "medium" ? (
+            <div className="relative pb-12">
+              <MediumScreenTestimonialCarousel
+                testimonials={testimonials}
+                themeState={themeState}
+              />{" "}
+              <div className="absolute bottom-4 right-4 z-50">
+                <button
+                  className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+                  onClick={() =>
+                    window.open("https://viewus.in/login", "_blank")
+                  }
+                >
+                  <div className="group-hover:bg-white rounded-full p-1 ">
+                    <img
+                      src="https://d3eyp937ijscg0.cloudfront.net/viewus_images/logo1.png"
+                      alt=""
+                      className="w-4 h-4"
+                    />
+                  </div>
+                  <span className=" text-xs font-semibold flex gap-1 group-hover:text-white">
+                    Collect testimonials with Viewus{" "}
+                    <ArrowUpRight
+                      className="w-4 h-4 group-hover:text-white"
+                      strokeWidth={2.75}
+                    />
+                  </span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div
+              {...handlers}
+              className="relative w-full mx-auto py-6 pb-12"
+              style={{
+                borderRadius: containerRadius,
+                background: isValidColor(themeState.backgroundColor)
+                  ? `#${themeState.backgroundColor}`
+                  : "transparent",
+              }}
+            >
+              <div className="absolute bottom-4 right-4 z-50">
+                <button
+                  className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+                  onClick={() =>
+                    window.open("https://viewus.in/login", "_blank")
+                  }
+                >
+                  <div className="group-hover:bg-white rounded-full p-1 ">
+                    <img
+                      src="https://d3eyp937ijscg0.cloudfront.net/viewus_images/logo1.png"
                       alt=""
                       className="w-4 h-4"
                     />

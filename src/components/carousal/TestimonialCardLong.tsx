@@ -184,7 +184,9 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
             </div>
           )}
           {testimonial.reviewType !== 1 && testimonial.review && (
-            <p className="text-xs md:text-sm z-10">"{testimonial.review}"</p>
+            <p className="text-xs md:text-sm z-50 bg-white">
+              "{testimonial.review}"
+            </p>
           )}
         </CardContent>
 
@@ -246,7 +248,7 @@ const TestimonialCardLong: React.FC<TestimonialCardProps> = ({
       )} */}
       <Quote
         className={cn(
-          "absolute bottom-0 right-6 w-20 h-20  transform -translate-x-2 -translate-y-2"
+          "absolute bottom-0 right-6 w-20 h-20  transform -translate-x-2 -translate-y-2 "
         )}
         style={{
           color:
