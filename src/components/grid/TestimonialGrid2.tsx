@@ -142,9 +142,6 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
         gutter: 16,
       });
     }
-    console.log("radius", themeState.cardBorderRadius);
-    console.log("outerRadius", cardBorderRad);
-    console.log("testimonial", testimonials);
   }, [testimonials]);
 
   if (isLoading) {
@@ -177,7 +174,7 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       style={{
         background: isValidColor(themeState.backgroundColor)
           ? `#${themeState.backgroundColor}`
-          : "black",
+          : "transparent",
       }}
     >
       <div className="absolute bottom-2 right-4 z-50">

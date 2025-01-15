@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Card,
   CardHeader,
@@ -41,9 +41,6 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
   cardBorderColor = "",
   className = "",
 }) => {
-  useEffect(() => {
-    console.log("radius", cardBorderRad);
-  }, []);
   return (
     <Card
       key={`${testimonial._id}-${index}`}
