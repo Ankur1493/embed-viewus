@@ -187,13 +187,13 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
         borderRadius: containerRadius,
         background: isValidColor(themeState.backgroundColor)
           ? `#${themeState.backgroundColor}`
-          : "transparent",
+          : "black",
       }}
     >
       <div className="absolute bottom-2 right-4 z-50">
         <button
-          className="flex gap-2 justify-center items-center bg-white text-black rounded-full pr-4 py-1 group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
-          onClick={() => window.open("https://viewus.in/login", "_blank")}
+          className="flex gap-2 justify-center border-none items-center bg-white text-black rounded-full pr-3 py-[2px] group border shadow-md hover:bg-gradient-to-r from-sky-500 to-pink-400 transform transition-all hover:scale-105 duration-300 ease-in-out "
+          onClick={() => window.open("https://viewus.in", "_blank")}
         >
           <div className="group-hover:bg-white rounded-full p-1 ">
             <img

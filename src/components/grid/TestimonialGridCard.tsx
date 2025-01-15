@@ -48,7 +48,7 @@ const TestimonialGridCard: React.FC<TestimonialGridCardProps> = ({
     <Card
       key={`${testimonial._id}-${index}`}
       className={cn(
-        "border  shadow-none hover:ring ring-gray-200 ring-opacity-50 transition-all grid-item mb-4",
+        "border  shadow-none grid-item mb-4",
         className,
         isDarkTheme ? "border-gray-800" : "border-gray-200",
         !isValidColor(cardBackgroundColor) && isDarkTheme
