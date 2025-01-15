@@ -120,15 +120,6 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
       ? "20px"
       : "10px";
 
-  const containerRadius =
-    themeState.outerRadius === "low"
-      ? "5px"
-      : themeState.outerRadius === "medium"
-      ? "10px"
-      : themeState.outerRadius === "high"
-      ? "20px"
-      : "";
-
   const getColumnClass = (columns: number) => {
     switch (columns) {
       case 1:
@@ -184,7 +175,6 @@ export const TestimonialGrid2: React.FC<TestimonialGridProps> = ({
     <div
       className="w-full h-full mx-auto py-4 pb-16 flex flex-col justify-center items-center relative"
       style={{
-        borderRadius: containerRadius,
         background: isValidColor(themeState.backgroundColor)
           ? `#${themeState.backgroundColor}`
           : "black",

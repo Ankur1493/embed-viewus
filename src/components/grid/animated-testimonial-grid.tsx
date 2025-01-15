@@ -36,6 +36,15 @@ export const AnimatedTestimonialGrid: React.FC<TestimonialGridProps> = ({
     return Math.min(columns, 4);
   };
 
+  const containerRadius =
+    themeState?.outerRadius === "low"
+      ? "5px"
+      : themeState?.outerRadius === "medium"
+      ? "10px"
+      : themeState?.outerRadius === "high"
+      ? "20px"
+      : "";
+
   const columnCount = getResponsiveColumns();
 
   return (
@@ -44,6 +53,7 @@ export const AnimatedTestimonialGrid: React.FC<TestimonialGridProps> = ({
         gridColumns[Math.min(columns, 4) as keyof typeof gridColumns] ||
         gridColumns[4]
       }`}
+      style={{ borderRadius: containerRadius }}
     >
       {[...Array(columnCount)].map((_, index) => (
         <AnimatedColumn
